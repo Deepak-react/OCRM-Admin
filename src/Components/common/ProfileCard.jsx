@@ -32,6 +32,9 @@ const EditProfileForm = ({ profile, onClose, onSave }) => {
     }
   }, [profile]);
 
+  // This is the line you already have, which is correct for logging formData
+  console.log("Form Data in EditProfileForm:", formData);
+
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -96,7 +99,7 @@ const EditProfileForm = ({ profile, onClose, onSave }) => {
               className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 text-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             />
           </div>
-            <div>
+          <div>
             <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-1">Website:</label>
             <input
               type="text"
@@ -107,7 +110,7 @@ const EditProfileForm = ({ profile, onClose, onSave }) => {
               className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 text-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             />
           </div>
-          
+
           <div className="flex justify-end space-x-3 pt-4">
             <button
               onClick={handleSave}
@@ -167,8 +170,6 @@ const ProfileCard = () => {
       }
     };
 
-    
-
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -190,22 +191,22 @@ const ProfileCard = () => {
   }, [leadId]);
 
   // Fetch attachments for the lead
- const fetchAttachments = async () => {
-  const token = localStorage.getItem("token");
+  const fetchAttachments = async () => {
+    const token = localStorage.getItem("token");
 
-  try {
-    const res = await axios.get(`${apiEndPoint}/lead-attachments/${leadId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+      const res = await axios.get(`${apiEndPoint}/lead-attachments/${leadId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    // Safely extract the data
-    const fetched = Array.isArray(res.data.data) ? res.data.data : [];
-    setAttachments(fetched);
-  } catch (err) {
-    console.error("Failed to fetch attachments", err);
-    setAttachments([]); // fallback to avoid undefined issues
-  }
-};
+      // Safely extract the data
+      const fetched = Array.isArray(res.data.data) ? res.data.data : [];
+      setAttachments(fetched);
+    } catch (err) {
+      console.error("Failed to fetch attachments", err);
+      setAttachments([]); // fallback to avoid undefined issues
+    }
+  };
 
   useEffect(() => {
     fetchAttachments();
@@ -308,31 +309,31 @@ const ProfileCard = () => {
 
   // Dropzone onDrop handler
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-  accept: {
-    'application/pdf': ['.pdf'],
-    'image/png': ['.png'],
-    'image/jpeg': ['.jpg', '.jpeg']
-  },
-  maxFiles: 1,
-  onDrop: (acceptedFiles) => {
-    if (acceptedFiles && acceptedFiles.length > 0) {
-      setSelectedFile(acceptedFiles[0]);
+    accept: {
+      'application/pdf': ['.pdf'],
+      'image/png': ['.png'],
+      'image/jpeg': ['.jpg', '.jpeg']
+    },
+    maxFiles: 1,
+    onDrop: (acceptedFiles) => {
+      if (acceptedFiles && acceptedFiles.length > 0) {
+        setSelectedFile(acceptedFiles[0]);
+      }
     }
-  }
-});
+  });
 
 
   // Upload handler triggered on clicking Upload button in modal
   const handleFileUpload = async () => {
-     const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-     let userId = null;
-         if (token) {
-        const base64Payload = token.split(".")[1];
-        const decodedPayload = atob(base64Payload);
-        const payloadObject = JSON.parse(decodedPayload);
-        userId = payloadObject.user_id;
-      }
+    let userId = null;
+    if (token) {
+      const base64Payload = token.split(".")[1];
+      const decodedPayload = atob(base64Payload);
+      const payloadObject = JSON.parse(decodedPayload);
+      userId = payloadObject.user_id;
+    }
 
     if (!selectedFile) return;
 
@@ -366,23 +367,24 @@ const ProfileCard = () => {
   if (!profile) return <div className="p-4 text-gray-700">No profile data found.</div>;
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-6 font-sans">
-      <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-        <h2 className="text-xl font-semibold text-gray-800">Lead Details</h2>
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-6 font-sans">
+      <div className="flex items-center 
+      justify-between pb-4 border-b border-gray-100">
+        <h2 className="text-lg font-semibold text-gray-800">Lead Details</h2>
         <div className="flex items-center space-x-3">
           <button
             onClick={() => setShowDetails(true)}
             className="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
             aria-label="View Full Details"
           >
-            <FiEye size={20} />
+            <FiEye size={15} />
           </button>
           <button
             onClick={handleEditProfile}
             className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors shadow-md"
             aria-label="Edit Profile"
           >
-            <FiEdit size={20} />
+            <FiEdit size={15} />
           </button>
         </div>
       </div>
@@ -410,41 +412,42 @@ const ProfileCard = () => {
         </div>
       </div>
 
-      <div className="text-base text-gray-700 space-y-3 pt-4">
+      <div className="text-base text-gray-700 break-words space-y-3 pt-4">
         <div className="flex items-center gap-3">
           <FiPhone className="text-gray-500 w-5 h-5" />
           <span>{profile.iphone_no || "N/A"}</span>
         </div>
         <div className="flex items-center gap-3">
-          <FiMail className="text-gray-500 w-5 h-5" />
+          <FiMail className="text-gray-500 break-words w-5 h-5" />
           <span>{profile.cemail || "N/A"}</span>
         </div>
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3 ">
           <FiMapPin className="text-gray-500 w-5 h-5 mt-1" />
-          <span>{profile.caddress || "N/A"}</span>
+          <span>{profile.clead_address1 || "N/A"}</span>
         </div>
-        <div className="flex items-start gap-3">
-  <TbWorld className="text-gray-500 w-5 h-5 mt-1" />
-  {profile.cwebsite ? (
-    <a
-      href={profile.cwebsite.startsWith('http') ? profile.cwebsite : `https://${profile.cwebsite}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-600 hover:underline"
-    >
-      {profile.cwebsite}
-    </a>
-  ) : (
-    <span>N/A</span>
-  )}
-</div>
-        <div className="flex items-start gap-3">
+         <div className="flex items-start gap-3 ">
           <FiMove className="text-gray-500 w-5 h-5 mt-1" />
-          <span>{profile?.status || "N/A"}</span>
+          <span>{profile.clead_address2 || "N/A"}</span>
         </div>
+        <div className="flex items-start gap-3">
+          <TbWorld className="text-gray-500 w-5 h-5 mt-1" />
+          {profile.cwebsite ? (
+            <a
+              href={profile.cwebsite.startsWith('http') ? profile.cwebsite : `https://${profile.cwebsite}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              {profile.cwebsite}
+            </a>
+          ) : (
+            <span>N/A</span>
+          )}
+        </div>
+       
         <div className="flex items-start gap-3">
           <FiCodesandbox className="text-gray-500 w-5 h-5 mt-1" />
-          <span>{profile.dcreated_at || "N/A"}</span>
+          <span>{profile.corganization || "N/A"}</span>
         </div>
 
         {profile.bactive === false && (
@@ -505,22 +508,22 @@ const ProfileCard = () => {
             {attachments.length === 0 && (
               <p className="text-sm text-gray-500 italic">No attachments uploaded yet.</p>
             )}
-           
-         
-{attachments.map((file) => {
-  const filePath = file?.cattechment_path;
-  const filename = filePath?.split("/").pop();
 
-  return (
-    <div
-      key={file.ilead_id || filename}
-      className="text-sm text-gray-800 bg-white border border-gray-200 rounded-lg p-3 shadow-sm flex justify-between items-center"
-    >
-      <span className="font-medium truncate max-w-[80%]">{filename}</span>
-      <FilePreviewer filePath={filePath} apiBaseUrl={apiNoEndPoint} />
-    </div>
-  );
-})}
+
+            {attachments.map((file) => {
+              const filePath = file?.cattechment_path;
+              const filename = filePath?.split("/").pop();
+
+              return (
+                <div
+                  key={file.ilead_id || filename}
+                  className="text-sm text-gray-800 bg-white border border-gray-200 rounded-lg p-3 shadow-sm flex justify-between items-center"
+                >
+                  <span className="font-medium truncate max-w-[80%]">{filename}</span>
+                  <FilePreviewer filePath={filePath} apiBaseUrl={apiNoEndPoint} />
+                </div>
+              );
+            })}
 
 
           </div>
@@ -543,12 +546,12 @@ const ProfileCard = () => {
                   <p className="text-sm text-gray-700 font-medium">{selectedFile.name}</p>
                 ) : (
                   <>
-                  <p className="text-sm text-gray-500">
-                    Drag & drop a file here, or <span className="text-blue-500 font-medium">click to select</span>
-                  </p>
-                  <p  className="text-xs text-gray-400">
-                    Only PDF,PNG and JPEG files can be uploaded</p>
-                  </>      
+                    <p className="text-sm text-gray-500">
+                      Drag & drop a file here, or <span className="text-blue-500 font-medium">click to select</span>
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Only PDF,PNG and JPEG files can be uploaded</p>
+                  </>
                 )}
               </div>
 
@@ -577,35 +580,35 @@ const ProfileCard = () => {
 
         {/* Attachment List with Previews */}
         {Array.isArray(attachments) && attachments.map((file, i) => {
-  const filename = file?.filename;
-  const extension = filename?.includes(".") ? filename.split(".").pop() : "unknown";
+          const filename = file?.filename;
+          const extension = filename?.includes(".") ? filename.split(".").pop() : "unknown";
 
-  return (
-    <div
-      key={file?.id || i}
-      className="text-sm text-gray-800 bg-white border border-gray-200 rounded-lg p-3 shadow-sm flex justify-between items-center"
-    >
-      {/* <div>
-        <span className="font-medium truncate max-w-[80%]">
-          {filename || "Unnamed file"}
-        </span>
-        <span className="ml-2 text-xs text-gray-500">({extension})</span>
-      </div> */}
+          return (
+            <div
+              key={file?.id || i}
+              className="text-sm text-gray-800 bg-white border border-gray-200 rounded-lg p-3 shadow-sm flex justify-between items-center"
+            >
+              {/* <div>
+                <span className="font-medium truncate max-w-[80%]">
+                  {filename || "Unnamed file"}
+                </span>
+                <span className="ml-2 text-xs text-gray-500">({extension})</span>
+              </div> */}
 
-     {file?.url && (
-  <a
-    href={file.url}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-blue-500 hover:underline text-xs sm:text-sm flex items-center gap-1"
-  >
-    <FiEye size={16} /> View
-  </a>
-)}
+              {file?.url && (
+                <a
+                  href={file.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline text-xs sm:text-sm flex items-center gap-1"
+                >
+                  <FiEye size={16} /> View
+                </a>
+              )}
 
-    </div>
-  );
-})}
+            </div>
+          );
+        })}
 
       </div>
 
@@ -638,25 +641,26 @@ const ProfileCard = () => {
                 <FiPhone className="text-gray-500 w-5 h-5" />
                 <span><span className="font-medium">Phone:</span> {profile.iphone_no || "N/A"}</span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center break-words gap-3">
                 <FiMail className="text-gray-500 w-5 h-5" />
                 <span><span className="font-medium">Email:</span> {profile.cemail || "N/A"}</span>
               </div>
               <div className="flex items-start gap-3">
                 <FiMapPin className="text-gray-500 w-5 h-5 mt-1" />
-                <span><span className="font-medium">Address:</span> {profile.caddress || "N/A"}</span>
+                <span><span className="font-medium">Address:</span> {profile.clead_address1 || "N/A"}</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <FiMove className="text-gray-500 w-5 h-5 mt-1" />
+                <span><span className="font-medium">Status:</span> {profile.clead_address2|| "N/A"}</span>
               </div>
               <div className="flex items-start gap-3">
                 <TbWorld className="text-gray-500 w-5 h-5 mt-1" />
                 <span><span className="font-medium">Website:</span> {profile.cwebsite || "N/A"}</span>
               </div>
-              <div className="flex items-start gap-3">
-                <FiMove className="text-gray-500 w-5 h-5 mt-1" />
-                <span><span className="font-medium">Status:</span> {profile?.status || "N/A"}</span>
-              </div>
+              
               <div className="flex items-start gap-3">
                 <FiCodesandbox className="text-gray-500 w-5 h-5 mt-1" />
-                <span><span className="font-medium">Created At:</span> {profile.dcreated_at || "N/A"}</span>
+                <span><span className="font-medium">Created At:</span> {profile.corganization || "N/A"}</span>
               </div>
               {/* Add any other detailed fields here that are not on the main card */}
             </div>
@@ -676,7 +680,7 @@ const ProfileCard = () => {
                       {entry.updatedProfile?.clead_name && <div><span className="font-medium">Name:</span> {entry.updatedProfile.clead_name}</div>}
                       {entry.updatedProfile?.cemail && <div><span className="font-medium">Email:</span> {entry.updatedProfile.cemail}</div>}
                       {entry.updatedProfile?.iphone_no && <div><span className="font-medium">Phone:</span> {entry.updatedProfile.iphone_no}</div>}
-                      {entry.updatedProfile?.caddress && <div><span className="font-medium">Address:</span> {entry.updatedProfile.caddress}</div>}
+                      {entry.updatedProfile?.caddress && <div><span className="font-medium">Address:</span> {entry.updatedProfile.icity}</div>}
                       {/* Add other updated fields to history display if needed */}
                     </div>
                   </div>

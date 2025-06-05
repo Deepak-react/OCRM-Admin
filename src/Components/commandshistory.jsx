@@ -82,6 +82,7 @@ const Comments = () => {
       if (response.ok) {
         setComments(data.result.sort((a, b) => new Date(b.icreate_dt) - new Date(a.icreate_dt)));
       }
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       showPopup("Error", "Network error fetching comments.", "error");
     }
@@ -138,6 +139,7 @@ const Comments = () => {
     // Refresh comments list after successful submission
     fetchComments();
 
+  // eslint-disable-next-line no-unused-vars
   } catch (error) {
     showPopup("Error", "Failed to add comment due to network error.", "error");
   }
@@ -157,6 +159,7 @@ const Comments = () => {
       showPopup("Success", "✅ Comment updated successfully!!", "success");
       setEditingId(null);
       fetchComments();
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       showPopup("Error", "Network error updating comment.", "error");
     }
@@ -184,6 +187,7 @@ const Comments = () => {
     setDeleteMsg(true);
     showPopup("Success", "✅ Comment deleted successfully.", "success");
     fetchComments();
+  // eslint-disable-next-line no-unused-vars
   } catch (error) {
     showPopup("Error", "Network error deleting comment.", "error");
   }

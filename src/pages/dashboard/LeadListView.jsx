@@ -108,19 +108,37 @@ const LeadListViewPage = () => {
             {filteredLeads.map((lead, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-xl shadow-sm p-4 flex flex-col gap-2 transition-all hover:shadow-md"
+                className="bg-white rounded-xl shadow-sm p-4 flex flex-col gap-4 transition-all hover:shadow-md"
               >
                 <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-gray-800">{lead.clead_name}</h2>
+                  <h2 className="text-lg font-semibold text-gray-800 break-words">{lead.clead_name}</h2>
                   <span className="text-sm text-gray-500">{lead.dmodified_dt}</span>
                 </div>
-                <div className="text-sm text-gray-600">
-                  <p><span className="font-medium">Organization:</span> {lead.corganization}</p>
-                  <p><span className="font-medium">Phone:</span> {lead.iphone_no}</p>
-                  <p><span className="font-medium">Email:</span> {lead.cemail}</p>
-                  <p><span className="font-medium">Assigned To:</span> {lead.assignedTo}</p>
-                  <p><span className="font-medium">Status:</span> {lead.lead_status?.clead_name}</p>
-                  <p><span className="font-medium">Potential:</span> {lead.lead_potential?.clead_name}</p>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <p>
+                    <span className="font-medium">Organization:</span>{' '}
+                    <span className="break-words">{lead.corganization}</span>
+                  </p>
+                  <p>
+                    <span className="font-medium">Phone:</span>{' '}
+                    <span className="break-words">{lead.iphone_no}</span>
+                  </p>
+                  <p>
+                    <span className="font-medium">Email:</span>{' '}
+                    <span className="break-words">{lead.cemail}</span>
+                  </p>
+                  <p>
+                    <span className="font-medium">Assigned To:</span>{' '}
+                    <span className="break-words">{lead.assignedTo}</span>
+                  </p>
+                  <p>
+                    <span className="font-medium">Status:</span>{' '}
+                    <span className="break-words">{lead.lead_status?.clead_name}</span>
+                  </p>
+                  <p>
+                    <span className="font-medium">Potential:</span>{' '}
+                    <span className="break-words">{lead.lead_potential?.clead_name}</span>
+                  </p>
                 </div>
               </div>
             ))}

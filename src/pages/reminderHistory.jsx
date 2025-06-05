@@ -12,10 +12,10 @@ const RemainderHistory = () => {
     <>
      <ProfileHeader />
      
-     <div className=" top-[] ms-[-700px] right-0">
+     <div className=" ms-[-700px] right-0">
       <ProgressBar />
       </div>
-      <div className="  top-[] ms-[] right-0">
+      <div className="   ms-[] right-0">
       <TabsBar />
       </div>
       <div className="flex px-2 gap-4">

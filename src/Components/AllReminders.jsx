@@ -23,7 +23,7 @@ const AllReminders = () => {
   };
 
   return (
-    <div className="px-4 py-6 max-w-4xl mx-auto">
+    <div className="px-4 py-6 max-w-4xl mx-auto overflow-y-scroll">
       <h2 className="text-xl font-bold mb-6 text-center sm:text-left">All Reminders</h2>
 
       {reminders.map((r, index) => {
@@ -31,7 +31,7 @@ const AllReminders = () => {
         return (
           <div
             key={r.id}
-            className="bg-white border rounded-lg p-4 sm:p-6 shadow-sm mb-6 space-y-4"
+            className="bg-white border rounded-lg p-4 sm:p-6 shadow-sm mb-6 overflow-y-scroll space-y-4"
           >
             {/* Top Section */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

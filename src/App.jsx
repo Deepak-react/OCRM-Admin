@@ -7,6 +7,7 @@ import SuccessMessage from "./pages/credential/SuccessMessage";
 import VerifyCodePage from "./pages/credential/verify_code";
 import Login from "./pages/credential/login";
 import { PopupProvider } from "./context/PopupContext";
+import { UserProvider } from "./context/UserContext";
 import SignupRes from "./pages/credential/signup_res";
 
 import LeadTimeline from "./Components/LeadTimeline";
@@ -24,6 +25,7 @@ import Commandpage from "./pages/command";
 import TeamviewDashboard from "./pages/dashboard/teamviewdashboard";
 import { TabProvider } from "./context/TabContext";
 import LeadDetailView from "./context/leaddetailsview";
+import UserProfile from "./pages/userPage/userProfile";
 import CreateUserForm from "./Components/registerUser";
 import AppLayout from "./Components/AppLayout";
 
@@ -38,12 +40,15 @@ import UserPage from "./pages/userPage/userPage";
 import LostLeadReportPage from './Components/reports/LeadLostReport';
 import SalesByStageReportPage from './Components/reports/salesByStageReport';
 import CardsPage from './Components/reports/reports';
+import CompanyDashboard from './pages/dashboard/companydashboard';
+import NotificationPage from "./pages/notification"; 
 
 function App() {
   return (
     <PopupProvider>
       <ToastProvider>
         <TabProvider>
+          <UserProvider>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Login />} />
@@ -62,6 +67,7 @@ function App() {
               <Route path="userpage" element={<UserPage />} />
               <Route path="commandpage" element={<Commandpage />} />
               <Route path="users" element={<CreateUserForm />} />
+              <Route path="/notifications" element={<NotificationPage />} />
 
               <Route path="leads" element={<LeadsDashboard />} />
               <Route path="leadlistview" element={<LeadListViewPage />} />
@@ -75,6 +81,9 @@ function App() {
               <Route path="analytics" element={<UserAnalyticsPage />} />
               <Route path="teamview" element={<TeamviewDashboard />} />
               <Route path="leaddetailview/:leadId" element={<LeadDetailView />} />
+              <Route path="userprofile/:userId" element={<UserProfile />}/>
+              <Route path="/companydashboard" element={<CompanyDashboard />} />
+
 
               <Route path="settingspage" element={<SettingsPage />}>
                 <Route path="account" element={<AccountSettings />} />
@@ -86,6 +95,7 @@ function App() {
               </Route>
             </Route>
           </Routes>
+            </UserProvider>
         </TabProvider>
       </ToastProvider>
     </PopupProvider>

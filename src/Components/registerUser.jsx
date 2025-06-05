@@ -201,7 +201,7 @@ const token = localStorage.getItem("token")
 
     return (
         <div className="relative inset-0 flex justify-center items-center  pt-10 overflow-y-auto z-5">
-            <form onSubmit={handleSubmit} className="form-container w-full max-w-2xl mx-auto bg-white shadow-lg rounded-2xl p-4 md:p-6" > {/* Close Button */} <button type="button" onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-black" aria-label="Close form" > <X size={20} /> </button>
+            <form onSubmit={handleSubmit} className="form-container w-full max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-4 md:p-6" > {/* Close Button */} <button type="button" onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-black" aria-label="Close form" > <X size={20} /> </button>
                 <h2 className="text-lg md:text-xl font-semibold text-center mb-6">
                     🚀 Let's Create a New Profile
                 </h2>
