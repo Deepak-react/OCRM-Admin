@@ -12,13 +12,10 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const fullMenuItems = [
-    { iconPath: '/images/nav/home.png', label: 'Home', route: '/leads' },
-    { iconPath: '/images/nav/group.png', label: 'Lead', route: '/leadcardview' },
-    { iconPath: '/images/nav/calen.png', label: 'Calendar', route: '/calenderpage' },
-    { iconPath: '/images/nav/settings.png', label: 'Settings', route: '/settingspage/account' },
-    { iconPath: '/images/nav/reports.png', label: 'Reports', route: '/reportpage' },
-    { iconPath: '/images/nav/users.png', label: 'Users', route: '/userpage' },
-    {iconPath: '/images/nav/company.png' , label: 'Company', route: '/companydashboard'}, 
+    { iconPath: '/images/nav/home.png', label: 'Dashboard', route: '/dashboard-admin' },
+    { iconPath: '/images/nav/group.png', label: 'Company', route: '/company' },
+    { iconPath: '/images/nav/calen.png', label: 'Reseller', route: '/reseller' },
+    { iconPath: '/images/nav/settings.png', label: 'Masters', route: '/masters' },
 
 
   ];
@@ -73,6 +70,14 @@ const Sidebar = () => {
     navigate('/', { replace: true });
   };
 
+  const used = 20;
+  const radius = 45;
+  const circumference = 2 * Math.PI * radius;
+  const usedOffset = circumference * (1 - used / 100);
+
+
+  
+
   return (
     <div className="flex h-screen w-full">
       {/* Sidebar */}
@@ -110,6 +115,9 @@ const Sidebar = () => {
         </div>
 
         <div className="flex flex-col items-center py-6 space-y-4 mb-4">
+
+            
+
           <button
             onClick={toggleSidebar}
             className="flex items-center justify-center space-x-2 px-3 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition"

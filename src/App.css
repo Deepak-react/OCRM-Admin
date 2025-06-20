@@ -66,4 +66,28 @@
 }
 
 
+@font-face {
+  font-family: 'Casuten';
+  src: url('/fonts/Causten-black.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+/* For Chrome, Safari, Edge */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+body {
+  font-family: 'Casuten', sans-serif;
+}
 

@@ -42,6 +42,18 @@ import SalesByStageReportPage from './Components/reports/salesByStageReport';
 import CardsPage from './Components/reports/reports';
 import CompanyDashboard from './pages/dashboard/companydashboard';
 import NotificationPage from "./pages/notification"; 
+import AdminDashboard from "../src/admin/pages/dashboard/adminDashboard";
+import Company from "./admin/pages/Company/companies";
+import MasterData from "./admin/pages/Masters/masterData";
+import LeadStatus from "./admin/pages/Masters/Status/leadStauts";
+import LeadSource from "./admin/pages/Masters/Source/leadSource";
+import LeadPotentail from "./admin/pages/Masters/Potential/leadPotential";
+import Indsutry from "./admin/pages/Masters/Industry/industry";
+import CompanyProfile from "./admin/pages/Company/companyProfile";
+import { NotFoundPage } from "./admin/components/404";
+import Reseller from "./admin/pages/Reseller/reseller";
+import ResellerProfile from "./admin/pages/Reseller/resellerProfile";
+import AlertScreen from "./admin/pages/Alerts/alerts";
 
 function App() {
   return (
@@ -68,6 +80,20 @@ function App() {
               <Route path="commandpage" element={<Commandpage />} />
               <Route path="users" element={<CreateUserForm />} />
               <Route path="/notifications" element={<NotificationPage />} />
+              <Route path="/dashboard-admin" element={<AdminDashboard />} />
+              <Route path="/company" element={<Company />} />
+              <Route path="/masters" element={<MasterData />} />
+              <Route path="/lead-status" element={<LeadStatus />} />
+              <Route path="/lead-source" element={<LeadSource />} />
+              <Route path="/lead-potential" element={<LeadPotentail />} />
+              <Route path="/industry" element={<Indsutry />} />
+              <Route path="/404" element={<NotFoundPage />} />              
+              <Route path="/company-profile/:id" element={<CompanyProfile />} />
+              <Route path="/reseller" element={<Reseller />} />
+              <Route path="/reseller-profile/:id" element={<ResellerProfile />} />
+              <Route path="/alerts" element={<AlertScreen />} />
+
+
 
               <Route path="leads" element={<LeadsDashboard />} />
               <Route path="leadlistview" element={<LeadListViewPage />} />
@@ -83,6 +109,7 @@ function App() {
               <Route path="leaddetailview/:leadId" element={<LeadDetailView />} />
               <Route path="userprofile/:userId" element={<UserProfile />}/>
               <Route path="/companydashboard" element={<CompanyDashboard />} />
+
 
 
               <Route path="settingspage" element={<SettingsPage />}>
