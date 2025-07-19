@@ -16,6 +16,9 @@ PointElement, Tooltip, Legend } from 'chart.js';
 import { useCompanyController } from "./companyController";
 import formatDate from "../../utils/formatDate";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material"; 
+import GeneralSettingsTab from './GeneralSettingsTab';
+import MasterData from "../Masters/masterData.jsx";
+import AuditLoginTab from './AuditLoginTab'; 
 
 ChartJS.register( ArcElement,
   LineElement,
@@ -394,6 +397,16 @@ const CompanyProfile = () => {
     ]);
     handleCloseAddModuleDialog();
   };
+  const [formData, setFormData] = useState({
+  name: "",
+  email: "",
+  appPassword: "",
+});
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
 
 
   return (
@@ -443,20 +456,19 @@ const CompanyProfile = () => {
       </div>
 
       {/* --- Tabs Section --- */}
-      <div className="bg-white rounded-xl shadow-md p-0 border border-gray-100">
+      <div className="bg-black rounded-xl shadow-md p-0 border border-gray-100">
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTab} onChange={handleTabChange} aria-label="company profile tabs"
-            sx={{
-              '.MuiTabs-indicator': {
-                backgroundColor: '#2563EB',
-              },
-            }}
-          >
+            sx={{'.MuiTabs-indicator': {backgroundColor: '#2563EB', },}}>
             <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">Company Profile</span>} {...a11yProps(0)} />
             <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">General Settings</span>} {...a11yProps(1)} />
             <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">Users</span>} {...a11yProps(2)} />
+            <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">Masters</span>} {...a11yProps(3)} />
+            <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">Audit login</span>} {...a11yProps(4)} />
           </Tabs>
         </Box>
+
+        
 
         {/* --- Tab Panel: Company Profile --- */}
         <CustomTabPanel value={activeTab} index={0}>
@@ -469,8 +481,8 @@ const CompanyProfile = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5 gap-x-6 text-base text-gray-800">
                 {/* Column 1 */}
                 <p className="flex items-center gap-2"><img src="/icons/company.png" alt="Company" width={30} height={30} /><span className="font-semibold">{company?.cCompany_name || "-"}</span></p>
-                <p className="flex items-center gap-2"><PhoneIcon className="text-gray-500" /> <span className="font-semibold">{company?.iPhone_no || "N/A"}</span></p>
-                <p className="flex items-center gap-2"><EmailIcon className="text-gray-500" /><span className="font-semibold">{company?.cEmail || "N/A"}</span></p>
+                <p className="flex items-center gap-2"><PhoneIcon className="text-gray-500" /> <span className="font-semibold">{company?.iPhone_no || "-"}</span></p>
+                <p className="flex items-center gap-2"><EmailIcon className="text-gray-500" /><span className="font-semibold">{company?.cEmail || "-"}</span></p>
                 <p className="md:col-span-2 lg:col-span-1 flex items-center gap-2"><LanguageIcon className="text-gray-500" /><a href={`http://${company?.cWebsite}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 hover:underline">{company?.cWebsite || "-"}</a></p>
                 <p className="flex items-center gap-2"><img src="/icons/reseller.png" alt="Reseller" width={30} height={30} /><span className="font-semibold">{company?.iReseller_id || "-"}</span></p>
                 <p className="flex items-center gap-2"><img src="/icons/user.png" alt="User" width={30} height={30} /><span className="font-semibold">{company?.iUser_no || "-"}</span></p>
@@ -495,106 +507,9 @@ const CompanyProfile = () => {
 
         {/* --- Tab Panel: General Settings & Enabled Modules --- */}
         <CustomTabPanel value={activeTab} index={1}>
-          <div className="space-y-8">
-            {/* General Settings Section */}
-            <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">General Settings</h2>
-              <div className="space-y-6">
-                 {/* Setting Row: Company Status Toggle */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-200">
-                  <div>
-                    <p className="font-semibold text-gray-800 text-lg">Company Status</p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Toggle to {company?.bactive ? "deactivate" : "activate"} this company's account.
-                    </p>
-                  </div>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={company?.bactive || false}
-                        onChange={handleOpenCompanyStatusDialog} 
-                        name="companyStatus"
-                        color="primary"
-                      />
-                    }
-                    label={company?.bactive ? "Active" : "Inactive"}
-                    labelPlacement="start"
-                    className="mt-2 sm:mt-0"
-                  />
-                </div>
-                {/* Setting Row: Preferred Currency */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-200">
-                  <div>
-                    <p className="font-semibold text-gray-800 text-lg">Preferred Currency</p>
-                    <p className="text-sm text-gray-500 mt-1">All transactions and reports will be displayed using this currency.</p>
-                  </div>
-                  <select className="border border-gray-300 px-4 py-2 rounded-lg text-base font-medium text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 sm:mt-0 shadow-sm">
-                    <option>₹ INR</option>
-                    <option>$ USD</option>
-                    <option>€ EUR</option>
-                  </select>
-                </div>
-
-                {/* Setting Row: Time Zone */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-200">
-                  <div>
-                    <p className="font-semibold text-gray-800 text-lg">Time Zone</p>
-                    <p className="text-sm text-gray-500 mt-1">System events, reminders, and schedules will follow this time zone.</p>
-                  </div>
-                  <select className="border border-gray-300 px-4 py-2 rounded-lg text-base font-medium text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 sm:mt-0 shadow-sm">
-                    <option>GMT +5:30) Asia/Kolkata</option>
-                    <option>GMT +1:00) Europe/London</option>
-                    <option>GMT -8:00) America/Los_Angeles</option>
-                  </select>
-                </div>
-
-                {/* Setting Row: Language */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                  <div>
-                    <p className="font-semibold text-gray-800 text-lg">Language</p>
-                    <p className="text-sm text-gray-500 mt-1">The CRM interface and default communication will use this language.</p>
-                  </div>
-                  <select className="border border-gray-300 px-4 py-2 rounded-lg text-base font-medium text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 sm:mt-0 shadow-sm">
-                    <option>English</option>
-                    <option>Hindi</option>
-                    <option>Tamil</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Enabled Modules Section */}
-            <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                Enabled Modules
-                <Button
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                  onClick={handleOpenAddModuleDialog}
-                  sx={{ ml: 2, bgcolor: '#2563EB', '&:hover': { bgcolor: '#1D4ED8' } }}
-                >
-                  Add Module
-                </Button>
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
-                {modules.map((module, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200 shadow-sm"
-                  >
-                    <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0 shadow-md">
-                      ✓
-                    </div>
-                    <div>
-                      <p className="text-lg font-semibold text-gray-800">{module.name}</p>
-                      <p className="text-sm text-gray-600 mt-1">{module.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </CustomTabPanel>
+  <GeneralSettingsTab />
+</CustomTabPanel> 
+        
 
         {/* --- Tab Panel: Users --- */}
         <CustomTabPanel value={activeTab} index={2}>
@@ -686,6 +601,13 @@ const CompanyProfile = () => {
      </div>
        </CustomTabPanel>
       </div>
+
+      <CustomTabPanel value={activeTab} index={3}> {/* New index for Masters */}
+  <MasterData />
+</CustomTabPanel>
+<CustomTabPanel value={activeTab} index={4}>
+  <AuditLoginTab />
+</CustomTabPanel> 
 
       {/* --- Edit Company Dialog --- */}
       <Dialog open={openEditDialog} onClose={handleCloseEditDialog} fullWidth maxWidth="md">

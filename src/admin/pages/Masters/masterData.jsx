@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 
 const MasterData = () => {
-  // Demo cards data (keeping as is per your request)
   const cardData = [
     { id: 1, title: 'Lead Status', description: 'Indicates the current stage or progress of the lead in the sales process.', image_path: '/icons/status.svg', route: '/lead-status' },
     { id: 2, title: 'Lead Source', description: 'Identifies where the lead came from—useful for tracking marketing effectiveness.', image_path: '/icons/coding.svg', route: '/lead-source' },
@@ -10,8 +9,8 @@ const MasterData = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50 p-6 sm:p-8 font-sans antialiased">
-      <div className="max-w-7xl mx-auto"> {/* Max width and center for larger screens */}
+    <div className="min-h-screen bg-white p-6 sm:p-8 font-sans antialiased">
+      <div className="max-w-7xl mx-auto"> 
         <h1 className="text-4xl font-extrabold text-gray-800 mb-12 leading-tight">
           Masters
         </h1>
@@ -21,7 +20,7 @@ const MasterData = () => {
             <Link
               to={card.route}
               key={card.id}
-              className="block h-full group" // 'block' makes the whole area clickable, 'h-full' ensures equal height, 'group' for hover effects
+              className="block h-full group" 
             >
               <div className="
                 h-full flex flex-col justify-between // Ensure content pushes down and card fills height
