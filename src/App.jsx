@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import ForgetPassword from "./Components/ForgetPassword";
 import { ToastProvider } from "./context/ToastContext";
@@ -9,7 +11,7 @@ import Login from "./pages/credential/login";
 import { PopupProvider } from "./context/PopupContext";
 import { UserProvider } from "./context/UserContext";
 import SignupRes from "./pages/credential/signup_res";
-
+import UpdatePassword from "./Components/UpdatePassword";
 import LeadTimeline from "./Components/LeadTimeline";
 import HistoryPage from "./pages/history";
 import CompanyList from "./Components/Company/CompanyList";
@@ -61,6 +63,8 @@ function App() {
       <ToastProvider>
         <TabProvider>
           <UserProvider>
+            <>
+            <ToastContainer position="top-right" autoClose={2500} />
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Login />} />
@@ -68,6 +72,7 @@ function App() {
             <Route path="/success" element={<SuccessMessage />} />
             <Route path="/verify" element={<VerifyCodePage />} />
             <Route path="/signupres" element={<SignupRes />} />
+            <Route path="/UpdatePassword" element={<UpdatePassword/>}/>
 
             {/* Protected Routes with Layout */}
             <Route element={<AppLayout />}>
@@ -122,6 +127,7 @@ function App() {
               </Route>
             </Route>
           </Routes>
+          </>
             </UserProvider>
         </TabProvider>
       </ToastProvider>

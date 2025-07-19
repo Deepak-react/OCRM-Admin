@@ -1,3 +1,85 @@
+// import React, { useState, useEffect } from 'react';
+// import { Link, useLocation } from 'react-router-dom';
+// import { jwtDecode } from 'jwt-decode';
+
+// const Sidebar = () => {
+//   const [menuItems, setMenuItems] = useState([]);
+//   const [showPopup, setShowPopup] = useState(false);
+//   const location = useLocation();
+
+//   useEffect(() => {
+//     const token = localStorage.getItem('token');
+//     if (token) {
+//       try {
+//         const decoded = jwt-decode(token);
+//         const roleId = decoded?.role_id;
+
+//         if (roleId === 1) {
+//           setMenuItems([
+//             {
+//               iconPath: '/images/nav/home.png',
+//               label: 'Dashboard',
+//               route: '/dashboard-admin',
+//             },
+//             {
+//               iconPath: '/images/nav/org.png',
+//               label: 'Company',
+//               route: '/company',
+//             },
+//             {
+//               iconPath: '/images/nav/calen.png',
+//               label: 'Reseller',
+//               route: '/reseller',
+//             },
+//             {
+//               iconPath: '/images/nav/settings.png',
+//               label: 'Masters',
+//               route: '/masters',
+//             },
+//           ]);
+//         } else {
+//           setShowPopup(true);
+//         }
+//       } catch (err) {
+//         console.error('Invalid token:', err);
+//         setShowPopup(true);
+//       }
+//     } else {
+//       setShowPopup(true);
+//     }
+//   }, []);
+
+//   return (
+//     <aside className="w-64 h-full bg-gray-100 p-4">
+//       {showPopup ? (
+//         <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg text-center font-medium">
+//           <p>This is only for administrator.</p>
+//           <p>Please contact your admin.</p>
+//         </div>
+//       ) : (
+//         <ul className="space-y-2">
+//           {menuItems.map((item, index) => (
+//             <li
+//               key={index}
+//               className={`p-2 rounded-lg hover:bg-gray-200 ${
+//                 location.pathname === item.route ? 'bg-gray-300 font-semibold' : ''
+//               }`}
+//             >
+//               <Link to={item.route} className="flex items-center space-x-2">
+//                 <img src={item.iconPath} alt={item.label} className="w-5 h-5" />
+//                 <span>{item.label}</span>
+//               </Link>
+//             </li>
+//           ))}
+//         </ul>
+//       )}
+//     </aside>
+//   );
+// };
+
+// export default Sidebar;
+
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { useTabs } from '../../context/TabContext';
@@ -13,7 +95,7 @@ const Sidebar = () => {
 
   const fullMenuItems = [
     { iconPath: '/images/nav/home.png', label: 'Dashboard', route: '/dashboard-admin' },
-    { iconPath: '/images/nav/group.png', label: 'Company', route: '/company' },
+    { iconPath: '/images/nav/org.png', label: 'Company', route: '/company' },
     { iconPath: '/images/nav/calen.png', label: 'Reseller', route: '/reseller' },
     { iconPath: '/images/nav/settings.png', label: 'Masters', route: '/masters' },
 

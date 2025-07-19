@@ -15,7 +15,7 @@ export const NotFoundPage = () => {
         The page you're looking for doesn't exist or something went wrong.
       </p>
       <button
-        onClick={() => (window.location.href = '/leads')}
+        onClick={() => (window.location.href = '/dashboard-admin')}
         className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
       >
         Go to Homepage
