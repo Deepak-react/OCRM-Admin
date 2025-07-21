@@ -15,6 +15,7 @@ export const ENDPOINTS = {
   CITY : `${BASE_URL}/city/`, 
   ADMIN_DASHBOARD : `${BASE_URL}/admin-dashboard/`,
   RESELLER : `${BASE_URL}/reseller/`, 
+  USER_TAB : (companyId) => `${BASE_URL}/users/company/${companyId}`,
 
 
 };
