@@ -32,6 +32,7 @@ const ResellerProfile = () => {
   const { fetchResellerDataById } = useResellerController();
   const [reseller, setReseller] = useState(null);
   const { id } = useParams();
+  
 
   const created_at = useMemo(() => formatDate(reseller?.dCreated_dt), [reseller?.dCreated_dt]);
   const modified_at = useMemo(() => formatDate(reseller?.dUpdated_dt), [reseller?.dUpdated_dt]);
