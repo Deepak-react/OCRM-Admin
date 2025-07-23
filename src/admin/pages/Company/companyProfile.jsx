@@ -8,7 +8,6 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EventIcon from '@mui/icons-material/Event';
 import EditDocumentIcon from '@mui/icons-material/EditDocument';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Chart as ChartJS, ArcElement, LineElement, CategoryScale, LinearScale,
@@ -58,18 +57,13 @@ function a11yProps(index) {
 }
 
 const CompanyProfile = () => {
-  //for user tab
-  // const [filterType, setFilterType] = useState("all");
-  //  const filteredUsers = usersByCompany?.filter((user) => {
-  //   if (filterType === "active") return user.bactive === true;
-  //   if (filterType === "inactive") return user.bactive === false;
-  //   return true; // "all"
-  // });
-
-  // Destructure usersByCompany and error from the controller
   const { fetchCompanyDataById, usersByCompany, fetchUsersByCompanyId, error } = useCompanyController();
   const [company, setCompany] = useState(null);
   const [activeTab, setActiveTab] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 10;
+
+
 
   const { id } = useParams();
 
@@ -217,24 +211,35 @@ const CompanyProfile = () => {
     },
   ]);
 
+
+  //funciton to calculate the total number of pages
+  // Calculate total pages
+const totalPages = Math.ceil(usersByCompany.length / usersPerPage);
+
+// Slice data based on currentPage
+const paginatedUsers = usersByCompany.slice(
+  (currentPage - 1) * usersPerPage,
+  currentPage * usersPerPage
+);
+
   // Removed static 'users' state: const [users, setUsers] = useState([...]);
 
   // Dynamically build full address, filtering out empty parts
   const fullAddressParts = [
-    company?.caddress1,
-    company?.caddress2,
-    company?.caddress3,
-    company?.city?.cCity_name,
-    company?.country?.cCountry_name
+    company?.result.caddress1,
+    company?.result.caddress2,
+    company?.result.caddress3,
+    company?.result.city?.cCity_name,
+    company?.result.country?.cCountry_name
   ].filter(Boolean);
   const fullAddress = fullAddressParts.length > 0 ? fullAddressParts.join(', ') : '-';
 
   // Format dates
-  const created_at = formatDate(company?.dCreated_dt);
-  const modified_at = formatDate(company?.dModified_dt);
+  const created_at = formatDate(company?.result.dCreated_dt);
+  const modified_at = formatDate(company?.result.dModified_dt);
 
   // Initial for company logo placeholder
-  const companyInitial = company?.cCompany_name?.charAt(0).toUpperCase() || '?';
+  const companyInitial = company?.result.cCompany_name?.charAt(0).toUpperCase() || '?';
 
   // Effect to fetch company data
   useEffect(() => {
@@ -243,6 +248,7 @@ const CompanyProfile = () => {
         const data = await fetchCompanyDataById(id);
         console.log("The company data is:", data);  
         setCompany(data);
+        console.log("Rendered with id:", id);
       } catch (error) {
         console.error("Failed to fetch company data:", error);
         setCompany(null);
@@ -257,9 +263,10 @@ const CompanyProfile = () => {
   useEffect(() => {
     if (activeTab === 2 && id) { // Only fetch when 'Users' tab is active and a company ID is available
       //console.log("Fetching users for company ID:", id);
-      fetchUsersByCompanyId(id); // Call the controller function with the current company ID
+      console.log("Fetching users for company ID:", id);
+      fetchUsersByCompanyId(id); 
     }
-  }, [id]); // Dependencies for this useEffect
+  }, [activeTab]); // Dependencies for this useEffect
 
 
   // for edit form
@@ -433,7 +440,7 @@ const CompanyProfile = () => {
               {company?.result.cCompany_name || "Loading Company..."}
             </h1>
             <p className="text-sm text-gray-500 mt-1 flex items-center gap-2">
-              Company ID: <span className="font-semibold text-gray-700">{company?.iCompany_id || '-'}</span>
+              Company ID: <span className="font-semibold text-gray-700">{company?.result.iCompany_id || '-'}</span>
               {company && (
                 <span
                   className={`
@@ -486,7 +493,7 @@ const CompanyProfile = () => {
                 {/* Column 1 */}
                 <p className="flex items-center gap-2"><img src="/icons/company.png" alt="Company" width={30} height={30} /><span className="font-semibold">{company?.result.cCompany_name || "-"}</span></p>
                 <p className="flex items-center gap-2"><PhoneIcon className="text-gray-500" /> <span className="font-semibold">{company?.result.iPhone_no || "-"}</span></p>
-                <p className="flex items-center gap-2"><EmailIcon className="text-gray-500" /><span className="font-semibold">{company?.result.cEmail || "-"}</span></p>
+                <p className="flex items-center gap-2"><EmailIcon className="text-gray-500" /><span className="font-semibold">{company?.result.cemail_address || "-"}</span></p>
                 <p className="md:col-span-2 lg:col-span-1 flex items-center gap-2"><LanguageIcon className="text-gray-500" /><a href={`http://${company?.result.cWebsite}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 hover:underline">{company?.result.cWebsite || "-"}</a></p>
                 <p className="flex items-center gap-2"><img src="/icons/reseller.png" alt="Reseller" width={30} height={30} /><span className="font-semibold">{company?.result.iReseller_id || "-"}</span></p>
                 <p className="flex items-center gap-2"><img src="/icons/user.png" alt="User" width={30} height={30} /><span className="font-semibold">{company?.result.iUser_no || "-"}</span></p>
@@ -495,6 +502,7 @@ const CompanyProfile = () => {
                 <p className="md:col-span-2 lg:col-span-1 flex items-start gap-2"><LocationOnIcon className="text-gray-500 mt-1" /><span className="font-semibold">{fullAddress}</span></p>
                 <p className="flex items-center gap-2"><EventIcon className="text-gray-500" /><span className="font-semibold">{created_at || "-"}</span></p>
                 <p className="flex items-center gap-2"><EditDocumentIcon className="text-gray-500" /> <span className="font-semibold">{modified_at || "-"}</span></p>
+                <p className="flex items-center gap-2"><EditDocumentIcon className="text-gray-500" /> <span className="font-semibold">{company?.totalLeads || "-"}</span></p>                
               </div>
             </div>
           </div>
@@ -520,8 +528,6 @@ const CompanyProfile = () => {
 <CustomTabPanel value={activeTab} index={2}>
           {console.log("usersByCompany length:", usersByCompany?.length)}
           {/* {console.log("usersByCompany length (render):", usersByCompany.length)} */}
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Users</h2>
             {/* Display error from the controller */}
             {error && <p className="text-red-500 mb-4">Error: {error}</p>}
             {usersByCompany.length > 0 ? (
@@ -542,7 +548,7 @@ const CompanyProfile = () => {
 
                   <tbody className="bg-white divide-y divide-gray-200">
                     {/* Iterate over usersByCompany fetched from the API */}
-                    {usersByCompany.map((user) => (
+                    {paginatedUsers.map((user) => (
                       <tr key={user.iUser_id}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.cFull_name}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.cEmail}</td>
@@ -597,11 +603,42 @@ const CompanyProfile = () => {
                     ))}
                   </tbody>
                 </table>
+                   <div className="flex justify-center mt-4 space-x-2">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                >
+                  Prev
+                </button>
+
+                {[...Array(totalPages)].map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`px-3 py-1 rounded ${
+                      currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                >
+                  Next
+                </button>
               </div>
+
+              </div>
+
+              
             ) : (
               <p className="text-red-500">No user data available for this company.</p>
             )}
-          </div>
         </CustomTabPanel>
 
       </div>

@@ -16,7 +16,7 @@ const LeadPotential = () => {
   // Fetch data on component mount
   useEffect(() => {
     fetchIndustryData();
-  }, [fetchIndustryData]);
+  }, []);
 
   // Pagination Logic
   const indexOfLastItem = currentPage * itemsPerPage;

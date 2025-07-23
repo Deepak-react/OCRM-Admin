@@ -19,7 +19,7 @@ const LeadSource = () => {
   // Fetch data on component mount
   useEffect(() => {
     fetchLeadSource();
-  }, [fetchLeadSource]); // Dependency array
+  }, []); // Dependency array
 
   // Generate unique list of companies
   const companies = useMemo(() => {

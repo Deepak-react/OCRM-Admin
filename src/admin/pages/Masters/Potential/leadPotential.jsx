@@ -19,7 +19,7 @@ const LeadPotential = () => {
   // Fetch data on component mount
   useEffect(() => {
     fetchLeadPotential();
-  }, [fetchLeadPotential]); // Dependency array to prevent infinite loop
+  }, []); // Dependency array to prevent infinite loop
 
   // Generate a unique list of companies from the lead potential response
   // Memoize to re-calculate only when leadPotential changes

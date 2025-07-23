@@ -7,3 +7,4 @@ export const update = (id, data, endpoint) => API.put(`${endpoint}${id}`, data);
 export const deActive = (id, endpoint) => API.delete(`${endpoint}${id}`);
 
 
+    

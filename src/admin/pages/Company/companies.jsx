@@ -158,7 +158,7 @@ const CompanyTableRow = ({ data }) => {
   );
 };
 
-// ---
+// ---  
 // ## Company Table Component
 // ---
 const CompanyTable = ({ data, sortConfig, requestSort }) => {
@@ -241,7 +241,7 @@ const Company = () => {
 
   useEffect(() => {
     fetchAllCompanyData();
-  }, [fetchAllCompanyData]);
+  }, []);
 
   // Filter data based on search query
   const filteredData = useMemo(() => {

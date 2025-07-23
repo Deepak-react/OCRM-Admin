@@ -19,7 +19,7 @@ const LeadStatus = () => {
   // Fetch data on component mount
   useEffect(() => {
     fetchLeadStatus();
-  }, [fetchLeadStatus]); // Dependency array
+  }, []); // Dependency array
 
   // Generate unique list of companies
   const companies = useMemo(() => {
