@@ -3,15 +3,15 @@ import LeadPotentialForm from './Sub-Components/leadPotentialForm';
 import { useLeadPotentialController } from './leadPotentialController';
 import formatDate from '../../../utils/formatDate';
 
-const LeadPotential = () => {
+const LeadPotential = ({company=""}) => {
   // Custom hooks for CRUD operations
   const { leadPotential, fetchLeadPotential, loading, error } = useLeadPotentialController(); // Assuming useLeadPotentialController provides loading and error states
 
   // State to set the company values from the lead status list.
-  const [selectedCompany, setSelectedCompany] = useState('');
+  const [selectedCompany, setSelectedCompany] = useState(company);
   // State to control the form visibility
   const [showForm, setShowForm] = useState(false);
-
+  
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10); // You can adjust items per page here

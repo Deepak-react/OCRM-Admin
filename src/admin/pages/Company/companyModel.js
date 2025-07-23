@@ -19,6 +19,12 @@ export const addNewCompany = async (data) => {
   return await ApiHelper.create(data, ENDPOINTS.COMPANIES);
 };
 
+
+//to add an admin user when the company is created
+export const addAdminUser= async (data) => {
+  return await ApiHelper.create(data, ENDPOINTS.USER);
+};
+
 //to get an company data based on the id.
 export const getCompanyById = async (id) =>{
   //console.log(ENDPOINTS.COMPANIES);

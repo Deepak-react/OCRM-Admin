@@ -37,9 +37,7 @@ const AuditLoginTab = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" component="h2" className="text-2xl font-bold text-gray-800 mb-6">
-        Audit Login Logs
-      </Typography>
+      
 
       {/* Search Bar */}
       <TextField

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as companyModel from './companyModel'; // This is the only model import needed
+import { create } from "../../api/ApiHelper";
 
 export const useCompanyController = () => {
 
@@ -32,9 +33,37 @@ export const useCompanyController = () => {
   // Function to create a new company
   const createCompany = async (data) => {
     try {
-      const res = await companyModel.addNewCompany(data);
+      const res = await companyModel.addNewCompany({
+          bactive: data.bactive,
+          cCompany_name: data.cCompany_name,
+          cGst_no: data.cGst_no,
+          cLogo_link: data.cLogo_link,
+          cWebsite: data.cWebsite,
+          caddress1: data.caddress1,
+          caddress2: data.caddress2,
+          caddress3: data.caddress3,
+          email: data.email,
+          iPhone_no: data.iPhone_no,
+          iUser_no: data.iUser_no,
+          icin_no: data.icin_no,
+          icity_id: data.icity_id,
+          ireseller_admin: data.ireseller_admin,
+          ireseller_id: data.ireseller_id,
+          isubscription_plan: data.isubscription_plan
+      });
       //console.log("The response is :", res);
-      await fetchAllCompanyData();
+      // await fetchAllCompanyData();
+      await createAdminUser({
+        iCompany_id: res.data.id, // Assuming the response contains the new company ID
+        cFull_name : data.cAdmin_full_name,
+        cProfile_pic : "Place holder for profile pic",
+        cUser_name: data.cAdmin_user_name,
+        cPassword: data.cAdmin_password,
+        cEmail: data.cAdmin_email,
+        cPhone_no: data.cAdmin_phone_no,
+        irole_id: 1, //Admin ID
+        reports_to: 13
+      });
       return true;
     } catch (err) {
       console.error('Failed to create company:', err);
@@ -42,6 +71,24 @@ export const useCompanyController = () => {
       return false;
     }
   }
+
+ //function to create an admin user when the company is created
+  const createAdminUser = async (data) => {
+    try {
+      console.log("Creating admin user with data:", data);
+      const res = await companyModel.addAdminUser(data);
+      //console.log("The response is :", res);
+      await fetchAllCompanyData();
+      return true;
+    } catch (err) {
+      console.error('Failed to create admin user:', err);
+      setError(err.message || 'Could not create admin user');
+      return false;
+    }
+  }
+
+
+
   // Function to fetch users by company ID}
 const fetchUsersByCompanyId = async (companyId) => {
   try {
@@ -66,6 +113,7 @@ const fetchUsersByCompanyId = async (companyId) => {
     companyData,
     fetchCompanyDataById,
     createCompany,
+    createAdminUser,
     fetchAllCompanyData,
     error,
     usersByCompany,

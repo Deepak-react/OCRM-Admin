@@ -3,12 +3,12 @@ import LeadStatusForm from './Sub-Components/leadStatusForm';
 import { useLeadStatusController } from './leadStatusController'; // Assuming this hook provides loading/error states
 import formatDate from '../../../utils/formatDate';
 
-const LeadStatus = () => {
+const LeadStatus = ({company=''} ) => {
   // Custom hooks for CRUD operations
   const { leadStatus, fetchLeadStatus, loading, error } = useLeadStatusController();
 
   // State for filtering by company
-  const [selectedCompany, setSelectedCompany] = useState('');
+  const [selectedCompany, setSelectedCompany] = useState(company);
   // State for form visibility
   const [showForm, setShowForm] = useState(false);
 
@@ -19,6 +19,7 @@ const LeadStatus = () => {
   // Fetch data on component mount
   useEffect(() => {
     fetchLeadStatus();
+    console.log("Props Data Fetched:", company);
   }, []); // Dependency array
 
   // Generate unique list of companies

@@ -3,12 +3,12 @@ import LeadSourceForm from './Sub-Components/leadSourceForm';
 import { useLeadSourceController } from './leadSourceController'; // Assuming this hook provides loading/error states
 import formatDate from '../../../utils/formatDate';
 
-const LeadSource = () => {
+const LeadSource = ({company=""}) => {
   // Custom hooks for CRUD operations
   const { leadSource, fetchLeadSource, loading, error } = useLeadSourceController();
 
   // State for filtering by company
-  const [selectedCompany, setSelectedCompany] = useState('');
+  const [selectedCompany, setSelectedCompany] = useState(company);
   // State for form visibility
   const [showForm, setShowForm] = useState(false);
 

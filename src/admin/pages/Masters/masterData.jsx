@@ -36,8 +36,7 @@ const MasterData = () => {
                 transition-all duration-300 ease-in-out // Smooth transitions
                 transform group-hover:-translate-y-1 // Subtle lift effect on hover
                 p-6 // Increased padding for more breathing room
-                border border-gray-200
-              ">
+                border border-gray-200v">
                 <div className="flex items-start mb-4"> 
                   {/* Icon */}
                   <img src={card.image_path} alt={`${card.title} icon`} className="w-10 h-10 mr-4 flex-shrink-0" />

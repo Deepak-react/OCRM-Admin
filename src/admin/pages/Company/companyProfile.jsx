@@ -17,6 +17,10 @@ import formatDate from "../../utils/formatDate";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import GeneralSettingsTab from './GeneralSettingsTab';  
 import MasterData from "../Masters/masterData.jsx";
+import LeadStatus from "../Masters/Status/leadStauts.jsx";
+import LeadPotential from "../Masters/Potential/leadPotential.jsx";
+import LeadSource from "../Masters/Source/leadSource.jsx";
+import LeadIndustry from "../Masters/Industry/industry.jsx";
 import AuditLoginTab from './AuditLoginTab';
 
 ChartJS.register( ArcElement,
@@ -55,6 +59,77 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
+
+
+const MasterDataPanel = ({companyData}) => {
+  const [selectedComponent, setSelectedComponent] = useState(null);
+
+  const cardData = [
+    { id: 1, title: 'Lead Status', description: 'Current stage of the lead.', icon: '/icons/status.svg', component: 'LeadStatus' },
+    { id: 2, title: 'Lead Potential', description: 'Business value of the lead.', icon: '/icons/progress.svg', component: 'LeadPotential' },
+    { id: 3, title: 'Lead Source', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadSource' },
+    { id: 4, title: 'Lead Industry', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadIndustry' },
+
+
+    // Add more cards here...
+  ];
+
+  const renderComponent = () => {
+    console.log("Selected company:", companyData);
+    switch (selectedComponent) {
+      case 'LeadStatus':
+        return <LeadStatus company={companyData} />;
+      case 'LeadPotential':
+        return <LeadPotential company = {companyData}/>;
+      case 'LeadSource':
+        return <LeadSource company = {companyData}/>;  
+      case 'LeadIndustry':
+        return <LeadIndustry />;    
+      // Add more cases for other master data
+      default:
+        return null;
+    }
+  };
+
+  // Step 1: If a card is selected, show its component
+  if (selectedComponent) {
+    return (
+      <div className="p-4">
+        <button
+          onClick={() => setSelectedComponent(null)}
+          className="mb-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+        >
+          ← Back to Master Cards
+        </button>
+        {renderComponent()}
+      </div>
+    );
+  }
+
+  // Step 2: Show cards when no component is selected
+  return (
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {cardData.map(card => (
+          <button
+            key={card.id}
+            onClick={() => setSelectedComponent(card.component)}
+            className="text-left group w-full"
+          >
+            <div className="p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform group-hover:-translate-y-1 border border-gray-200 h-full flex flex-col justify-between">
+              <div className="flex items-start mb-4">
+                <img src={card.icon} alt={card.title} className="w-10 h-10 mr-4" />
+                <h3 className="text-xl font-semibold text-gray-900">{card.title}</h3>
+              </div>
+              <p className="text-sm text-gray-600">{card.description}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+  );
+};
+
+
 
 const CompanyProfile = () => {
   const { fetchCompanyDataById, usersByCompany, fetchUsersByCompanyId, error } = useCompanyController();
@@ -486,7 +561,7 @@ const paginatedUsers = usersByCompany.slice(
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Company Profile Info Card (Span 2 columns on large screens) */}
 
-            <div className="lg:col-span-3 bg-white rounded-xl shadow-md p-6 border border-gray-100">
+            <div className="lg:col-span-3 bg-white rounded-xl  p-6 border border-gray-100">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Company Details</h2>
               {/* The grid below ensures content wraps and flows responsively */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5 gap-x-6 text-base text-gray-800">
@@ -507,7 +582,7 @@ const paginatedUsers = usersByCompany.slice(
             </div>
           </div>
           {/* Pie Chart */}
-          <div className="lg:col-span-1 bg-white rounded-xl shadow-md p-6 border border-gray-100 flex flex-col gap-6 mt-6"> {/* Added mt-6 for spacing */}
+          <div className="lg:col-span-1 bg-white rounded-xl p-6 border border-gray-100 flex flex-col gap-6 mt-6"> {/* Added mt-6 for spacing */}
             <div className="min-h-[250px] relative">
               <h3 className="text-xl font-bold text-gray-800 mb-4">Storage Allocation</h3>
               <div className="h-[250px]">
@@ -644,7 +719,10 @@ const paginatedUsers = usersByCompany.slice(
       </div>
 
       <CustomTabPanel value={activeTab} index={3}> {/* New index for Masters */}
-        <MasterData />
+        {/* <MasterData /> */}
+        {console.log("Company data in MasterDataPanel:", company?.result.cCompany_name)}
+        <MasterDataPanel companyData = {company?.result.cCompany_name}/>
+
       </CustomTabPanel>
       <CustomTabPanel value={activeTab} index={4}>
         <AuditLoginTab />
@@ -815,50 +893,6 @@ const paginatedUsers = usersByCompany.slice(
             className={`px-4 py-2 rounded-lg font-semibold ${company?.bactive ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"} text-white`}
           >
             Yes, {company?.bactive ? "Deactivate" : "Activate"}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* --- Add New Module Dialog --- */}
-      <Dialog open={openAddModuleDialog} onClose={handleCloseAddModuleDialog} fullWidth maxWidth="sm">
-        <DialogTitle className="text-2xl font-bold text-center text-gray-1000 border-b pb-4">Add New Module</DialogTitle>
-        <DialogContent dividers>
-          <div className="py-4 space-y-5">
-            <TextField
-              autoFocus
-              margin="dense"
-              id="module-name"
-              label={<span>Module Name <span className="text-red-500">*</span></span>}
-              type="text"
-              fullWidth
-              variant="outlined"
-              value={newModuleName}
-              onChange={(e) => setNewModuleName(e.target.value)}
-              inputProps={{ maxLength: 25 }}
-              error={moduleNameError}
-              helperText={moduleNameError ? "Module Name is mandatory and must be 25 characters or less." : `Characters: ${newModuleName.length}/25`}
-            />
-            <TextField
-              margin="dense"
-              id="module-description"
-              label="Description"
-              type="text"
-              fullWidth
-              multiline
-              rows={4}
-              variant="outlined"
-              value={newModuleDescription}
-              onChange={(e) => setNewModuleDescription(e.target.value)}
-              error={moduleDescriptionError}
-            />
-          </div>
-        </DialogContent>
-        <DialogActions className="p-4">
-          <Button onClick={handleCloseAddModuleDialog} color="primary" variant="outlined" className="px-4 py-2 rounded-lg font-semibold">
-            Cancel
-          </Button>
-          <Button onClick={handleAddModule} color="primary" variant="contained" className="px-4 py-2 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700">
-            Add Module
           </Button>
         </DialogActions>
       </Dialog>
