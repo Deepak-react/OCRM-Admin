@@ -8,8 +8,8 @@ const CompanyForm = ({ onClose, onSuccess }) => {
   const { cities } = useSharedController();
 
   const [formData, setFormData] = useState({
-    cCompany_name: '',
     cLogo_link: 'https://xcodefix.com/logo.png',
+    cCompany_name: '',
     iPhone_no: '',
     cWebsite: '',
     caddress1: '',
@@ -37,7 +37,7 @@ const CompanyForm = ({ onClose, onSuccess }) => {
   const [errors, setErrors] = useState({});
   const [pageNumber, setPageNumber] = useState(1);
 
-  const validate = (values) => {
+  const validate = (values) => {``
     const newErrors = {};
 
     // Company Name Validation
@@ -149,6 +149,8 @@ const CompanyForm = ({ onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Data:", formData);
+    console.log("Form is submitting");
+
 
     const newErrors = validate(formData);
     setErrors(newErrors);
@@ -176,7 +178,7 @@ const CompanyForm = ({ onClose, onSuccess }) => {
     <>
       <h1 className="text-2xl font-semibold mb-6 text-center">🚀 Begin Your Company Setup</h1>
 
-      <form  onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-white shadow rounded-xl max-w-5xl mx-auto">
+      <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-white shadow rounded-xl max-w-5xl mx-auto">
         {pageNumber === 1 && (
         <>
         <div>
@@ -318,14 +320,14 @@ const CompanyForm = ({ onClose, onSuccess }) => {
   {pageNumber < 2 ? (
     <button   type="button"
         onClick={() => {
-        const currentErrors = validate(formData);
-        const errorsForStep = pageNumber === 1
-          ? ['cCompany_name', 'iPhone_no', 'email']
-          : [];
+        // const currentErrors = validate(formData);
+        // const errorsForStep = pageNumber === 1
+        //   ? ['cCompany_name', 'iPhone_no', 'email']
+        //   : [];
 
-        const hasStepErrors = errorsForStep.some((field) => currentErrors[field]);
+        // const hasStepErrors = errorsForStep.some((field) => currentErrors[field]);
 
-        setErrors(currentErrors);
+        // setErrors(currentErrors);
         setPageNumber(pageNumber + 1);
       }}
       className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -334,7 +336,7 @@ const CompanyForm = ({ onClose, onSuccess }) => {
     </button>
   ) : (
     
-          <button   type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Submit</button> 
+          <button  type="button" onClick={handleSubmit} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Submit</button> 
   )}
 </div>
       </form>

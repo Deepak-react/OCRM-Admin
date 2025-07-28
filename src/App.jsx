@@ -44,7 +44,7 @@ import SalesByStageReportPage from './Components/reports/salesByStageReport';
 import CardsPage from './Components/reports/reports';
 import CompanyDashboard from './pages/dashboard/companydashboard';
 import NotificationPage from "./pages/notification"; 
-import AdminDashboard from "../src/admin/pages/dashboard/adminDashboard";
+import AdminDashboard from "./admin/pages/Dashboard/adminDashboard";
 import Company from "./admin/pages/Company/companies";
 import MasterData from "./admin/pages/Masters/masterData";
 import LeadStatus from "./admin/pages/Masters/Status/leadStauts";
@@ -85,9 +85,9 @@ function App() {
               <Route path="commandpage" element={<Commandpage />} />
               <Route path="users" element={<CreateUserForm />} />
               <Route path="/notifications" element={<NotificationPage />} />
-              <Route path="/dashboard-admin" element={<AdminDashboard />} />
               <Route path="/company" element={<Company />} />
               <Route path="/masters" element={<MasterData />} />
+              <Route path="/dashboard-admin" element={<AdminDashboard />} />
               <Route path="/lead-status" element={<LeadStatus />} />
               <Route path="/lead-source" element={<LeadSource />} />
               <Route path="/lead-potential" element={<LeadPotentail />} />
@@ -117,6 +117,7 @@ function App() {
 
 
 
+
               <Route path="settingspage" element={<SettingsPage />}>
                 <Route path="account" element={<AccountSettings />} />
                 <Route path="notification" element={<NotificationSettings />} />
@@ -124,6 +125,7 @@ function App() {
                 <Route path="members" element={<MembersSettings />} />
                 <Route path="support" element={<SupportSettings />} />
                 <Route path="smtpsettings" element={<SmtpSettings />} />
+                
               </Route>
             </Route>
           </Routes>

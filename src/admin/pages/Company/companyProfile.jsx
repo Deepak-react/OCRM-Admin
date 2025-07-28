@@ -1,4 +1,4 @@
-import { Button, IconButton, Tabs, Tab, Box, Typography, Menu, MenuItem, Switch, FormControlLabel, TextField } from "@mui/material";
+import { Button, IconButton, Tabs, Tab, Box, Typography, Menu, MenuItem, Switch, FormControlLabel, TextField, Autocomplete } from "@mui/material";
 import { Line, Pie } from 'react-chartjs-2';
 import EditSquareIcon from '@mui/icons-material/EditSquare';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import { Chart as ChartJS, ArcElement, LineElement, CategoryScale, LinearScale,
   PointElement, Tooltip, Legend } from 'chart.js';
 import { useCompanyController } from "./companyController";
+import { useSharedController } from "../../api/shared/controller";
 import formatDate from "../../utils/formatDate";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import GeneralSettingsTab from './GeneralSettingsTab';  
@@ -69,6 +70,8 @@ const MasterDataPanel = ({companyData}) => {
     { id: 2, title: 'Lead Potential', description: 'Business value of the lead.', icon: '/icons/progress.svg', component: 'LeadPotential' },
     { id: 3, title: 'Lead Source', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadSource' },
     { id: 4, title: 'Lead Industry', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadIndustry' },
+    { id: 5, title: 'Country', description: 'Leads across the country.', icon: '/icons/industrial-park.svg', component: 'LeadIndustry' },
+    
 
 
     // Add more cards here...
@@ -132,7 +135,9 @@ const MasterDataPanel = ({companyData}) => {
 
 
 const CompanyProfile = () => {
-  const { fetchCompanyDataById, usersByCompany, fetchUsersByCompanyId, error } = useCompanyController();
+  const { fetchCompanyDataById, usersByCompany, changeUserStatus, editCompanyDetails, fetchUsersByCompanyId, error } = useCompanyController();
+  const {fetchAllCities, cities} = useSharedController();
+
   const [company, setCompany] = useState(null);
   const [activeTab, setActiveTab] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -289,10 +294,10 @@ const CompanyProfile = () => {
 
   //funciton to calculate the total number of pages
   // Calculate total pages
-const totalPages = Math.ceil(usersByCompany.length / usersPerPage);
+const totalPages = Math.ceil((Array.isArray(usersByCompany) ? usersByCompany.length : 0) / usersPerPage);
 
 // Slice data based on currentPage
-const paginatedUsers = usersByCompany.slice(
+const paginatedUsers = (usersByCompany || []).slice(
   (currentPage - 1) * usersPerPage,
   currentPage * usersPerPage
 );
@@ -348,8 +353,10 @@ const paginatedUsers = usersByCompany.slice(
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [editCompanyData, setEditCompanyData] = useState({});
 
-  const handleOpenEditDialog = () => {
-    setEditCompanyData(company);
+  const handleOpenEditDialog = async () => {
+    console.log("Opening edit dialog with company data:", company);
+    await fetchAllCities(); // Fetch cities when opening the edit dialog
+    setEditCompanyData(company.result);
     setOpenEditDialog(true);
   };
 
@@ -360,15 +367,23 @@ const paginatedUsers = usersByCompany.slice(
 
   // Function to handle changes in the edit form fields
   const handleEditFormChange = (e) => {
-    const { name, value } = e.target;
-    setEditCompanyData(prevData => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
+  const { name, value } = e.target;
+
+  // Fields that must be converted to integers
+  const intFields = ['iUser_no', 'iReseller_id', 'iPhone_no', 'ireseller_admin_id', 'isubscription_plan'];
+
+  setEditCompanyData(prevData => ({
+    ...prevData,
+    [name]: intFields.includes(name) ? (value === '' ? '' : parseInt(value, 10)) : value
+  }));
+};
+
 
   // Function to handle saving the edited company data
   const handleSaveEditedCompany = () => {
+
+    const { iCompany_id,iReseller_id,icity_id,ireseller_admin_id,isubscription_plan, ...payload } = editCompanyData;
+    editCompanyDetails(payload, editCompanyData.iCompany_id);
     //console.log("Saving edited company data:", editCompanyData);
     setOpenEditDialog(false);
   };
@@ -376,6 +391,8 @@ const paginatedUsers = usersByCompany.slice(
   // State for activate/deactivate user dialog
   const [openUserStatusDialog, setOpenUserStatusDialog] = useState(false);
   const [userToModify, setUserToModify] = useState(null);
+  const [userActive, setUserActive] = useState(1);
+
 
   // State for the ellipsis menu anchor
   const [anchorEl, setAnchorEl] = useState(null);
@@ -403,9 +420,11 @@ const paginatedUsers = usersByCompany.slice(
     setUserToModify(null);
   };
 
-  const handleToggleUserStatus = () => {
+  const handleToggleUserStatus =  async () => {
     if (userToModify) {
-      const newStatus = userToModify.bactive ? 'Inactive' : 'Active';
+        console.log(userToModify);                
+        await changeUserStatus(userToModify.iUser_id);
+        const newStatus = userToModify.bactive ? 'Inactive' : 'Active';
       console.log(`Attempting to ${newStatus} user: ${userToModify.cFull_name}. (Implement API call here)`);
       handleCloseUserStatusDialog();
     }
@@ -439,6 +458,8 @@ const paginatedUsers = usersByCompany.slice(
   const [newModuleName, setNewModuleName] = useState('');
   const [newModuleDescription, setNewModuleDescription] = useState('');
   const [moduleNameError, setModuleNameError] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+
   const [moduleDescriptionError, setModuleDescriptionError] = useState(false);
 
   const handleOpenAddModuleDialog = () => {
@@ -497,6 +518,7 @@ const paginatedUsers = usersByCompany.slice(
 
 
   return (    
+    
     <div className="p-6 lg:p-8 space-y-8 bg-gray-50 min-h-screen font-sans antialiased">
       {/* --- Header Section --- */}
       <div className="bg-white rounded-xl shadow-md p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 border border-gray-100">
@@ -594,18 +616,18 @@ const paginatedUsers = usersByCompany.slice(
 
         {/* --- Tab Panel: General Settings & Enabled Modules --- */}
         <CustomTabPanel value={activeTab} index={1}>
-        {console.log("usersByCompany length 2 :", usersByCompany?.length)}
+        {console.log("usersByCompany length 2 :", usersByCompany)}
           <GeneralSettingsTab />
         </CustomTabPanel>
 
 
         {/* --- Tab Panel: Users --- */}
 <CustomTabPanel value={activeTab} index={2}>
-          {console.log("usersByCompany length:", usersByCompany?.length)}
-          {/* {console.log("usersByCompany length (render):", usersByCompany.length)} */}
+            {    console.log("The users list are :", usersByCompany)}
+          {console.log("usersByCompany length are:", paginatedUsers)}
             {/* Display error from the controller */}
             {error && <p className="text-red-500 mb-4">Error: {error}</p>}
-            {usersByCompany.length > 0 ? (
+            {paginatedUsers.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
@@ -620,10 +642,9 @@ const paginatedUsers = usersByCompany.slice(
                       </th>
                     </tr>
                   </thead>
-
                   <tbody className="bg-white divide-y divide-gray-200">
                     {/* Iterate over usersByCompany fetched from the API */}
-                    {paginatedUsers.map((user) => (
+                    { paginatedUsers.map((user) => (
                       <tr key={user.iUser_id}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.cFull_name}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.cEmail}</td>
@@ -646,14 +667,19 @@ const paginatedUsers = usersByCompany.slice(
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <IconButton
+                          
+                          {user.bactive ?  <IconButton
                             aria-label="more"
                             aria-controls={`user-actions-menu-${user.iUser_id}`}
                             aria-haspopup="true"
                             onClick={(event) => handleMenuOpen(event, user)}
                           >
                             <MoreVertIcon />
-                          </IconButton>
+                          </IconButton> : 
+                          
+                          <></>}
+                          
+                         
                           {userToModify?.iUser_id === user.iUser_id && (
                             <Menu
                               id={`user-actions-menu-${user.iUser_id}`}
@@ -675,8 +701,11 @@ const paginatedUsers = usersByCompany.slice(
                           )}
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
+                    ))
+                   }
+                  </tbody> 
+                  
+                  
                 </table>
                    <div className="flex justify-center mt-4 space-x-2">
                 <button
@@ -708,11 +737,11 @@ const paginatedUsers = usersByCompany.slice(
                 </button>
               </div>
 
-              </div>
-
-              
+              </div> 
             ) : (
+              <div className="p-6 text-center">
               <p className="text-red-500">No user data available for this company.</p>
+              </div>
             )}
         </CustomTabPanel>
 
@@ -725,7 +754,7 @@ const paginatedUsers = usersByCompany.slice(
 
       </CustomTabPanel>
       <CustomTabPanel value={activeTab} index={4}>
-        <AuditLoginTab />
+        <AuditLoginTab company_id={company?.result.iCompany_id}/>
       </CustomTabPanel>
 
       {/* --- Edit Company Dialog --- */}
@@ -752,7 +781,7 @@ const paginatedUsers = usersByCompany.slice(
             <TextField
               label={<span>Email </span>}
               name="cEmail"
-              value={editCompanyData?.cEmail || ''}
+              value={editCompanyData?.cemail_address || ''}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
@@ -821,14 +850,37 @@ const paginatedUsers = usersByCompany.slice(
               fullWidth
               variant="outlined"
             />
-            <TextField
-              label={<span>City <span className="text-red-500">*</span></span>}
-              name="cCity_name"
-              value={editCompanyData?.city?.cCity_name || ''}
-              onChange={(e) => setEditCompanyData(prev => ({ ...prev, city: { ...prev.city, cCity_name: e.target.value } }))}
-              fullWidth
-              variant="outlined"
-            />
+                      <Autocomplete
+            options={cities}
+            getOptionLabel={(option) => option.cCity_name || ''}
+            value={editCompanyData?.city || null}
+            onChange={(event, newValue) => {
+              setEditCompanyData(prev => ({
+                ...prev,
+                city: newValue || { cCity_name: '' } // handle clearing
+              }));
+            }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+              setInputValue(newInputValue);
+              // Optional: Trigger API call here for dynamic search
+            }}
+            isOptionEqualToValue={(option, value) =>
+              option.cCity_name === value?.cCity_name
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={
+                  <span>
+                    City <span className="text-red-500">*</span>
+                  </span>
+                }
+                fullWidth
+                variant="outlined"
+              />
+            )}
+          />
           </div>
         </DialogContent>
         <DialogActions className="p-4">

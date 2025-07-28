@@ -13,7 +13,6 @@ import CustomTooltip from "../../components/customTooltip";
 import { useDashboardController } from "./dashboardController";
 
 function AdminDashboard() {
-  // For Bar chart data (Static) - Keeping as is since core logic is not to be changed
   const data = [
     { name: 'Jan', users: 400 },
     { name: 'Feb', users: 300 },

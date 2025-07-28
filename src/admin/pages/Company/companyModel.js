@@ -12,11 +12,36 @@ export const getAllCompantData = async () => {
   return res.data; 
 };
 
+
+export const getAuditLogs = async (company_id) => {
+  //console.log(ENDPOINTS.COMPANIES);
+  const res = await ApiHelper.getAll(ENDPOINTS.AUDIT_LOGS(company_id));
+  console.log("The errored response is :", res);
+  return res.data; 
+};
+
+
+export const changeUserStatus = async (user_id) => {
+  //console.log(ENDPOINTS.COMPANIES);
+  const res = await ApiHelper.deActive(user_id, ENDPOINTS.USER);
+  console.log("The errored response is :", res);
+  return res.data; 
+};
+
 //to add an new company.
 export const addNewCompany = async (data) => {
   // console.log(ENDPOINTS.COMPANIES);
   // console.log(data);
   return await ApiHelper.create(data, ENDPOINTS.COMPANIES);
+};
+
+
+
+export const editCompany = async (data, company_id) => {
+  console.log("The company data and the company id are :", data, company_id);
+  const res = await ApiHelper.update(company_id,data,ENDPOINTS.COMPANIES);
+  console.log("The errored response is :", res);
+  return res.data; 
 };
 
 

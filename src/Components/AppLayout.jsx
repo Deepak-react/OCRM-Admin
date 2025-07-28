@@ -1,13 +1,11 @@
 import React from 'react';
 import Sidebar from '../Components/common/sidebar';
-import { Outlet } from 'react-router-dom';
 
 const AppLayout = () => {
   return (
     <div className="flex">
-      <Sidebar />
       <div className="flex-1 h-screen overflow-x-hidden">
-        <Outlet />
+      <Sidebar />
       </div>
     </div>
   );

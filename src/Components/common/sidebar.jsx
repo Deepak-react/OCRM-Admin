@@ -17,7 +17,6 @@ const Sidebar = () => {
     { iconPath: '/images/nav/calen.png', label: 'Reseller', route: '/reseller' },
     { iconPath: '/images/nav/settings.png', label: 'Masters', route: '/masters' },
 
-
   ];
 
   useEffect(() => {

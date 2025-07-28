@@ -17,7 +17,7 @@ export const ENDPOINTS = {
   ADMIN_DASHBOARD : `${BASE_URL}/admin-dashboard/`,
   RESELLER : `${BASE_URL}/reseller/`, 
   USER_TAB : (companyId) => `${BASE_URL}/users/company/${companyId}`,
-
+  AUDIT_LOGS : (companyId) => `${BASE_URL}/admin-dashboard/userAudit/${companyId}`,
 
 };
 

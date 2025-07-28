@@ -9,10 +9,10 @@ import { TabProvider } from "./context/TabContext";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-    <TabProvider>
+    {/* <TabProvider> */}
 
       <App />
-      </TabProvider>
+      {/* </TabProvider> */}
      
     </BrowserRouter>
   </React.StrictMode>
