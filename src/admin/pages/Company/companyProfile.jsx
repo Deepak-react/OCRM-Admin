@@ -17,11 +17,12 @@ import { useSharedController } from "../../api/shared/controller";
 import formatDate from "../../utils/formatDate";
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import GeneralSettingsTab from './GeneralSettingsTab';  
-import MasterData from "../Masters/masterData.jsx";
 import LeadStatus from "../Masters/Status/leadStauts.jsx";
 import LeadPotential from "../Masters/Potential/leadPotential.jsx";
 import LeadSource from "../Masters/Source/leadSource.jsx";
 import LeadIndustry from "../Masters/Industry/industry.jsx";
+import Country from "../Masters/Country/country.jsx";
+
 import AuditLoginTab from './AuditLoginTab';
 
 ChartJS.register( ArcElement,
@@ -70,11 +71,8 @@ const MasterDataPanel = ({companyData}) => {
     { id: 2, title: 'Lead Potential', description: 'Business value of the lead.', icon: '/icons/progress.svg', component: 'LeadPotential' },
     { id: 3, title: 'Lead Source', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadSource' },
     { id: 4, title: 'Lead Industry', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadIndustry' },
-    { id: 5, title: 'Country', description: 'Leads across the country.', icon: '/icons/industrial-park.svg', component: 'LeadIndustry' },
+    { id: 5, title: 'Country', description: 'Leads across the country.', icon: '/icons/industrial-park.svg', component: 'Country' },
     
-
-
-    // Add more cards here...
   ];
 
   const renderComponent = () => {
@@ -87,7 +85,9 @@ const MasterDataPanel = ({companyData}) => {
       case 'LeadSource':
         return <LeadSource company = {companyData}/>;  
       case 'LeadIndustry':
-        return <LeadIndustry />;    
+        return <LeadIndustry />;
+      case 'Country':
+        return < Country/>;      
       // Add more cases for other master data
       default:
         return null;
@@ -96,12 +96,15 @@ const MasterDataPanel = ({companyData}) => {
 
   // Step 1: If a card is selected, show its component
   if (selectedComponent) {
+    console.log("Rendering component for:", selectedComponent);
+
     return (
       <div className="p-4">
         <button
           onClick={() => setSelectedComponent(null)}
           className="mb-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
         >
+          
           ← Back to Master Cards
         </button>
         {renderComponent()}
@@ -119,6 +122,7 @@ const MasterDataPanel = ({companyData}) => {
             onClick={() => setSelectedComponent(card.component)}
             className="text-left group w-full"
           >
+
             <div className="p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform group-hover:-translate-y-1 border border-gray-200 h-full flex flex-col justify-between">
               <div className="flex items-start mb-4">
                 <img src={card.icon} alt={card.title} className="w-10 h-10 mr-4" />

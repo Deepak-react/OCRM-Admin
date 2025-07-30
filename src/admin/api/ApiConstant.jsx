@@ -14,6 +14,7 @@ export const ENDPOINTS = {
   LEAD_SOURCE : `${BASE_URL}/lead-source/`,
   CITY : `${BASE_URL}/city/`, 
   USER : `${BASE_URL}/users/`, 
+  COUNTRY : `${BASE_URL}/country/`,   
   ADMIN_DASHBOARD : `${BASE_URL}/admin-dashboard/`,
   RESELLER : `${BASE_URL}/reseller/`, 
   USER_TAB : (companyId) => `${BASE_URL}/users/company/${companyId}`,

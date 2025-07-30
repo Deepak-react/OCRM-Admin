@@ -8,6 +8,8 @@ export const useSharedController = () => {
 
     //contains cities data
   const [cities, setCities] = useState([]);
+  const [countries, setCountries] = useState([]);
+
 
 
   //Contains the business logic to fetch all the companies
@@ -25,17 +27,28 @@ export const useSharedController = () => {
     };
 
 
+//Contains the business logic to fetch all the countries
+    const fetchAllCountries = async() =>{
+      const data = await model.getAllCountries();
+      console.log("The country response is :", data);
+      setCountries(data);
+    };
+
+
   //Use effect initially runs.
   useEffect(() => {
     fetchCompanies();
     fetchAllCities();
+    fetchAllCountries();
   }, []);
 
   return {
     fetchCompanies, //For manual refresh 
     companies,
     fetchAllCities,
-    cities
+    cities,
+    fetchAllCountries,
+    countries 
 
     
   };

@@ -14,5 +14,10 @@ export const  getAllCities  = async ()=>{
   return res.data.cities;
 }
 
+export const  getAllCountries  = async ()=>{
+  const res = await ApiHelper.getAll(ENDPOINTS.COUNTRY);
+  console.log("The country response is :", res.data);
+  return res.data.data;
+}
 
 
