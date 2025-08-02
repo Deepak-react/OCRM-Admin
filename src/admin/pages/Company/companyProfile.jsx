@@ -23,6 +23,9 @@ import LeadPotential from "../Masters/Potential/leadPotential.jsx";
 import LeadSource from "../Masters/Source/leadSource.jsx";
 import LeadIndustry from "../Masters/Industry/industry.jsx";
 import AuditLoginTab from './AuditLoginTab';
+import DistrictMaster from "../Masters/district/districtMasters.jsx";
+import CountryMaster from "../Masters/country/countryMaster.jsx";
+import StateMaster from "../Masters/States/StateMaster.jsx";
 
 ChartJS.register( ArcElement,
   LineElement,
@@ -70,8 +73,10 @@ const MasterDataPanel = ({companyData}) => {
     { id: 2, title: 'Lead Potential', description: 'Business value of the lead.', icon: '/icons/progress.svg', component: 'LeadPotential' },
     { id: 3, title: 'Lead Source', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadSource' },
     { id: 4, title: 'Lead Industry', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadIndustry' },
-    { id: 5, title: 'Country', description: 'Leads across the country.', icon: '/icons/industrial-park.svg', component: 'LeadIndustry' },
-    
+    // { id: 5, title: 'Country', description: 'List of Country.', icon: '/icons/industrial-park.svg', component: 'country' },
+    // { id: 6, title: 'State', description: 'List of State.', icon: '/icons/industrial-park.svg', component: 'state' },
+    // { id: 7, title: 'District', description: 'List of Districts.', icon: '/icons/industrial-park.svg', component: 'district' },
+
 
 
     // Add more cards here...
@@ -87,7 +92,17 @@ const MasterDataPanel = ({companyData}) => {
       case 'LeadSource':
         return <LeadSource company = {companyData}/>;  
       case 'LeadIndustry':
-        return <LeadIndustry />;    
+        return <LeadIndustry  />;   
+      // case 'district':
+      //   return <DistrictMaster />;
+      //      case 'country':
+      //   return <CountryMaster />;
+      //      case 'state':
+      //   return <StateMaster />;
+
+
+      
+
       // Add more cases for other master data
       default:
         return null;

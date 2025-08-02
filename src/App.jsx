@@ -49,6 +49,7 @@ import Company from "./admin/pages/Company/companies";
 import MasterData from "./admin/pages/Masters/masterData";
 import LeadStatus from "./admin/pages/Masters/Status/leadStauts";
 import LeadSource from "./admin/pages/Masters/Source/leadSource";
+import DistrictMaster from "./admin/pages/Masters/district/districtMasters";
 import LeadPotentail from "./admin/pages/Masters/Potential/leadPotential";
 import Indsutry from "./admin/pages/Masters/Industry/industry";
 import CompanyProfile from "./admin/pages/Company/companyProfile";
@@ -56,6 +57,9 @@ import { NotFoundPage } from "./admin/components/404";
 import Reseller from "./admin/pages/Reseller/reseller";
 import ResellerProfile from "./admin/pages/Reseller/resellerProfile";
 import AlertScreen from "./admin/pages/Alerts/alerts";
+import StateMaster from "./admin/pages/Masters/States/StateMaster";
+import CountryMaster from "./admin/pages/Masters/country/countryMaster";
+import CityMaster from "./admin/pages/Masters/city/cityMaster";
 
 function App() {
   return (
@@ -90,6 +94,9 @@ function App() {
               <Route path="/dashboard-admin" element={<AdminDashboard />} />
               <Route path="/lead-status" element={<LeadStatus />} />
               <Route path="/lead-source" element={<LeadSource />} />
+              <Route path="/district" element={<DistrictMaster />} />
+              <Route path="/state" element={<StateMaster />} />
+              <Route path="/country" element={<CountryMaster />} />
               <Route path="/lead-potential" element={<LeadPotentail />} />
               <Route path="/industry" element={<Indsutry />} />
               <Route path="/404" element={<NotFoundPage />} />              
@@ -106,6 +113,7 @@ function App() {
               <Route path="leadmanage" element={<LeadManagePage />} />
               <Route path="leadtimeline" element={<LeadTimeline />} />
               <Route path="allleadpage" element={<AllLeadsPage />} />
+              <Route path ="city" element={<CityMaster/>} />
               <Route path="history" element={<HistoryPage />} />
               <Route path="companylist" element={<CompanyList />} />
               <Route path="companypage" element={<CompanyPage />} />

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useIndustryController } from './industryController';
 import IndustryForm from './Sub-Components/industryFormData';
 
-const LeadPotential = () => {
+const LeadIndustry = () => {
   // Custom hooks for CRUD operations
   const { industries, fetchIndustryData } = useIndustryController();
 
@@ -133,4 +133,4 @@ const LeadPotential = () => {
   );
 };
 
-export default LeadPotential;
+export default LeadIndustry;

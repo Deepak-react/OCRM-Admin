@@ -2,14 +2,14 @@ import { Link } from 'react-router-dom';
 
 const MasterData = () => {
   const cardData = [
-    { id: 1, title: 'Lead Status', description: 'Indicates the current stage or progress of the lead in the sales process.', image_path: '/icons/status.svg', route: '/lead-status' },
+    { id: 1, title: 'Lead Status', description: 'Indicates the current stage or progress of the lead in the sales process.', image_path: '/icons/status.svg', route: '/lead-status'},
     { id: 2, title: 'Lead Source', description: 'Identifies where the lead came from—useful for tracking marketing effectiveness.', image_path: '/icons/coding.svg', route: '/lead-source' },
     { id: 3, title: 'Lead Potential', description: 'Estimates the business value or conversion likelihood of the lead.', image_path: '/icons/progress.svg', route: '/lead-potential' },
     { id: 4, title: 'Industry', description: 'Categorizes the business based on its primary economic activity.', image_path: '/icons/industrial-park.svg', route: '/industry' }, 
-    { id: 5, title: 'Country', description: 'Specifies the nation where the business is located.', image_path: '/icons/industrial-park.svg' },
-    { id: 6, title: 'State', description: 'Indicates the state or province of business operation.', image_path: '/icons/industrial-park.svg' },
-    { id: 7, title: 'District', description: 'Represents the district within the selected state.', image_path: '/icons/industrial-park.svg'},
-    { id: 8, title: 'City', description: 'Identifies the specific city of the business.', image_path: '/icons/industrial-park.svg' },
+    { id: 5, title: 'Country', description: 'Specifies the nation where the business is located.', image_path: '/icons/industrial-park.svg', route:'/country'},
+    { id: 6, title: 'State', description: 'Indicates the state or province of business operation.', image_path: '/icons/industrial-park.svg', route:'/state'},
+    { id: 7, title: 'District', description: 'Represents the district within the selected state.', image_path: '/icons/industrial-park.svg', route:'/district'},
+    { id: 8, title: 'City', description: 'Identifies the specific city of the business.', image_path: '/icons/industrial-park.svg', route:'/city' },
 
   ];
 
@@ -26,16 +26,16 @@ const MasterData = () => {
               to={card.route}
               key={card.id}
               className="block h-full group" 
-            >
+            > 
               <div className="
-                h-full flex flex-col justify-between // Ensure content pushes down and card fills height
+                h-full flex flex-col justify-between 
                 bg-white
-                rounded-2xl // Slightly more rounded corners
-                shadow-md // Softer initial shadow
-                hover:shadow-xl // More pronounced shadow on hover
-                transition-all duration-300 ease-in-out // Smooth transitions
-                transform group-hover:-translate-y-1 // Subtle lift effect on hover
-                p-6 // Increased padding for more breathing room
+                rounded-2xl 
+                shadow-md 
+                hover:shadow-xl 
+                transition-all duration-300 ease-in-out
+                transform group-hover:-translate-y-1 
+                p-6 *:
                 border border-gray-200v">
                 <div className="flex items-start mb-4"> 
                   {/* Icon */}

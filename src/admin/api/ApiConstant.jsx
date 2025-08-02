@@ -12,12 +12,27 @@ export const ENDPOINTS = {
   LEAD_POTENTIAL : `${BASE_URL}/lead-potential/`,
   INDUSTRY : `${BASE_URL}/lead-industry/`,
   LEAD_SOURCE : `${BASE_URL}/lead-source/`,
-  CITY : `${BASE_URL}/city/`, 
+  CITY : `${BASE_URL}/city`, 
   USER : `${BASE_URL}/users/`, 
   ADMIN_DASHBOARD : `${BASE_URL}/admin-dashboard/`,
   RESELLER : `${BASE_URL}/reseller/`, 
   USER_TAB : (companyId) => `${BASE_URL}/users/company/${companyId}`,
   AUDIT_LOGS : (companyId) => `${BASE_URL}/admin-dashboard/userAudit/${companyId}`,
+
+  //Masters
+
+  DISTRICT: `${BASE_URL}/district`,
+    DISTRICT_ID: `${BASE_URL}/district/`,
+
+  STATE: `${BASE_URL}/state`,
+  STATE_ID:`${BASE_URL}/state/`,
+  COUNTRY: `${BASE_URL}/country`, 
+  COUNTRY_ID:`${BASE_URL}/country/`,
+  CITIES:`${BASE_URL}/cities`, 
+
+  CITY_ID:`${BASE_URL}/cities/`, 
+  
+
 
 };
 

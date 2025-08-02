@@ -1,11 +1,24 @@
-// Correct and safe function to format ISO string to readable format
-const formatDate = (rawDate) => {
-  const date = new Date(rawDate); // Convert string to Date object
-  return date.toLocaleString('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
+// /src/admin/utils/formatDate.js
+export const formatDate = (dateString) => {
+  if (!dateString) return 'N/A';
+  
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Invalid date';
+    
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  } catch (e) {
+    console.error('Error formatting date:', e);
+    return 'Invalid date';
+  }
 };
 
+// Add this if you want to support both named and default exports
 export default formatDate;
