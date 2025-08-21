@@ -18,6 +18,7 @@ export const ENDPOINTS = {
   RESELLER : `${BASE_URL}/reseller/`, 
   USER_TAB : (companyId) => `${BASE_URL}/users/company/${companyId}`,
   AUDIT_LOGS : (companyId) => `${BASE_URL}/admin-dashboard/userAudit/${companyId}`,
+  
 
   //Masters
 
@@ -29,8 +30,9 @@ export const ENDPOINTS = {
   COUNTRY: `${BASE_URL}/country`, 
   COUNTRY_ID:`${BASE_URL}/country/`,
   CITIES:`${BASE_URL}/cities`, 
-
   CITY_ID:`${BASE_URL}/cities/`, 
+  CURRENCY : `${BASE_URL}/currency`, 
+  CURRENCY_ID: `${BASE_URL}/currency/`, 
   
 
 

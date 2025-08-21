@@ -60,6 +60,7 @@ import AlertScreen from "./admin/pages/Alerts/alerts";
 import StateMaster from "./admin/pages/Masters/States/StateMaster";
 import CountryMaster from "./admin/pages/Masters/country/countryMaster";
 import CityMaster from "./admin/pages/Masters/city/cityMaster";
+import CurrencyMaster from "./admin/pages/Masters/currency/currencyMaster";
 
 function App() {
   return (
@@ -94,6 +95,7 @@ function App() {
               <Route path="/dashboard-admin" element={<AdminDashboard />} />
               <Route path="/lead-status" element={<LeadStatus />} />
               <Route path="/lead-source" element={<LeadSource />} />
+              <Route path="/currency" element={<CurrencyMaster />} />
               <Route path="/district" element={<DistrictMaster />} />
               <Route path="/state" element={<StateMaster />} />
               <Route path="/country" element={<CountryMaster />} />
