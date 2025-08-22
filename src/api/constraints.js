@@ -27,7 +27,7 @@ export const ENDPOINTS = {
   // LOST_LEADS: `${BASE_URL}/reports/lost-leads`,
   // STAGE_LEADS: `${BASE_URL}/reports/sales-stage-leads`,
   // COMPANY_GET: `${BASE_URL}/lead/company-dashboard/`,
-  // USER_GET: `${BASE_URL}/users`,
+  USER_GET: `${BASE_URL}/users`,
   // NOTIFICATIONS: `${BASE_URL}/notifications`,
   // TERRITORY_LEADS: `${BASE_URL}/reports/territory-leads`,
   // FEEDBACK: `${BASE_URL}/reports/feedback`,

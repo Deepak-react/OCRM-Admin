@@ -35,6 +35,5 @@ export const ENDPOINTS = {
   CURRENCY_ID: `${BASE_URL}/currency/`, 
   
 
-
 };
 

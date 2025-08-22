@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const CurrencyForm = ({
-  onClose,
-  onSuccess,
-  initialData = null,
-  loading
-}) => {
+const CurrencyForm = ({ onClose, onSuccess, initialData = null, loading }) => {
   const [formData, setFormData] = useState({
     country_name: '',
     currency_code: '',
@@ -15,79 +10,116 @@ const CurrencyForm = ({
   });
 
   const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errors, setErrors] = useState({});
 
   // Initialize form if editing
   useEffect(() => {
-    if (initialData) {
+    if (initialData && initialData.icurrency_id) {
       setFormData({
+        icurrency_id: initialData.icurrency_id,
         country_name: initialData.country_name || '',
         currency_code: initialData.currency_code || '',
         currency_name: initialData.currency_name || '',
         symbol: initialData.symbol || '',
-        bactive: initialData.bactive !== false
       });
     } else {
       setFormData({
         country_name: '',
         currency_code: '',
         currency_name: '',
+        currency_name: '',
         symbol: '',
-        bactive: true
       });
     }
   }, [initialData]);
 
   const clearMessages = () => {
     setSuccessMessage('');
-    setErrorMessage('');
+    setErrors({});
   };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value,
     }));
+    setErrors((prev) => ({ ...prev, [name]: '' }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.country_name?.trim()) {
+      newErrors.country_name = 'Country Name is mandatory.';
+    } else if (formData.country_name.length > 50) {
+      newErrors.country_name = 'Country Name cannot exceed 50 characters.';
+    }
+
+    if (!formData.currency_code?.trim()) {
+      newErrors.currency_code = 'Currency Code is mandatory.';
+    } else if (formData.currency_code.length > 50) {
+      newErrors.currency_code = 'Currency Code cannot exceed 50 characters.';
+    }
+
+    if (!formData.currency_name?.trim()) {
+      newErrors.currency_name = 'Currency Name is mandatory.';
+    } else if (formData.currency_name.length > 50) {
+      newErrors.currency_name = 'Currency Name cannot exceed 50 characters.';
+    }
+
+    if (!formData.symbol?.trim()) {
+      newErrors.symbol = 'Symbol is mandatory.';
+    } else if (formData.symbol.length > 10) {
+      newErrors.symbol = 'Symbol cannot exceed 10 characters.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearMessages();
-    console.log('Form submission started');
+
+    if (!validateForm()) return;
 
     try {
-      // Calling onSuccess prop from parent component
       await onSuccess(formData);
-      setSuccessMessage(`Currency ${initialData ? 'updated' : 'created'} successfully!`);
-      
-      console.log('Form submission successful');
+      setSuccessMessage(
+        `Currency ${
+          initialData && initialData.icurrency_id ? 'updated' : 'created'
+        } successfully!`
+      );
       setTimeout(() => {
         clearMessages();
         onClose?.();
-      }, 3000);
-
+      }, 2000);
     } catch (error) {
-      console.error("Form submission failed:", error);
-      setErrorMessage(error.response?.data?.message || 'Operation failed. Please try again.');
+      console.error('Form submission failed:', error);
+      setErrors({
+        api:
+          error.response?.data?.message ||
+          'Operation failed. Please try again.',
+      });
     }
   };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
       <h2 className="text-xl font-bold mb-4">
-        {initialData ? 'Edit Currency' : 'Add New Currency'}
+        {initialData && initialData.icurrency_id
+          ? 'Edit Currency'
+          : 'Add New Currency'}
       </h2>
 
-      {/* Success and Error Messages */}
       {successMessage && (
         <div className="mb-4 p-2 bg-green-100 text-green-800 rounded text-sm">
           {successMessage}
         </div>
       )}
-      {errorMessage && (
+      {errors.api && (
         <div className="mb-4 p-2 bg-red-100 text-red-800 rounded text-sm">
-          {errorMessage}
+          {errors.api}
         </div>
       )}
 
@@ -95,90 +127,90 @@ const CurrencyForm = ({
         {/* Country Name Input */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Country Name
+            Country Name<span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             name="country_name"
             value={formData.country_name}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
-            required
+            className={`w-full border rounded-md p-2 ${
+              errors.country_name ? 'border-red-500' : 'border-gray-300'
+            }`}
             disabled={loading}
             placeholder="Enter country name"
+            maxLength={50}
           />
+          {errors.country_name && (
+            <p className="text-red-500 text-xs mt-1">{errors.country_name}</p>
+          )}
         </div>
 
         {/* Currency Code Input */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Currency Code
+            Currency Code<span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             name="currency_code"
             value={formData.currency_code}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
-            required
+            className={`w-full border rounded-md p-2 ${
+              errors.currency_code ? 'border-red-500' : 'border-gray-300'
+            }`}
             disabled={loading}
-            placeholder="e.g., USD, INR"
+            placeholder="e.g., INR, USD"
+            maxLength={50}
           />
+          {errors.currency_code && (
+            <p className="text-red-500 text-xs mt-1">{errors.currency_code}</p>
+          )}
         </div>
 
         {/* Currency Name Input */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Currency Name
+            Currency Name<span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             name="currency_name"
             value={formData.currency_name}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
-            required
+            className={`w-full border rounded-md p-2 ${
+              errors.currency_name ? 'border-red-500' : 'border-gray-300'
+            }`}
             disabled={loading}
-            placeholder="e.g., United States Dollar"
+            placeholder="e.g., Indian Rupee"
+            maxLength={50}
           />
+          {errors.currency_name && (
+            <p className="text-red-500 text-xs mt-1">{errors.currency_name}</p>
+          )}
         </div>
 
         {/* Symbol Input */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Symbol
+            Symbol<span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             name="symbol"
             value={formData.symbol}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
-            required
+            className={`w-full border rounded-md p-2 ${
+              errors.symbol ? 'border-red-500' : 'border-gray-300'
+            }`}
             disabled={loading}
-            placeholder="e.g., $"
+            placeholder="e.g., ₹"
+            maxLength={10}
           />
+          {errors.symbol && (
+            <p className="text-red-500 text-xs mt-1">{errors.symbol}</p>
+          )}
         </div>
-
-        {/* Active Status Checkbox (only in edit mode) */}
-        {initialData && (
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="bactive"
-                name="bactive"
-                checked={formData.bactive}
-                onChange={handleChange}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500"
-                disabled={loading}
-              />
-              <label htmlFor="bactive" className="ml-2 block text-sm text-gray-700">
-                Active
-              </label>
-            </div>
-          </div>
-        )}
 
         {/* Form Actions */}
         <div className="flex justify-end space-x-3 pt-4">
@@ -193,6 +225,7 @@ const CurrencyForm = ({
           >
             Cancel
           </button>
+          
           <button
             type="submit"
             disabled={loading}

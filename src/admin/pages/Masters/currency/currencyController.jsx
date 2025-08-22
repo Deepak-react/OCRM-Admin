@@ -5,12 +5,10 @@ import {
   updateCurrency as modelUpdateCurrency,
   deleteCurrency as modelDeleteCurrency
 } from './currencyModel';
-
 const useCurrencyController = () => {
   const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const fetchCurrencies = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -25,7 +23,6 @@ const useCurrencyController = () => {
       setLoading(false);
     }
   }, []);
-
   const createCurrency = async (currencyData) => {
     setLoading(true);
     setError(null);
@@ -41,7 +38,6 @@ const useCurrencyController = () => {
       setLoading(false);
     }
   };
-
   const updateCurrency = async (currencyData) => {
     setLoading(true);
     setError(null);
@@ -59,13 +55,12 @@ const useCurrencyController = () => {
       setLoading(false);
     }
   };
-
   const deleteCurrency = async (currencyId) => {
     setLoading(true);
     setError(null);
     try {
       await modelDeleteCurrency(currencyId);
-      // Soft-delete logic: update state to reflect deactivation
+      
       setCurrencies(prev => prev.map(c =>
         c.icurrency_id === currencyId ? { ...c, bactive: false } : c
       ));
@@ -78,7 +73,6 @@ const useCurrencyController = () => {
       setLoading(false);
     }
   };
-
   return {
     currencies,
     loading,
@@ -89,5 +83,4 @@ const useCurrencyController = () => {
     deleteCurrency
   };
 };
-
 export default useCurrencyController;
