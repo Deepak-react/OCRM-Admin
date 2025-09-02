@@ -27,7 +27,7 @@ const CurrencyForm = ({ onClose, onSuccess, initialData = null, loading }) => {
         country_name: '',
         currency_code: '',
         currency_name: '',
-        currency_name: '',
+        // currency_name: '',
         symbol: '',
       });
     }
