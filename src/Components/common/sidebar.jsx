@@ -31,7 +31,7 @@ const Sidebar = () => {
         setUserRoleId(roleIdFromToken);
 
         // Apply dynamic menu filtering
-        if (roleIdFromToken === 1) {
+        if (roleIdFromToken === 4) {
           // Full access
           setMenuItems(fullMenuItems);
         } else {
@@ -74,9 +74,6 @@ const Sidebar = () => {
   const circumference = 2 * Math.PI * radius;
   const usedOffset = circumference * (1 - used / 100);
 
-
-  
-
   return (
     <div className="flex h-screen w-full">
       {/* Sidebar */}
@@ -114,9 +111,6 @@ const Sidebar = () => {
         </div>
 
         <div className="flex flex-col items-center py-6 space-y-4 mb-4">
-
-            
-
           <button
             onClick={toggleSidebar}
             className="flex items-center justify-center space-x-2 px-3 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition"

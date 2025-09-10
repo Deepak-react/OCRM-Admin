@@ -72,7 +72,7 @@ const LoginPage = () => {
         const decodedToken = jwtDecode(data.jwtToken);
         const roleIdFromToken = decodedToken.role_id;
 
-        if (roleIdFromToken === 1) {
+        if (roleIdFromToken === 4) {
           localStorage.setItem('token', data.jwtToken);
           localStorage.setItem('user', JSON.stringify(data.user));
           localStorage.setItem('profileImage', data.user.cProfile_pic || '');
