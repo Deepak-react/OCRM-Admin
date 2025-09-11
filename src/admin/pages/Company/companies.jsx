@@ -13,20 +13,8 @@ const CompanyGrid = ({ data }) => {
     <Link to={`/company-profile/${data.iCompany_id}`} className="block h-full">
       {' '}
       <div
-        className="
-        bg-white
-        rounded-2xl
-        shadow-sm
-        hover:shadow-md
-        transition-all duration-200 ease-in-out
-        transform hover:-translate-y-0.5
-        overflow-hidden
-        p-7 sm:p-8 {/* More generous padding */}
-        border border-gray-200
-        flex flex-col {/* Use flexbox for vertical layout */}
-        h-full {/* Ensure the div fills the height of the link block */}
-      "
-      >
+        className=" bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 ease-in-out 
+        transform hover:-translate-y-0.5 overflow-hidden p-7 sm:p-8 border border-gray-200 flex flex-col h-full  ">
         {/* Top Section: Company Name, Initial, Website */}
         <div className="flex items-start gap-5 mb-6">
           {' '}
