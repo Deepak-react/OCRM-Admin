@@ -26,6 +26,7 @@ import AuditLoginTab from './AuditLoginTab';
 import DistrictMaster from "../Masters/district/districtMasters.jsx";
 import CountryMaster from "../Masters/country/countryMaster.jsx";
 import StateMaster from "../Masters/States/StateMaster.jsx";
+import { useToast } from "../../../context/ToastContext.jsx";
 
 ChartJS.register( ArcElement,
   LineElement,
@@ -147,18 +148,24 @@ const MasterDataPanel = ({companyData}) => {
   );
 };
 
-
-
 const CompanyProfile = () => {
-  const { fetchCompanyDataById, usersByCompany, changeUserStatus, editCompanyDetails, fetchUsersByCompanyId, error } = useCompanyController();
-  const {fetchAllCities, cities} = useSharedController();
+  const {
+    fetchCompanyDataById,
+    usersByCompany,
+    changeUserStatus,
+    editCompanyDetails,
+    fetchUsersByCompanyId,
+    error,
+    message,
+    loading,
+  } = useCompanyController();
+  const { fetchAllCities, cities } = useSharedController();
+  const { showToast } = useToast();
 
   const [company, setCompany] = useState(null);
   const [activeTab, setActiveTab] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10;
-
-
 
   const { id } = useParams();
 
@@ -168,20 +175,20 @@ const CompanyProfile = () => {
 
   // Demo data for graph and pie chart (keeping as is per request)
   const lineData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
     datasets: [
       {
-        label: 'Sales',
+        label: "Sales",
         data: [150, 200, 180, 220, 250],
-        borderColor: '#4A90E2',
-        backgroundColor: 'rgba(74, 144, 226, 0.2)',
+        borderColor: "#4A90E2",
+        backgroundColor: "rgba(74, 144, 226, 0.2)",
         tension: 0.4,
         fill: true,
-        pointBackgroundColor: '#4A90E2',
-        pointBorderColor: '#fff',
+        pointBackgroundColor: "#4A90E2",
+        pointBorderColor: "#fff",
         pointHoverRadius: 6,
-        pointHoverBackgroundColor: '#4A90E2',
-        pointHoverBorderColor: '#fff',
+        pointHoverBackgroundColor: "#4A90E2",
+        pointHoverBorderColor: "#fff",
       },
     ],
   };
@@ -191,22 +198,22 @@ const CompanyProfile = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
         labels: {
           font: {
             size: 14,
-            family: 'Inter, sans-serif'
+            family: "Inter, sans-serif",
           },
-          color: '#374151'
-        }
+          color: "#374151",
+        },
       },
       tooltip: {
-        backgroundColor: '#374151',
-        titleFont: { size: 14, family: 'Inter, sans-serif' },
-        bodyFont: { size: 12, family: 'Inter, sans-serif' },
+        backgroundColor: "#374151",
+        titleFont: { size: 14, family: "Inter, sans-serif" },
+        bodyFont: { size: 12, family: "Inter, sans-serif" },
         padding: 10,
         cornerRadius: 4,
-      }
+      },
     },
     scales: {
       x: {
@@ -214,37 +221,37 @@ const CompanyProfile = () => {
           display: false,
         },
         ticks: {
-          color: '#6B7280',
-          font: { family: 'Inter, sans-serif' }
+          color: "#6B7280",
+          font: { family: "Inter, sans-serif" },
         },
         border: {
-          display: false
-        }
+          display: false,
+        },
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: '#E5E7EB',
+          color: "#E5E7EB",
         },
         ticks: {
-          color: '#6B7280',
-          font: { family: 'Inter, sans-serif' }
+          color: "#6B7280",
+          font: { family: "Inter, sans-serif" },
         },
         border: {
-          display: false
-        }
+          display: false,
+        },
       },
     },
   };
 
   const pieData = {
-    labels: ['Sales', 'Marketing', 'Development', 'Support'],
+    labels: ["Sales", "Marketing", "Development", "Support"],
     datasets: [
       {
-        label: 'Department Budget',
+        label: "Department Budget",
         data: [300, 200, 400, 100],
-        backgroundColor: ['#4A90E2', '#FF6384', '#F5A623', '#50E3C2'],
-        borderColor: '#fff',
+        backgroundColor: ["#4A90E2", "#FF6384", "#F5A623", "#50E3C2"],
+        borderColor: "#fff",
         borderWidth: 2,
       },
     ],
@@ -255,34 +262,37 @@ const CompanyProfile = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'bottom',
+        position: "bottom",
         labels: {
           font: {
             size: 14,
-            family: 'Inter, sans-serif'
+            family: "Inter, sans-serif",
           },
-          color: '#374151'
-        }
+          color: "#374151",
+        },
       },
       tooltip: {
-        backgroundColor: '#374151',
-        titleFont: { size: 14, family: 'Inter, sans-serif' },
-        bodyFont: { size: 12, family: 'Inter, sans-serif' },
+        backgroundColor: "#374151",
+        titleFont: { size: 14, family: "Inter, sans-serif" },
+        bodyFont: { size: 12, family: "Inter, sans-serif" },
         padding: 10,
         cornerRadius: 4,
         callbacks: {
           label: function (context) {
-            let label = context.label || '';
+            let label = context.label || "";
             if (label) {
-              label += ': ';
+              label += ": ";
             }
             if (context.parsed !== null) {
-              label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed);
+              label += new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(context.parsed);
             }
             return label;
-          }
-        }
-      }
+          },
+        },
+      },
     },
   };
 
@@ -290,32 +300,37 @@ const CompanyProfile = () => {
   const [modules, setModules] = useState([
     {
       name: "Leads",
-      description: "Manage potential customers before they convert into contacts or deals.",
+      description:
+        "Manage potential customers before they convert into contacts or deals.",
     },
     {
       name: "Contacts",
-      description: "Store individual contact details of clients, suppliers, or partners.",
+      description:
+        "Store individual contact details of clients, suppliers, or partners.",
     },
     {
       name: "Deals",
-      description: "Track ongoing sales activities and their progress toward closure.",
+      description:
+        "Track ongoing sales activities and their progress toward closure.",
     },
     {
       name: "Support",
-      description: "Record and resolve customer issues using a structured ticketing system.",
+      description:
+        "Record and resolve customer issues using a structured ticketing system.",
     },
   ]);
 
-
   //funciton to calculate the total number of pages
   // Calculate total pages
-const totalPages = Math.ceil((Array.isArray(usersByCompany) ? usersByCompany.length : 0) / usersPerPage);
+  const totalPages = Math.ceil(
+    (Array.isArray(usersByCompany) ? usersByCompany.length : 0) / usersPerPage
+  );
 
-// Slice data based on currentPage
-const paginatedUsers = (usersByCompany || []).slice(
-  (currentPage - 1) * usersPerPage,
-  currentPage * usersPerPage
-);
+  // Slice data based on currentPage
+  const paginatedUsers = (usersByCompany || []).slice(
+    (currentPage - 1) * usersPerPage,
+    currentPage * usersPerPage
+  );
 
   // Removed static 'users' state: const [users, setUsers] = useState([...]);
 
@@ -325,23 +340,25 @@ const paginatedUsers = (usersByCompany || []).slice(
     company?.result.caddress2,
     company?.result.caddress3,
     company?.result.city?.cCity_name,
-    company?.result.country?.cCountry_name
+    company?.result.country?.cCountry_name,
   ].filter(Boolean);
-  const fullAddress = fullAddressParts.length > 0 ? fullAddressParts.join(', ') : '-';
+  const fullAddress =
+    fullAddressParts.length > 0 ? fullAddressParts.join(", ") : "-";
 
   // Format dates
   const created_at = formatDate(company?.result.dCreated_dt);
   const modified_at = formatDate(company?.result.dModified_dt);
 
   // Initial for company logo placeholder
-  const companyInitial = company?.result.cCompany_name?.charAt(0).toUpperCase() || '?';
+  const companyInitial =
+    company?.result.cCompany_name?.charAt(0).toUpperCase() || "?";
 
   // Effect to fetch company data
   useEffect(() => {
     const loadCompany = async () => {
       try {
         const data = await fetchCompanyDataById(id);
-        console.log("The company data is:", data);  
+        console.log("The company data is:", data);
         setCompany(data);
         console.log("Rendered with id:", id);
       } catch (error) {
@@ -353,19 +370,19 @@ const paginatedUsers = (usersByCompany || []).slice(
     if (id) loadCompany();
   }, [id]);
 
-
   // Effect to fetch users when the Users tab is active and company ID is available
   useEffect(() => {
-    if (activeTab === 2 && id) { // Only fetch when 'Users' tab is active and a company ID is available
+    if (activeTab === 2 && id) {
+      // Only fetch when 'Users' tab is active and a company ID is available
       //console.log("Fetching users for company ID:", id);
       console.log("Fetching users for company ID:", id);
-      fetchUsersByCompanyId(id); 
+      fetchUsersByCompanyId(id);
     }
   }, [activeTab]); // Dependencies for this useEffect
 
-
   // for edit form
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openUserCreateDialog, setOpenUserCreateDialog] = useState(false);  
   const [editCompanyData, setEditCompanyData] = useState({});
 
   const handleOpenEditDialog = async () => {
@@ -375,6 +392,11 @@ const paginatedUsers = (usersByCompany || []).slice(
     setOpenEditDialog(true);
   };
 
+  const handleUserCreate = async () => {
+    console.log("Open the user create dialog");
+    setOpenUserCreateDialog(true);
+  }
+
   // Function to close the edit dialog
   const handleCloseEditDialog = () => {
     setOpenEditDialog(false);
@@ -382,32 +404,53 @@ const paginatedUsers = (usersByCompany || []).slice(
 
   // Function to handle changes in the edit form fields
   const handleEditFormChange = (e) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  // Fields that must be converted to integers
-  const intFields = ['iUser_no', 'iReseller_id', 'iPhone_no', 'ireseller_admin_id', 'isubscription_plan'];
+    // Fields that must be converted to integers
+    const intFields = [
+      "iUser_no",
+      "iReseller_id",
+      "iPhone_no",
+      "ireseller_admin_id",
+      "isubscription_plan",
+    ];
 
-  setEditCompanyData(prevData => ({
-    ...prevData,
-    [name]: intFields.includes(name) ? (value === '' ? '' : parseInt(value, 10)) : value
-  }));
-};
-
+    setEditCompanyData((prevData) => ({
+      ...prevData,
+      [name]: intFields.includes(name)
+        ? value === ""
+          ? ""
+          : parseInt(value, 10)
+        : value,
+    }));
+  };
 
   // Function to handle saving the edited company data
-  const handleSaveEditedCompany = () => {
+  const handleSaveEditedCompany = async () => {
+    const {
+      iCompany_id,
+      iReseller_id,
+      icity_id,
+      ireseller_admin_id,
+      isubscription_plan,
+      ...payload
+    } = editCompanyData;
 
-    const { iCompany_id,iReseller_id,icity_id,ireseller_admin_id,isubscription_plan, ...payload } = editCompanyData;
-    editCompanyDetails(payload, editCompanyData.iCompany_id);
-    //console.log("Saving edited company data:", editCompanyData);
+    const response = await editCompanyDetails(
+      payload,
+      editCompanyData.iCompany_id
+    );
     setOpenEditDialog(false);
+    response
+      ? showToast("success", "Company details updated successfully.")
+      : showToast("error", "Failed to update company details");
   };
+
 
   // State for activate/deactivate user dialog
   const [openUserStatusDialog, setOpenUserStatusDialog] = useState(false);
   const [userToModify, setUserToModify] = useState(null);
   const [userActive, setUserActive] = useState(1);
-
 
   // State for the ellipsis menu anchor
   const [anchorEl, setAnchorEl] = useState(null);
@@ -435,12 +478,14 @@ const paginatedUsers = (usersByCompany || []).slice(
     setUserToModify(null);
   };
 
-  const handleToggleUserStatus =  async () => {
+  const handleToggleUserStatus = async () => {
     if (userToModify) {
-        console.log(userToModify);                
-        await changeUserStatus(userToModify.iUser_id);
-        const newStatus = userToModify.bactive ? 'Inactive' : 'Active';
-      console.log(`Attempting to ${newStatus} user: ${userToModify.cFull_name}. (Implement API call here)`);
+      console.log(userToModify);
+      await changeUserStatus(userToModify.iUser_id);
+      const newStatus = userToModify.bactive ? "Inactive" : "Active";
+      console.log(
+        `Attempting to ${newStatus} user: ${userToModify.cFull_name}. (Implement API call here)`
+      );
       handleCloseUserStatusDialog();
     }
   };
@@ -459,27 +504,34 @@ const paginatedUsers = (usersByCompany || []).slice(
   };
 
   // Function to handle company status toggle
-  const handleToggleCompanyStatus = () => { 
+  const handleToggleCompanyStatus = () => {
     if (company) {
       const newBactiveStatus = !company.result.bactive;
-      console.log(`Toggling company status to: ${newBactiveStatus ? 'Active' : 'Inactive'}`);
-      setCompany(prevCompany => ({ ...prevCompany, bactive: newBactiveStatus }));
+      console.log(
+        `Toggling company status to: ${
+          newBactiveStatus ? "Active" : "Inactive"
+        }`
+      );
+      setCompany((prevCompany) => ({
+        ...prevCompany,
+        bactive: newBactiveStatus,
+      }));
       handleCloseCompanyStatusDialog();
     }
   };
 
   // --- State and Handlers for Add Module Dialog ---
   const [openAddModuleDialog, setOpenAddModuleDialog] = useState(false);
-  const [newModuleName, setNewModuleName] = useState('');
-  const [newModuleDescription, setNewModuleDescription] = useState('');
+  const [newModuleName, setNewModuleName] = useState("");
+  const [newModuleDescription, setNewModuleDescription] = useState("");
   const [moduleNameError, setModuleNameError] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
   const [moduleDescriptionError, setModuleDescriptionError] = useState(false);
 
   const handleOpenAddModuleDialog = () => {
-    setNewModuleName('');
-    setNewModuleDescription('');
+    setNewModuleName("");
+    setNewModuleDescription("");
     setModuleNameError(false);
     setModuleDescriptionError(false);
     setOpenAddModuleDialog(true);
@@ -493,7 +545,7 @@ const paginatedUsers = (usersByCompany || []).slice(
     let hasError = false;
 
     // Validate module name
-    if (newModuleName.trim() === '' || newModuleName.length > 25) {
+    if (newModuleName.trim() === "" || newModuleName.length > 25) {
       setModuleNameError(true);
       hasError = true;
     } else {
@@ -501,7 +553,10 @@ const paginatedUsers = (usersByCompany || []).slice(
     }
 
     // Validate module description (word count)
-    const wordCount = newModuleDescription.trim().split(/\s+/).filter(word => word.length > 0).length;
+    const wordCount = newModuleDescription
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
     if (wordCount > 100) {
       setModuleDescriptionError(true);
       hasError = true;
@@ -514,9 +569,9 @@ const paginatedUsers = (usersByCompany || []).slice(
     }
 
     // Add the new module
-    setModules(prevModules => [
+    setModules((prevModules) => [
       ...prevModules,
-      { name: newModuleName.trim(), description: newModuleDescription.trim() }
+      { name: newModuleName.trim(), description: newModuleDescription.trim() },
     ]);
     handleCloseAddModuleDialog();
   };
@@ -531,33 +586,42 @@ const paginatedUsers = (usersByCompany || []).slice(
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-
-  return (    
-    
+  return (
     <div className="p-6 lg:p-8 space-y-8 bg-gray-50 min-h-screen font-sans antialiased">
       {/* --- Header Section --- */}
       <div className="bg-white rounded-xl shadow-md p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 border border-gray-100">
         <div className="flex items-center gap-6">
           {/* Company Logo/Initial */}
           {company?.cCompany_logo_url ? (
-            <img src={company.cCompany_logo_url} alt="Company Logo" className="w-20 h-20 rounded-full object-cover shadow-sm ring-2 ring-blue-200" />
+            <img
+              src={company.cCompany_logo_url}
+              alt="Company Logo"
+              className="w-20 h-20 rounded-full object-cover shadow-sm ring-2 ring-blue-200"
+            />
           ) : (
-            <div className="w-20 h-20 flex items-center justify-center bg-blue-100 text-blue-700 font-extrabold rounded-full text-4xl shadow-sm ring-2 ring-blue-200">
+            <div className="w-20 h-20 flex items-center justify-center bg-blue-100 text-blue-700 font-bold rounded-full text-4xl shadow-sm ring-2 ring-blue-200">
               {companyInitial}
             </div>
           )}
 
           <div>
-            <h1 className="text-3xl font-extrabold text-gray-900 leading-tight">
+            <h1 className="text-3xl font-bold text-gray-900">
               {company?.result.cCompany_name || "Loading Company..."}
             </h1>
             <p className="text-sm text-gray-500 mt-1 flex items-center gap-2">
-              Company ID: <span className="font-semibold text-gray-700">{company?.result.iCompany_id || '-'}</span>
+              Company ID:
+              <span className="font-semibold text-gray-700">
+                {company?.result.iCompany_id || "-"}
+              </span>
               {company && (
                 <span
                   className={`
                     text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm uppercase
-                    ${company.result.bactive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}
+                    ${
+                      company.result.bactive
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }
                   `}
                 >
                   {company.result.bactive ? "Active" : "Inactive"}
@@ -566,32 +630,73 @@ const paginatedUsers = (usersByCompany || []).slice(
             </p>
 
             <p className="text-sm text-gray-500 mt-1">
-              Subscription Plan: <span className="font-semibold text-gray-700">{company?.result.pricing_plan?.plan_name || "-"}</span>
+              Subscription Plan:
+              <span className="font-semibold text-gray-700">
+                {company?.result.pricing_plan?.plan_name || "-"}
+              </span>
             </p>
           </div>
         </div>
 
         <button
-          className="bg-black text-white font-semibold rounded-lg px-4 py-2 hover:bg-blue-700 shadow-md hover:shadow-lg flex items-center gap-2 transition-all"
+          className="bg-indigo-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-indigo-700 transition-colors duration-200 shadow-sm"
           onClick={handleOpenEditDialog}
         >
-          <EditSquareIcon />
+          Edit Profile
         </button>
       </div>
 
       {/* --- Tabs Section --- */}
       <div className="bg-white rounded-xl shadow-md p-0 border border-gray-100">
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={activeTab} onChange={handleTabChange} aria-label="company profile tabs"
-            sx={{'.MuiTabs-indicator': {backgroundColor: '#2563EB', },}}>
-            <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">Company Profile</span>} {...a11yProps(0)} />
-            <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">General Settings</span>} {...a11yProps(1)} />
-            <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">Users</span>} {...a11yProps(2)} />
-            <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">Masters</span>} {...a11yProps(3)} />
-            <Tab label={<span className="font-semibold text-gray-700 hover:text-blue-600">Audit login</span>} {...a11yProps(4)} />
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            aria-label="company profile tabs"
+            sx={{ ".MuiTabs-indicator": { backgroundColor: "#2563EB" } }}
+          >
+            <Tab
+              label={
+                <span className="font-semibold text-gray-700 hover:text-blue-600">
+                  Company Profile
+                </span>
+              }
+              {...a11yProps(0)}
+            />
+            <Tab
+              label={
+                <span className="font-semibold text-gray-700 hover:text-blue-600">
+                  General Settings
+                </span>
+              }
+              {...a11yProps(1)}
+            />
+            <Tab
+              label={
+                <span className="font-semibold text-gray-700 hover:text-blue-600">
+                  Users
+                </span>
+              }
+              {...a11yProps(2)}
+            />
+            <Tab
+              label={
+                <span className="font-semibold text-gray-700 hover:text-blue-600">
+                  Masters
+                </span>
+              }
+              {...a11yProps(3)}
+            />
+            <Tab
+              label={
+                <span className="font-semibold text-gray-700 hover:text-blue-600">
+                  Audit login
+                </span>
+              }
+              {...a11yProps(4)}
+            />
           </Tabs>
         </Box>
-
 
         {/* --- Tab Panel: Company Profile --- */}
         <CustomTabPanel value={activeTab} index={0}>
@@ -599,29 +704,118 @@ const paginatedUsers = (usersByCompany || []).slice(
             {/* Company Profile Info Card (Span 2 columns on large screens) */}
 
             <div className="lg:col-span-3 bg-white rounded-xl  p-6 border border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">Company Details</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                Company Details
+              </h2>
               {/* The grid below ensures content wraps and flows responsively */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5 gap-x-6 text-base text-gray-800">
                 {/* Column 1 */}
-                <p className="flex items-center gap-2"><img src="/icons/company.png" alt="Company" width={30} height={30} /><span className="font-semibold">{company?.result.cCompany_name || "-"}</span></p>
-                <p className="flex items-center gap-2"><PhoneIcon className="text-gray-500" /> <span className="font-semibold">{company?.result.iPhone_no || "-"}</span></p>
-                <p className="flex items-center gap-2"><EmailIcon className="text-gray-500" /><span className="font-semibold">{company?.result.cemail_address || "-"}</span></p>
-                <p className="md:col-span-2 lg:col-span-1 flex items-center gap-2"><LanguageIcon className="text-gray-500" /><a href={`http://${company?.result.cWebsite}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 hover:underline">{company?.result.cWebsite || "-"}</a></p>
-                <p className="flex items-center gap-2"><img src="/icons/reseller.png" alt="Reseller" width={30} height={30} /><span className="font-semibold">{company?.result.iReseller_id || "-"}</span></p>
-                <p className="flex items-center gap-2"><img src="/icons/user.png" alt="User" width={30} height={30} /><span className="font-semibold">{company?.result.iUser_no || "-"}</span></p>
-                <p className="flex items-center gap-2"><img src="/icons/gst.png" alt="GST Number" width={30} height={30} /><span className="font-semibold">{company?.result.cGst_no || "-"}</span></p>
-                <p className="flex items-center gap-2"><img src="/icons/cin.png" alt="CIN Number" width={30} height={30} /> <span className="font-semibold">{company?.result.icin_no || "-"}</span></p>
-                <p className="md:col-span-2 lg:col-span-1 flex items-start gap-2"><LocationOnIcon className="text-gray-500 mt-1" /><span className="font-semibold">{fullAddress}</span></p>
-                <p className="flex items-center gap-2"><EventIcon className="text-gray-500" /><span className="font-semibold">{created_at || "-"}</span></p>
-                <p className="flex items-center gap-2"><EditDocumentIcon className="text-gray-500" /> <span className="font-semibold">{modified_at || "-"}</span></p>
-                <p className="flex items-center gap-2"><EditDocumentIcon className="text-gray-500" /> <span className="font-semibold">{company?.totalLeads || "-"}</span></p>                
+                <p className="flex items-center gap-2">
+                  <img
+                    src="/icons/company.png"
+                    alt="Company"
+                    width={30}
+                    height={30}
+                  />
+                  <span className="font-semibold">
+                    {company?.result.cCompany_name || "-"}
+                  </span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <PhoneIcon className="text-gray-500" />
+                  <span className="font-semibold">
+                    {company?.result.iPhone_no || "-"}
+                  </span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <EmailIcon className="text-gray-500" />
+                  <span className="font-semibold">
+                    {company?.result.cemail_address || "-"}
+                  </span>
+                </p>
+                <p className="md:col-span-2 lg:col-span-1 flex items-center gap-2">
+                  <LanguageIcon className="text-gray-500" />
+                  <a
+                    href={`http://${company?.result.cWebsite}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-blue-600 hover:underline"
+                  >
+                    {company?.result.cWebsite || "-"}
+                  </a>
+                </p>
+                <p className="flex items-center gap-2">
+                  <img
+                    src="/icons/reseller.png"
+                    alt="Reseller"
+                    width={30}
+                    height={30}
+                  />
+                  <span className="font-semibold">
+                    {company?.result.iReseller_id || "-"}
+                  </span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <img
+                    src="/icons/user.png"
+                    alt="User"
+                    width={30}
+                    height={30}
+                  />
+                  <span className="font-semibold">
+                    {company?.result.iUser_no || "-"}
+                  </span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <img
+                    src="/icons/gst.png"
+                    alt="GST Number"
+                    width={30}
+                    height={30}
+                  />
+                  <span className="font-semibold">
+                    {company?.result.cGst_no || "-"}
+                  </span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <img
+                    src="/icons/cin.png"
+                    alt="CIN Number"
+                    width={30}
+                    height={30}
+                  />
+                  <span className="font-semibold">
+                    {company?.result.icin_no || "-"}
+                  </span>
+                </p>
+                <p className="md:col-span-2 lg:col-span-1 flex items-start gap-2">
+                  <LocationOnIcon className="text-gray-500 mt-1" />
+                  <span className="font-semibold">{fullAddress}</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <EventIcon className="text-gray-500" />
+                  <span className="font-semibold">{created_at || "-"}</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <EditDocumentIcon className="text-gray-500" />
+                  <span className="font-semibold">{modified_at || "-"}</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <EditDocumentIcon className="text-gray-500" />
+                  <span className="font-semibold">
+                    {company?.totalLeads || "-"}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
           {/* Pie Chart */}
-          <div className="lg:col-span-1 bg-white rounded-xl p-6 border border-gray-100 flex flex-col gap-6 mt-6"> {/* Added mt-6 for spacing */}
+          <div className="lg:col-span-1 bg-white rounded-xl p-6 border border-gray-100 flex flex-col gap-6 mt-6">
+            {/* Added mt-6 for spacing */}
             <div className="min-h-[250px] relative">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Storage Allocation</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                Lead Distribution
+              </h3>
               <div className="h-[250px]">
                 <Pie data={pieData} options={pieOptions} />
               </div>
@@ -631,100 +825,128 @@ const paginatedUsers = (usersByCompany || []).slice(
 
         {/* --- Tab Panel: General Settings & Enabled Modules --- */}
         <CustomTabPanel value={activeTab} index={1}>
-        {console.log("usersByCompany length 2 :", usersByCompany)}
+          {console.log("usersByCompany length 2 :", usersByCompany)}
           <GeneralSettingsTab />
         </CustomTabPanel>
 
-
         {/* --- Tab Panel: Users --- */}
-<CustomTabPanel value={activeTab} index={2}>
-            {    console.log("The users list are :", usersByCompany)}
+        <CustomTabPanel value={activeTab} index={2}>
+          {console.log("The users list are :", usersByCompany)}
           {console.log("usersByCompany length are:", paginatedUsers)}
-            {/* Display error from the controller */}
-            {error && <p className="text-red-500 mb-4">Error: {error}</p>}
-            {paginatedUsers.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Title</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="relative px-6 py-3">
-                        <span className="sr-only">Actions</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {/* Iterate over usersByCompany fetched from the API */}
-                    { paginatedUsers.map((user) => (
-                      <tr key={user.iUser_id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.cFull_name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.cEmail}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.role}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {new Date(user.dCreate_dt).toLocaleDateString("en-IN", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`
+          <div className="flex justify-end mb-4">
+            <button
+              className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors duration-200 shadow-sm"
+              onClick={setOpenUserCreateDialog}
+            >
+              {/* Changed to indigo, reduced shadow */}+ Create user
+            </button>
+          </div>
+          {/* Display error from the controller */}
+          {error && <p className="text-red-500 mb-4">Error: {error}</p>}
+          {paginatedUsers.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Job Title
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Created At
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="relative px-6 py-3">
+                      <span className="sr-only">Actions</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {/* Iterate over usersByCompany fetched from the API */}
+                  {paginatedUsers.map((user) => (
+                    <tr key={user.iUser_id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {user.cFull_name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.cEmail}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.role}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(user.dCreate_dt).toLocaleDateString("en-IN", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`
                               px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                              ${user.bactive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}
+                              ${
+                                user.bactive
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
+                              }
                             `}
-                          >
-                            {user.bactive ? "Active" : "Deactivated"}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          
-                          {user.bactive ?  <IconButton
+                        >
+                          {user.bactive ? "Active" : "Deactivated"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        {user.bactive ? (
+                          <IconButton
                             aria-label="more"
                             aria-controls={`user-actions-menu-${user.iUser_id}`}
                             aria-haspopup="true"
                             onClick={(event) => handleMenuOpen(event, user)}
                           >
                             <MoreVertIcon />
-                          </IconButton> : 
-                          
-                          <></>}
-                          
-                         
-                          {userToModify?.iUser_id === user.iUser_id && (
-                            <Menu
-                              id={`user-actions-menu-${user.iUser_id}`}
-                              anchorEl={anchorEl}
-                              open={Boolean(anchorEl)}
-                              onClose={handleMenuClose}
-                              MenuListProps={{
-                                "aria-labelledby": "more-button",
-                              }}
-                              PaperProps={{
-                                style: {
-                                  maxHeight: 48 * 4.5,
-                                  width: "20ch",
-                                },
-                              }}
-                            >
-                              <MenuItem onClick={handleOpenStatusConfirmation}>{user.bactive ? "Deactivate" : "Activate"}</MenuItem>
-                            </Menu>
-                          )}
-                        </td>
-                      </tr>
-                    ))
-                   }
-                  </tbody> 
-                  
-                  
-                </table>
-                   <div className="flex justify-center mt-4 space-x-2">
+                          </IconButton>
+                        ) : (
+                          <></>
+                        )}
+
+                        {userToModify?.iUser_id === user.iUser_id && (
+                          <Menu
+                            id={`user-actions-menu-${user.iUser_id}`}
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleMenuClose}
+                            MenuListProps={{
+                              "aria-labelledby": "more-button",
+                            }}
+                            PaperProps={{
+                              style: {
+                                maxHeight: 48 * 4.5,
+                                width: "20ch",
+                              },
+                            }}
+                          >
+                            <MenuItem onClick={handleOpenStatusConfirmation}>
+                              {user.bactive ? "Deactivate" : "Activate"}
+                            </MenuItem>
+                          </Menu>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="flex justify-center mt-4 space-x-2">
                 <button
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
                   disabled={currentPage === 1}
                   className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
                 >
@@ -736,7 +958,9 @@ const paginatedUsers = (usersByCompany || []).slice(
                     key={i}
                     onClick={() => setCurrentPage(i + 1)}
                     className={`px-3 py-1 rounded ${
-                      currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+                      currentPage === i + 1
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200"
                     }`}
                   >
                     {i + 1}
@@ -744,51 +968,71 @@ const paginatedUsers = (usersByCompany || []).slice(
                 ))}
 
                 <button
-                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
                   disabled={currentPage === totalPages}
                   className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
                 >
                   Next
                 </button>
               </div>
-
-              </div> 
-            ) : (
-              <div className="p-6 text-center">
-              <p className="text-red-500">No user data available for this company.</p>
-              </div>
-            )}
+            </div>
+          ) : (
+            <div className="p-6 text-center">
+              <p className="text-red-500">
+                No user data available for this company.
+              </p>
+            </div>
+          )}
         </CustomTabPanel>
-
       </div>
 
-      <CustomTabPanel value={activeTab} index={3}> {/* New index for Masters */}
+      <CustomTabPanel value={activeTab} index={3}>
+        {/* New index for Masters */}
         {/* <MasterData /> */}
-        {console.log("Company data in MasterDataPanel:", company?.result.cCompany_name)}
-        <MasterDataPanel companyData = {company?.result.cCompany_name}/>
-
+        {console.log(
+          "Company data in MasterDataPanel:",
+          company?.result.cCompany_name
+        )}
+        <MasterDataPanel companyData={company?.result.cCompany_name} />
       </CustomTabPanel>
       <CustomTabPanel value={activeTab} index={4}>
-        <AuditLoginTab company_id={company?.result.iCompany_id}/>
+        <AuditLoginTab company_id={company?.result.iCompany_id} />
       </CustomTabPanel>
 
       {/* --- Edit Company Dialog --- */}
-      <Dialog open={openEditDialog} onClose={handleCloseEditDialog} fullWidth maxWidth="md">
-        <DialogTitle className="text-2xl font-bold text-center text-gray-1000 border-b pb-4">Edit Company Details</DialogTitle>
+      <Dialog
+        open={openEditDialog}
+        onClose={handleCloseEditDialog}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle className="text-2xl font-bold text-center text-gray-1000 border-b pb-4">
+          Edit Company Details
+        </DialogTitle>
         <DialogContent dividers>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
             <TextField
-              label={<span>Company Name <span className="text-red-500">*</span></span>}
+              label={
+                <span>
+                  Company Name <span className="text-red-500">*</span>
+                </span>
+              }
               name="cCompany_name"
-              value={editCompanyData?.cCompany_name || ''}
+              value={editCompanyData?.cCompany_name || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
             />
             <TextField
-              label={<span>Phone Number <span className="text-red-500">*</span></span>}
+              label={
+                <span>
+                  Phone Number <span className="text-red-500">*</span>
+                </span>
+              }
               name="iPhone_no"
-              value={editCompanyData?.iPhone_no || ''}
+              value={editCompanyData?.iPhone_no || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
@@ -796,7 +1040,7 @@ const paginatedUsers = (usersByCompany || []).slice(
             <TextField
               label={<span>Email </span>}
               name="cEmail"
-              value={editCompanyData?.cemail_address || ''}
+              value={editCompanyData?.cemail_address || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
@@ -804,47 +1048,67 @@ const paginatedUsers = (usersByCompany || []).slice(
             <TextField
               label={<span>Website </span>}
               name="cWebsite"
-              value={editCompanyData?.cWebsite || ''}
+              value={editCompanyData?.cWebsite || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
             />
             <TextField
-              label={<span>Reseller ID <span className="text-red-500">*</span></span>}
+              label={
+                <span>
+                  Reseller ID <span className="text-red-500">*</span>
+                </span>
+              }
               name="iReseller_id"
-              value={editCompanyData?.iReseller_id || ''}
+              value={editCompanyData?.iReseller_id || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
             />
             <TextField
-              label={<span>Number of Users <span className="text-red-500">*</span></span>}
+              label={
+                <span>
+                  Number of Users <span className="text-red-500">*</span>
+                </span>
+              }
               name="iUser_no"
-              value={editCompanyData?.iUser_no || ''}
+              value={editCompanyData?.iUser_no || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
             />
             <TextField
-              label={<span>GST Number <span className="text-red-500">*</span></span>}
+              label={
+                <span>
+                  GST Number <span className="text-red-500">*</span>
+                </span>
+              }
               name="cGst_no"
-              value={editCompanyData?.cGst_no || ''}
+              value={editCompanyData?.cGst_no || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
             />
             <TextField
-              label={<span>CIN Number <span className="text-red-500">*</span></span>}
+              label={
+                <span>
+                  CIN Number <span className="text-red-500">*</span>
+                </span>
+              }
               name="icin_no"
-              value={editCompanyData?.icin_no || ''}
+              value={editCompanyData?.icin_no || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
             />
             <TextField
-              label={<span>Address Line 1 <span className="text-red-500">*</span></span>}
+              label={
+                <span>
+                  Address Line 1 <span className="text-red-500">*</span>
+                </span>
+              }
               name="caddress1"
-              value={editCompanyData?.caddress1 || ''}
+              value={editCompanyData?.caddress1 || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
@@ -852,7 +1116,7 @@ const paginatedUsers = (usersByCompany || []).slice(
             <TextField
               label="Address Line 2"
               name="caddress2"
-              value={editCompanyData?.caddress2 || ''}
+              value={editCompanyData?.caddress2 || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
@@ -860,49 +1124,59 @@ const paginatedUsers = (usersByCompany || []).slice(
             <TextField
               label="Address Line 3"
               name="caddress3"
-              value={editCompanyData?.caddress3 || ''}
+              value={editCompanyData?.caddress3 || ""}
               onChange={handleEditFormChange}
               fullWidth
               variant="outlined"
             />
-                      <Autocomplete
-            options={cities}
-            getOptionLabel={(option) => option.cCity_name || ''}
-            value={editCompanyData?.city || null}
-            onChange={(event, newValue) => {
-              setEditCompanyData(prev => ({
-                ...prev,
-                city: newValue || { cCity_name: '' } // handle clearing
-              }));
-            }}
-            inputValue={inputValue}
-            onInputChange={(event, newInputValue) => {
-              setInputValue(newInputValue);
-              // Optional: Trigger API call here for dynamic search
-            }}
-            isOptionEqualToValue={(option, value) =>
-              option.cCity_name === value?.cCity_name
-            }
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={
-                  <span>
-                    City <span className="text-red-500">*</span>
-                  </span>
-                }
-                fullWidth
-                variant="outlined"
-              />
-            )}
-          />
+            <Autocomplete
+              options={cities}
+              getOptionLabel={(option) => option.cCity_name || ""}
+              value={editCompanyData?.city || null}
+              onChange={(event, newValue) => {
+                setEditCompanyData((prev) => ({
+                  ...prev,
+                  city: newValue || { cCity_name: "" }, // handle clearing
+                }));
+              }}
+              inputValue={inputValue}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
+                // Optional: Trigger API call here for dynamic search
+              }}
+              isOptionEqualToValue={(option, value) =>
+                option.cCity_name === value?.cCity_name
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={
+                    <span>
+                      City <span className="text-red-500">*</span>
+                    </span>
+                  }
+                  fullWidth
+                  variant="outlined"
+                />
+              )}
+            />
           </div>
         </DialogContent>
         <DialogActions className="p-4">
-          <Button onClick={handleCloseEditDialog} color="primary" variant="outlined" className="px-4 py-2 rounded-lg font-semibold">
+          <Button
+            onClick={handleCloseEditDialog}
+            color="primary"
+            variant="outlined"
+            className="px-4 py-2 rounded-lg font-semibold"
+          >
             Cancel
           </Button>
-          <Button onClick={handleSaveEditedCompany} color="primary" variant="contained" className="px-4 py-2 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700">
+          <Button
+            onClick={handleSaveEditedCompany}
+            color="primary"
+            variant="contained"
+            className="px-4 py-2 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700"
+          >
             Save Changes
           </Button>
         </DialogActions>
@@ -915,49 +1189,229 @@ const paginatedUsers = (usersByCompany || []).slice(
         </DialogTitle>
         <DialogContent dividers>
           <Typography>
-            Are you sure you want to {userToModify?.bactive ? "deactivate" : "activate"} user: <span className="font-semibold">{userToModify?.cFull_name}</span>?
+            Are you sure you want to
+            {userToModify?.bactive ? "deactivate" : "activate"} user:
+            <span className="font-semibold">{userToModify?.cFull_name}</span>?
           </Typography>
           <Typography className="mt-2 text-sm text-gray-600">
-            This action will set the user's status to "{userToModify?.bactive ? "Inactive" : "Active"}".
+            This action will set the user's status to "
+            {userToModify?.bactive ? "Inactive" : "Active"}".
           </Typography>
         </DialogContent>
         <DialogActions className="p-4">
-          <Button onClick={handleCloseUserStatusDialog} color="primary" variant="outlined" className="px-4 py-2 rounded-lg font-semibold">
+          <Button
+            onClick={handleCloseUserStatusDialog}
+            color="primary"
+            variant="outlined"
+            className="px-4 py-2 rounded-lg font-semibold"
+          >
             No
           </Button>
           <Button
             onClick={handleToggleUserStatus}
             color={userToModify?.bactive ? "error" : "success"}
             variant="contained"
-            className={`px-4 py-2 rounded-lg font-semibold ${userToModify?.bactive ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"} text-white`}
+            className={`px-4 py-2 rounded-lg font-semibold ${
+              userToModify?.bactive
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-green-600 hover:bg-green-700"
+            } text-white`}
           >
             Yes, {userToModify?.bactive ? "Deactivate" : "Activate"}
           </Button>
         </DialogActions>
       </Dialog>
 
+      {/* Create user dialog box */}
+      {openUserCreateDialog && (
+        <>
+          <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
+            {/* Dialog Box */}
+            <div className="relative z-50 w-full max-w-2xl mx-auto">
+              <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-white shadow rounded-xl max-w-5xl">
+                {/* Email */}
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-sm font-medium">
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="Enter email"
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Full Name */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="fullName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Full Name
+                  </label>
+                  <input
+                    id="fullName"
+                    type="text"
+                    placeholder="Enter full name"
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Username */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Username
+                  </label>
+                  <input
+                    id="username"
+                    type="text"
+                    placeholder="Enter username"
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Password */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    placeholder="Enter password"
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Job Title (Full Width) */}
+                <div className="space-y-2 col-span-2">
+                  <label
+                    htmlFor="jobTitle"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Job Title
+                  </label>
+                  <input
+                    id="jobTitle"
+                    type="text"
+                    placeholder="Enter job title"
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Business Phone */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="businessPhone"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Business Phone
+                  </label>
+                  <input
+                    id="businessPhone"
+                    type="tel"
+                    placeholder="Business phone number"
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Personal Phone */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="personalPhone"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Personal Phone
+                  </label>
+                  <input
+                    id="personalPhone"
+                    type="tel"
+                    placeholder="Personal phone number"
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Role */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="role"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Role
+                  </label>
+                  <input
+                    id="role"
+                    type="text"
+                    placeholder="Choose role"
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Reporting */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="reporting"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Reporting
+                  </label>
+                  <input
+                    id="reporting"
+                    type="text"
+                    placeholder="Choose reporting"
+                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* --- Company Status Confirmation Dialog --- */}
-      <Dialog open={openCompanyStatusDialog} onClose={handleCloseCompanyStatusDialog}>
+      <Dialog
+        open={openCompanyStatusDialog}
+        onClose={handleCloseCompanyStatusDialog}
+      >
         <DialogTitle className="text-xl font-bold text-gray-900">
           Confirm Company {company?.bactive ? "Deactivation" : "Activation"}
         </DialogTitle>
         <DialogContent dividers>
           <Typography>
-            Are you sure you want to {company?.bactive ? "deactivate" : "activate"} the company: <span className="font-semibold">{company?.cCompany_name}</span>?
+            Are you sure you want to
+            {company?.bactive ? "deactivate" : "activate"} the company:
+            <span className="font-semibold">{company?.cCompany_name}</span>?
           </Typography>
           <Typography className="mt-2 text-sm text-gray-600">
-            This action will set the company's status to "{company?.bactive ? "Inactive" : "Active"}".
+            This action will set the company's status to "
+            {company?.bactive ? "Inactive" : "Active"}".
           </Typography>
         </DialogContent>
         <DialogActions className="p-4">
-          <Button onClick={handleCloseCompanyStatusDialog} color="primary" variant="outlined" className="px-4 py-2 rounded-lg font-semibold">
+          <Button
+            onClick={handleCloseCompanyStatusDialog}
+            color="primary"
+            variant="outlined"
+            className="px-4 py-2 rounded-lg font-semibold"
+          >
             No
           </Button>
           <Button
             onClick={handleToggleCompanyStatus}
             color={company?.bactive ? "error" : "success"}
             variant="contained"
-            className={`px-4 py-2 rounded-lg font-semibold ${company?.bactive ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"} text-white`}
+            className={`px-4 py-2 rounded-lg font-semibold ${
+              company?.bactive
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-green-600 hover:bg-green-700"
+            } text-white`}
           >
             Yes, {company?.bactive ? "Deactivate" : "Activate"}
           </Button>

@@ -7,6 +7,8 @@ export const useCompanyController = () => {
   const [companyData, setCompanyData] = useState([]);
   const [error, setError] = useState(null);
   const [usersByCompany, setUsersByCompany] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   // Function to fetch all company details
   const fetchAllCompanyData = async () => {
@@ -124,7 +126,7 @@ export const useCompanyController = () => {
 
   //function to create an admin user when the company is created
   const editCompanyDetails = async (data, company_id) => {
-    console.log("Editing company with data:", data, "and company_id:", company_id);
+    setLoading(true);
     try {
       const res = await companyModel.editCompany({
         cCompany_name: data.cCompany_name,
@@ -141,11 +143,15 @@ export const useCompanyController = () => {
         icity_id : data.city.icity_id
 
       }, company_id);
+      console.log("Edit company response:", res);
+      setMessage(res.message);
       //console.log("The response is :", res);
-      await fetchCompanyDataById(company_id);
+      // await fetchCompanyDataById(company_id);
+      setLoading(false);
       return true;
     } catch (err) {
-      console.error('Failed to create admin user:', err);
+      console.log("Error object:", err.message);
+      console.error('Failed to update company details:', err.message);
       setError(err.message || 'Could not create admin user');
       return false;
     }
@@ -181,6 +187,8 @@ const fetchUsersByCompanyId = async (companyId) => {
     changeUserStatus,
     editCompanyDetails,
     error,
+    message,
+    loading,
     usersByCompany,
     fetchUsersByCompanyId,
     fetchAuditLogs,

@@ -4,7 +4,6 @@ export const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Define all API endpoints relative to BASE_URL
 export const ENDPOINTS = {
-  BASE_URL_IS: BASE_URL,
   LOGIN: `${BASE_URL}/login`,
   DASHBOARD: `${BASE_URL}/admin/dashboard`,
   LEAD_STATUS: `${BASE_URL}/lead-status/`,
