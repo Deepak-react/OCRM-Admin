@@ -184,7 +184,6 @@ const ResellerProfile = () => {
     );
   }
 
-
   return (
     <div className="p-6 sm:p-8 space-y-8 bg-gradient-to-br from-white via-gray-50 to-blue-50 min-h-screen font-sans antialiased">
       <div className="max-w-7xl mx-auto">
