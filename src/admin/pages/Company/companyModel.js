@@ -37,6 +37,7 @@ export const addNewCompany = async (data) => {
 
 
 
+
 export const editCompany = async (data, company_id) => {
   console.log("The company data and the company id are :", data, company_id);
   const res = await ApiHelper.update(company_id,data,ENDPOINTS.COMPANIES);
@@ -47,7 +48,8 @@ export const editCompany = async (data, company_id) => {
 
 //to add an admin user when the company is created
 export const addAdminUser= async (data) => {
-  return await ApiHelper.create(data, ENDPOINTS.USER);
+  const res = await ApiHelper.create(data, ENDPOINTS.USER);
+  return res.data;
 };
 
 //to get an company data based on the id.

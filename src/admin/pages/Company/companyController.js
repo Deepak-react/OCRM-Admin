@@ -54,11 +54,11 @@ export const useCompanyController = () => {
   }
 
 
-
   // Function to fetch company by ID
   const fetchCompanyDataById = async (id) => {
     try {
       const data = await companyModel.getCompanyById(id);
+      console.log("Company details are:", data);
       return data;
     } catch (err) {
       console.error('Failed to fetch company data:', err);
@@ -109,20 +109,36 @@ export const useCompanyController = () => {
   }
 
  //function to create an admin user when the company is created
-  const createAdminUser = async (data) => {
+  // const createAdminUser = async (data) => {
+  //   try {
+  //     console.log("Creating admin user with data:", data);
+  //     const res = await companyModel.addAdminUser(data);
+  //     console.log("The response is :", res);
+  //     await fetchAllCompanyData();
+  //     return true;
+  //   } catch (err) {
+  //     console.error('Failed to create admin user:', err);
+  //     setError(err.message || 'Could not create admin user');
+  //     return false;
+  //   }
+  // }
+
+
+
+  //function to create normal user for an company 
+ const createUser = async (data) => {
     try {
-      console.log("Creating admin user with data:", data);
+      console.log("Creating  user with data:", data);
       const res = await companyModel.addAdminUser(data);
-      //console.log("The response is :", res);
-      await fetchAllCompanyData();
+      console.log("The response is :", res);
       return true;
     } catch (err) {
       console.error('Failed to create admin user:', err);
-      setError(err.message || 'Could not create admin user');
+      console.log("The response is:", err.response.data.error)
+      setError(err.response.data.error || 'Could not create admin user');
       return false;
     }
   }
-
 
   //function to create an admin user when the company is created
   const editCompanyDetails = async (data, company_id) => {
@@ -182,14 +198,15 @@ const fetchUsersByCompanyId = async (companyId) => {
     companyData,
     fetchCompanyDataById,
     createCompany,
-    createAdminUser,
     fetchAllCompanyData,
     changeUserStatus,
     editCompanyDetails,
+    createUser,
     error,
     message,
     loading,
     usersByCompany,
+    setUsersByCompany,
     fetchUsersByCompanyId,
     fetchAuditLogs,
   };

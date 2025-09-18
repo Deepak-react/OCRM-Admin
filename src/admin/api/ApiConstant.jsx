@@ -7,32 +7,34 @@ export const ENDPOINTS = {
   LOGIN: `${BASE_URL}/login`,
   DASHBOARD: `${BASE_URL}/admin/dashboard`,
   LEAD_STATUS: `${BASE_URL}/lead-status/`,
-  COMPANIES : `${BASE_URL}/company/`,
-  LEAD_POTENTIAL : `${BASE_URL}/lead-potential/`,
-  INDUSTRY : `${BASE_URL}/lead-industry/`,
-  LEAD_SOURCE : `${BASE_URL}/lead-source/`,
-  CITY : `${BASE_URL}/city`, 
-  USER : `${BASE_URL}/users/`, 
-  ADMIN_DASHBOARD : `${BASE_URL}/admin-dashboard/`,
-  RESELLER : `${BASE_URL}/reseller/`, 
-  USER_TAB : (companyId) => `${BASE_URL}/users/company/${companyId}`,
-  AUDIT_LOGS : (companyId) => `${BASE_URL}/admin-dashboard/userAudit/${companyId}`,
-  
+  SUB_INDUSTRY: `${BASE_URL}/sub-`,
+  SUB_SERVICE: `${BASE_URL}/sub-service`,
+  COMPANIES: `${BASE_URL}/company/`,
+  LEAD_POTENTIAL: `${BASE_URL}/lead-potential/`,
+  INDUSTRY: `${BASE_URL}/lead-industry/`,
+  LEAD_SOURCE: `${BASE_URL}/lead-source/`,
+  LEAD_SERVICE: `${BASE_URL}/lead-service/`,
+  CITY: `${BASE_URL}/city`,
+  USER: `${BASE_URL}/users/`,
+  ROLE: `${BASE_URL}/role/`,
+  ADMIN_DASHBOARD: `${BASE_URL}/admin-dashboard/`,
+  RESELLER: `${BASE_URL}/reseller/`,
+  USER_TAB: (companyId) => `${BASE_URL}/users/company/${companyId}`,
+  AUDIT_LOGS: (companyId) =>
+    `${BASE_URL}/admin-dashboard/userAudit/${companyId}`,
 
   //Masters
 
   DISTRICT: `${BASE_URL}/district`,
-    DISTRICT_ID: `${BASE_URL}/district/`,
+  DISTRICT_ID: `${BASE_URL}/district/`,
 
   STATE: `${BASE_URL}/state`,
-  STATE_ID:`${BASE_URL}/state/`,
-  COUNTRY: `${BASE_URL}/country`, 
-  COUNTRY_ID:`${BASE_URL}/country/`,
-  CITIES:`${BASE_URL}/cities`, 
-  CITY_ID:`${BASE_URL}/cities/`, 
-  CURRENCY : `${BASE_URL}/currency`, 
-  CURRENCY_ID: `${BASE_URL}/currency/`, 
-  
-
+  STATE_ID: `${BASE_URL}/state/`,
+  COUNTRY: `${BASE_URL}/country`,
+  COUNTRY_ID: `${BASE_URL}/country/`,
+  CITIES: `${BASE_URL}/cities`,
+  CITY_ID: `${BASE_URL}/cities/`,
+  CURRENCY: `${BASE_URL}/currency`,
+  CURRENCY_ID: `${BASE_URL}/currency/`,
 };
 

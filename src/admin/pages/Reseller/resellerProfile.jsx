@@ -52,7 +52,7 @@ const ResellerProfile = () => {
     } else {
       setReseller(null);
     }
-  }, [id, fetchResellerDataById]);
+  }, [id]);
 
   // --- Chart Data & Options ---
   const lineData = useMemo(() => ({

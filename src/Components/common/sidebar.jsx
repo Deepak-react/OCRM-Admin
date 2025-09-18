@@ -31,7 +31,7 @@ const Sidebar = () => {
         setUserRoleId(roleIdFromToken);
 
         // Apply dynamic menu filtering
-        if (roleIdFromToken === 4) {
+        if (roleIdFromToken === 1) {
           // Full access
           setMenuItems(fullMenuItems);
         } else {

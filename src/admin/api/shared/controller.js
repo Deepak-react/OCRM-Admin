@@ -9,6 +9,9 @@ export const useSharedController = () => {
     //contains cities data
   const [cities, setCities] = useState([]);
 
+  // contains roles data
+  const [roles, setRoles] = useState([]);
+
 
   //Contains the business logic to fetch all the companies
   const fetchCompanies = async () => {
@@ -18,23 +21,39 @@ export const useSharedController = () => {
     };
 
   //Contains the business logic to fetch all the cities    
-    const fetchAllCities = async() =>{
+    const fetchAllCities = async () => {
       const data = await model.getAllCities();
       console.log("The lead status response is :", data);
       setCities(data);
     };
 
 
+    // function to fetch the roles for an company
+    const fetchRoles = async () => {
+      try {
+        const data = await model.getAllRoles();
+        console.log("The user roles are:", data )
+        setRoles(data);
+        return data;
+      } catch (err) {
+        console.error("Failed to fetch company data:", err);
+        setError(err.message || "Something went wrong");
+      }
+    };
+
+
   //Use effect initially runs.
   useEffect(() => {
     fetchCompanies();
-    fetchAllCities();
+    fetchAllCities();             
   }, []);
 
   return {
     fetchCompanies, //For manual refresh 
     companies,
     fetchAllCities,
+    fetchRoles,
+    roles,
     cities
 
     

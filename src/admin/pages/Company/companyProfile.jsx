@@ -1,34 +1,63 @@
-import { Button, IconButton, Tabs, Tab, Box, Typography, Menu, MenuItem, Switch, FormControlLabel, TextField, Autocomplete } from "@mui/material";
-import { Line, Pie } from 'react-chartjs-2';
-import EditSquareIcon from '@mui/icons-material/EditSquare';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import LanguageIcon from '@mui/icons-material/Language';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import EventIcon from '@mui/icons-material/Event';
-import EditDocumentIcon from '@mui/icons-material/EditDocument';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {
+  Button,
+  IconButton,
+  Tabs,
+  Tab,
+  Box,
+  Typography,
+  Menu,
+  MenuItem,
+  TextField,
+  Autocomplete,
+} from "@mui/material";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import LanguageIcon from "@mui/icons-material/Language";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import EventIcon from "@mui/icons-material/Event";
+import EditDocumentIcon from "@mui/icons-material/EditDocument";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Chart as ChartJS, ArcElement, LineElement, CategoryScale, LinearScale,
-  PointElement, Tooltip, Legend } from 'chart.js';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { useCompanyController } from "./companyController";
 import { useSharedController } from "../../api/shared/controller";
 import formatDate from "../../utils/formatDate";
-import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
-import GeneralSettingsTab from './GeneralSettingsTab';  
-import MasterData from "../Masters/masterData.jsx";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+import GeneralSettingsTab from "./GeneralSettingsTab";
 import LeadStatus from "../Masters/Status/leadStauts.jsx";
 import LeadPotential from "../Masters/Potential/leadPotential.jsx";
 import LeadSource from "../Masters/Source/leadSource.jsx";
 import LeadIndustry from "../Masters/Industry/industry.jsx";
-import AuditLoginTab from './AuditLoginTab';
-import DistrictMaster from "../Masters/district/districtMasters.jsx";
-import CountryMaster from "../Masters/country/countryMaster.jsx";
-import StateMaster from "../Masters/States/StateMaster.jsx";
-import { useToast } from "../../../context/ToastContext.jsx";
+import DistrictMaster from "../Masters/district/districtMasters.jsx"
+import CountryMaster from "../Masters/country/countryMaster.jsx"
+import StateMaster from "../Masters/States/StateMaster.jsx"
+import CurrencyMaster from "../Masters/currency/currencyMaster.jsx"
 
-ChartJS.register( ArcElement,
+
+import AuditLoginTab from "./AuditLoginTab";
+
+import { useToast } from "../../../context/ToastContext.jsx";
+import LeadServices from "../Masters/Services/Services.jsx";
+import SubIndustry from "../Masters/Sub-Industry/SubIndustry.jsx";
+import SubService from "../Masters/Sub-service/SubService.jsx";
+
+ChartJS.register(
+  ArcElement,
   LineElement,
   CategoryScale,
   LinearScale,
@@ -49,11 +78,7 @@ function CustomTabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -61,48 +86,112 @@ function CustomTabPanel(props) {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
-
-const MasterDataPanel = ({companyData}) => {
+const MasterDataPanel = ({ companyData }) => {
   const [selectedComponent, setSelectedComponent] = useState(null);
 
   const cardData = [
-    { id: 1, title: 'Lead Status', description: 'Current stage of the lead.', icon: '/icons/status.svg', component: 'LeadStatus' },
-    { id: 2, title: 'Lead Potential', description: 'Business value of the lead.', icon: '/icons/progress.svg', component: 'LeadPotential' },
-    { id: 3, title: 'Lead Source', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadSource' },
-    { id: 4, title: 'Lead Industry', description: 'Business value of the lead.', icon: '/icons/industrial-park.svg', component: 'LeadIndustry' },
-    // { id: 5, title: 'Country', description: 'List of Country.', icon: '/icons/industrial-park.svg', component: 'country' },
-    // { id: 6, title: 'State', description: 'List of State.', icon: '/icons/industrial-park.svg', component: 'state' },
-    // { id: 7, title: 'District', description: 'List of Districts.', icon: '/icons/industrial-park.svg', component: 'district' },
+    {
+      id: 1,
+      title: "Lead Status",
+      description: "Current stage of the lead.",
+      icon: "/icons/status.svg",
+      component: "LeadStatus",
+    },
+    {
+      id: 2,
+      title: "Lead Potential",
+      description: "Business value of the lead.",
+      icon: "/icons/progress.svg",
+      component: "LeadPotential",
+    },
+    {
+      id: 3,
+      title: "Lead Source",
+      description: "Business value of the lead.",
+      icon: "/icons/industrial-park.svg",
+      component: "LeadSource",
+    },
+    {
+      id: 4,
+      title: "Lead Industry",
+      description: "Business value of the lead.",
+      icon: "/icons/progress.svg",
+      component: "LeadIndustry",
+    },
+    {
+      id: 5,
+      title: "Country",
+      description: "List of Country.",
+      icon: "/icons/industrial-park.svg",
+      component: "country",
+    },
+    {
+      id: 6,
+      title: "State",
+      description: "List of State.",
+      icon: "/icons/industrial-park.svg",
+      component: "state",
+    },
+    {
+      id: 7,
+      title: "District",
+      description: "List of Districts.",
+      icon: "/icons/industrial-park.svg",
+      component: "district",
+    },
+    {
+      id: 8,
+      title: "Service",
+      description: "List of services",
+      icon: "/icons/industrial-park.svg",
+      component: "services",
+    },
 
-
+     {
+      id: 9,
+      title: "Currency",
+      description: "List of currencies",
+      icon: "/icons/industrial-park.svg",
+      component: "currency",
+    },
+    {
+      id: 10,
+      title: "Sub-Service",
+      description: "List of currencies",
+      icon: "/icons/industrial-park.svg",
+      component: "sub-service",
+    },
 
     // Add more cards here...
   ];
 
   const renderComponent = () => {
-    console.log("Selected company:", companyData);
+    console.log("Selected company:", companyData.cCompany_name);
     switch (selectedComponent) {
-      case 'LeadStatus':
-        return <LeadStatus company={companyData} />;
-      case 'LeadPotential':
-        return <LeadPotential company = {companyData}/>;
-      case 'LeadSource':
-        return <LeadSource company = {companyData}/>;  
-      case 'LeadIndustry':
-        return <LeadIndustry  />;   
-      // case 'district':
-      //   return <DistrictMaster />;
-      //      case 'country':
-      //   return <CountryMaster />;
-      //      case 'state':
-      //   return <StateMaster />;
-
-
-      
+      case "LeadStatus":
+        return <LeadStatus company={companyData.cCompany_name} />;
+      case "LeadPotential":
+        return <LeadPotential company={companyData.cCompany_name} />;
+      case "LeadSource":
+        return <LeadSource company={companyData.cCompany_name} />;
+      case "LeadIndustry":
+        return <LeadIndustry />;
+      case 'district':
+        return < DistrictMaster/>;
+           case 'country':
+        return <CountryMaster />;
+           case 'state':
+        return <StateMaster />;
+        case 'currency':
+        return <CurrencyMaster />;
+        case 'services':
+        return <LeadServices company = {companyData}/>;
+        case 'sub-service':
+        return <SubService company = {companyData}/>;
 
       // Add more cases for other master data
       default:
@@ -127,24 +216,29 @@ const MasterDataPanel = ({companyData}) => {
 
   // Step 2: Show cards when no component is selected
   return (
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {cardData.map(card => (
-          <button
-            key={card.id}
-            onClick={() => setSelectedComponent(card.component)}
-            className="text-left group w-full"
-          >
-            <div className="p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform group-hover:-translate-y-1 border border-gray-200 h-full flex flex-col justify-between">
-              <div className="flex items-start mb-4">
-                <img src={card.icon} alt={card.title} className="w-10 h-10 mr-4" />
-                <h3 className="text-xl font-semibold text-gray-900">{card.title}</h3>
-              </div>
-              <p className="text-sm text-gray-600">{card.description}</p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {cardData.map((card) => (
+        <button
+          key={card.id}
+          onClick={() => setSelectedComponent(card.component)}
+          className="text-left group w-full"
+        >
+          <div className="p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform group-hover:-translate-y-1 border border-gray-200 h-full flex flex-col justify-between">
+            <div className="flex items-start mb-4">
+              <img
+                src={card.icon}
+                alt={card.title}
+                className="w-10 h-10 mr-4"
+              />
+              <h3 className="text-xl font-semibold text-gray-900">
+                {card.title}
+              </h3>
             </div>
-          </button>
-        ))}
-      </div>
+            <p className="text-sm text-gray-600">{card.description}</p>
+          </div>
+        </button>
+      ))}
+    </div>
   );
 };
 
@@ -156,10 +250,11 @@ const CompanyProfile = () => {
     editCompanyDetails,
     fetchUsersByCompanyId,
     error,
-    message,
+    createUser,
     loading,
+    setUsersByCompany,
   } = useCompanyController();
-  const { fetchAllCities, cities } = useSharedController();
+  const { fetchAllCities, cities, fetchRoles, roles } = useSharedController();
   const { showToast } = useToast();
 
   const [company, setCompany] = useState(null);
@@ -173,76 +268,6 @@ const CompanyProfile = () => {
     setActiveTab(newValue);
   };
 
-  // Demo data for graph and pie chart (keeping as is per request)
-  const lineData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-    datasets: [
-      {
-        label: "Sales",
-        data: [150, 200, 180, 220, 250],
-        borderColor: "#4A90E2",
-        backgroundColor: "rgba(74, 144, 226, 0.2)",
-        tension: 0.4,
-        fill: true,
-        pointBackgroundColor: "#4A90E2",
-        pointBorderColor: "#fff",
-        pointHoverRadius: 6,
-        pointHoverBackgroundColor: "#4A90E2",
-        pointHoverBorderColor: "#fff",
-      },
-    ],
-  };
-
-  const lineOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "top",
-        labels: {
-          font: {
-            size: 14,
-            family: "Inter, sans-serif",
-          },
-          color: "#374151",
-        },
-      },
-      tooltip: {
-        backgroundColor: "#374151",
-        titleFont: { size: 14, family: "Inter, sans-serif" },
-        bodyFont: { size: 12, family: "Inter, sans-serif" },
-        padding: 10,
-        cornerRadius: 4,
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false,
-        },
-        ticks: {
-          color: "#6B7280",
-          font: { family: "Inter, sans-serif" },
-        },
-        border: {
-          display: false,
-        },
-      },
-      y: {
-        beginAtZero: true,
-        grid: {
-          color: "#E5E7EB",
-        },
-        ticks: {
-          color: "#6B7280",
-          font: { family: "Inter, sans-serif" },
-        },
-        border: {
-          display: false,
-        },
-      },
-    },
-  };
 
   const pieData = {
     labels: ["Sales", "Marketing", "Development", "Support"],
@@ -332,7 +357,6 @@ const CompanyProfile = () => {
     currentPage * usersPerPage
   );
 
-  // Removed static 'users' state: const [users, setUsers] = useState([...]);
 
   // Dynamically build full address, filtering out empty parts
   const fullAddressParts = [
@@ -377,12 +401,13 @@ const CompanyProfile = () => {
       //console.log("Fetching users for company ID:", id);
       console.log("Fetching users for company ID:", id);
       fetchUsersByCompanyId(id);
+      fetchRoles();
     }
   }, [activeTab]); // Dependencies for this useEffect
 
   // for edit form
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [openUserCreateDialog, setOpenUserCreateDialog] = useState(false);  
+  const [openUserCreateDialog, setOpenUserCreateDialog] = useState(false);
   const [editCompanyData, setEditCompanyData] = useState({});
 
   const handleOpenEditDialog = async () => {
@@ -392,10 +417,47 @@ const CompanyProfile = () => {
     setOpenEditDialog(true);
   };
 
-  const handleUserCreate = async () => {
+  const handleUserCreateDialog = async () => {
     console.log("Open the user create dialog");
-    setOpenUserCreateDialog(true);
-  }
+    setOpenUserCreateDialog(false);
+  };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setUserFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleUserCreate = async (e) => {
+    e.preventDefault(); // prevent page reload
+    console.log("Form Data Submitted:", userFormData);
+
+    const jsonData = {
+      cFull_name: userFormData.fullName,
+      cUser_name: userFormData.username,
+      cEmail: userFormData.email,
+      cPassword: userFormData.password,
+      i_bPhone_no: userFormData.businessPhone,
+      iphone_no: userFormData.personalPhone,
+      iCompany_id: company?.result.iCompany_id,
+      irole_id: parseInt(userFormData.role),
+    };
+    const res = await createUser(jsonData);
+    console.log(res);
+    res
+      ? showToast("success", "User created successfully.")
+      : showToast("error", error);
+    console.log("User created response is:", error);
+    setUsersByCompany((prev) => [...prev,   {
+        cFull_name: userFormData.fullName,
+        cEmail: userFormData.email,
+        role: userFormData.role, // or map role name if backend sends only role_id
+        dCreate_dt: new Date(),
+        bactive: true,
+      },]);
+  };
 
   // Function to close the edit dialog
   const handleCloseEditDialog = () => {
@@ -445,7 +507,6 @@ const CompanyProfile = () => {
       ? showToast("success", "Company details updated successfully.")
       : showToast("error", "Failed to update company details");
   };
-
 
   // State for activate/deactivate user dialog
   const [openUserStatusDialog, setOpenUserStatusDialog] = useState(false);
@@ -581,10 +642,17 @@ const CompanyProfile = () => {
     appPassword: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const [userFormData, setUserFormData] = useState({
+    email: "",
+    fullName: "",
+    username: "",
+    password: "",
+    jobTitle: "",
+    businessPhone: "",
+    personalPhone: "",
+    role: "",
+    reporting: "",
+  });
 
   return (
     <div className="p-6 lg:p-8 space-y-8 bg-gray-50 min-h-screen font-sans antialiased">
@@ -646,6 +714,27 @@ const CompanyProfile = () => {
         </button>
       </div>
 
+        {/* Overview Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center"> {/* Rounded-xl, shadow-sm */}
+            <h3 className="text-base font-semibold text-gray-700 mb-2">Total Users</h3>
+            <p className="text-4xl font-extrabold text-blue-600">321</p> {/* Consistent blue */}
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center">
+            <h3 className="text-base font-semibold text-gray-700 mb-2">Total Leads</h3>
+            <p className="text-4xl font-extrabold text-green-600">{company?.totalLeads}</p> {/* Consistent green */}
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center">
+            <h3 className="text-base font-semibold text-gray-700 mb-2">Total Revenue</h3>
+            <p className="text-4xl font-extrabold text-purple-600">₹1.2L</p> {/* Consistent purple */}
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center">
+            <h3 className="text-base font-semibold text-gray-700 mb-2">Active modules</h3>
+            <p className="text-4xl font-extrabold text-orange-600">5</p> {/* Consistent orange */}
+          </div>
+        </div>
+
+
       {/* --- Tabs Section --- */}
       <div className="bg-white rounded-xl shadow-md p-0 border border-gray-100">
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -704,9 +793,6 @@ const CompanyProfile = () => {
             {/* Company Profile Info Card (Span 2 columns on large screens) */}
 
             <div className="lg:col-span-3 bg-white rounded-xl  p-6 border border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                Company Details
-              </h2>
               {/* The grid below ensures content wraps and flows responsively */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5 gap-x-6 text-base text-gray-800">
                 {/* Column 1 */}
@@ -817,7 +903,7 @@ const CompanyProfile = () => {
                 Lead Distribution
               </h3>
               <div className="h-[250px]">
-                <Pie data={pieData} options={pieOptions} />
+                {/* <Pie data={pieData} options={pieOptions} /> */}
               </div>
             </div>
           </div>
@@ -825,14 +911,11 @@ const CompanyProfile = () => {
 
         {/* --- Tab Panel: General Settings & Enabled Modules --- */}
         <CustomTabPanel value={activeTab} index={1}>
-          {console.log("usersByCompany length 2 :", usersByCompany)}
           <GeneralSettingsTab />
         </CustomTabPanel>
 
         {/* --- Tab Panel: Users --- */}
         <CustomTabPanel value={activeTab} index={2}>
-          {console.log("The users list are :", usersByCompany)}
-          {console.log("usersByCompany length are:", paginatedUsers)}
           <div className="flex justify-end mb-4">
             <button
               className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors duration-200 shadow-sm"
@@ -995,7 +1078,7 @@ const CompanyProfile = () => {
           "Company data in MasterDataPanel:",
           company?.result.cCompany_name
         )}
-        <MasterDataPanel companyData={company?.result.cCompany_name} />
+        <MasterDataPanel companyData={company?.result} />
       </CustomTabPanel>
       <CustomTabPanel value={activeTab} index={4}>
         <AuditLoginTab company_id={company?.result.iCompany_id} />
@@ -1228,146 +1311,196 @@ const CompanyProfile = () => {
           <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
             {/* Dialog Box */}
             <div className="relative z-50 w-full max-w-2xl mx-auto">
-              <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-white shadow rounded-xl max-w-5xl">
-                {/* Email */}
-                <div className="space-y-2">
-                  <label htmlFor="email" className="block text-sm font-medium">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="Enter email"
-                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+              <form className="bg-white shadow rounded-xl max-w-5xl  p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Email */}
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium"
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      value={userFormData.email}
+                      onChange={handleChange}
+                      placeholder="Enter email"
+                      className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
 
-                {/* Full Name */}
-                <div className="space-y-2">
-                  <label
-                    htmlFor="fullName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Full Name
-                  </label>
-                  <input
-                    id="fullName"
-                    type="text"
-                    placeholder="Enter full name"
-                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                  {/* Full Name */}
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="fullName"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Full Name
+                    </label>
+                    <input
+                      id="fullName"
+                      type="text"
+                      value={userFormData.fullName}
+                      onChange={handleChange}
+                      placeholder="Enter full name"
+                      className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
 
-                {/* Username */}
-                <div className="space-y-2">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Username
-                  </label>
-                  <input
-                    id="username"
-                    type="text"
-                    placeholder="Enter username"
-                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                  {/* Username */}
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="username"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Username
+                    </label>
+                    <input
+                      id="username"
+                      type="text"
+                      value={userFormData.username}
+                      onChange={handleChange}
+                      placeholder="Enter username"
+                      className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
 
-                {/* Password */}
-                <div className="space-y-2">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Password
-                  </label>
-                  <input
-                    id="password"
-                    type="password"
-                    placeholder="Enter password"
-                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                  {/* Password */}
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Password
+                    </label>
+                    <input
+                      id="password"
+                      type="password"
+                      value={userFormData.password}
+                      onChange={handleChange}
+                      placeholder="Enter password"
+                      className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
 
-                {/* Job Title (Full Width) */}
-                <div className="space-y-2 col-span-2">
-                  <label
-                    htmlFor="jobTitle"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Job Title
-                  </label>
-                  <input
-                    id="jobTitle"
-                    type="text"
-                    placeholder="Enter job title"
-                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                  {/* Job Title (Full Width) */}
+                  <div className="space-y-2 col-span-2">
+                    <label
+                      htmlFor="jobTitle"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Job Title
+                    </label>
+                    <input
+                      id="jobTitle"
+                      type="text"
+                      value={userFormData.jobTitle}
+                      onChange={handleChange}
+                      placeholder="Enter job title"
+                      className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
 
-                {/* Business Phone */}
-                <div className="space-y-2">
-                  <label
-                    htmlFor="businessPhone"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Business Phone
-                  </label>
-                  <input
-                    id="businessPhone"
-                    type="tel"
-                    placeholder="Business phone number"
-                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                  {/* Business Phone */}
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="businessPhone"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Business Phone
+                    </label>
+                    <input
+                      id="businessPhone"
+                      type="tel"
+                      value={userFormData.businessPhone}
+                      onChange={handleChange}
+                      placeholder="Business phone number"
+                      className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
 
-                {/* Personal Phone */}
-                <div className="space-y-2">
-                  <label
-                    htmlFor="personalPhone"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Personal Phone
-                  </label>
-                  <input
-                    id="personalPhone"
-                    type="tel"
-                    placeholder="Personal phone number"
-                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                  {/* Personal Phone */}
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="personalPhone"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Personal Phone
+                    </label>
+                    <input
+                      id="personalPhone"
+                      type="tel"
+                      value={userFormData.personalPhone}
+                      onChange={handleChange}
+                      placeholder="Personal phone number"
+                      className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  {/* Role */}
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="role"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Role
+                    </label>
+                    <select
+                      id="role"
+                      value={userFormData.role} // ✅ controlled
+                      onChange={handleChange} // ✅ updates state
+                      className="w-full px-3 py-2 border rounded-lg shadow-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                    >
+                      <option value="" disabled className="text-gray-400">
+                        Choose role
+                      </option>
+                      {roles.map((role) => (
+                        <option key={role.irole_id} value={role.irole_id}>
+                          {role.cRole_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                {/* Role */}
-                <div className="space-y-2">
-                  <label
-                    htmlFor="role"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Role
-                  </label>
-                  <input
-                    id="role"
-                    type="text"
-                    placeholder="Choose role"
-                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                  {/* Reporting */}
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="reporting"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Reports to
+                    </label>
+                    <select
+                      id="reporting"
+                      value={userFormData.reporting} // ✅ controlled
+                      onChange={handleChange} // ✅ updates state
+                      className="w-full px-3 py-2 border rounded-lg shadow-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                    >
+                      <option value="" disabled className="text-gray-400">
+                        Choose reporting
+                      </option>
+                      {usersByCompany.map((user) => (
+                        <option key={user.iUser_id} value={user.iUser_id}>
+                          {user.cFull_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
-
-                {/* Reporting */}
-                <div className="space-y-2">
-                  <label
-                    htmlFor="reporting"
-                    className="block text-sm font-medium text-gray-700"
+                <div className="flex  gap-4 justify-center  mt-6">
+                  <button
+                    className="bg-[#2563EB] px-4 py-2 rounded-lg text-white"
+                    onClick={handleUserCreate}
                   >
-                    Reporting
-                  </label>
-                  <input
-                    id="reporting"
-                    type="text"
-                    placeholder="Choose reporting"
-                    className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                    Save
+                  </button>
+                  <button
+                    className="bg-red-400 px-4 py-2 rounded-lg text-white"
+                    onClick={handleUserCreateDialog}
+                  >
+                    Cancel
+                  </button>
                 </div>
               </form>
             </div>
@@ -1419,7 +1552,6 @@ const CompanyProfile = () => {
       </Dialog>
     </div>
   );
-}
+};
 
 export default CompanyProfile;
-
