@@ -5,12 +5,24 @@ import * as model from './model';
 export const useSharedController = () => {
     //contains comapies data 
   const [companies, setCompanies] = useState([]);
+  //Bussiness type
+  const [bussinessType, setBussinessType] = useState([]);
 
     //contains cities data
   const [cities, setCities] = useState([]);
 
   // contains roles data
   const [roles, setRoles] = useState([]);
+
+  //  const [roles, setRoles] = useState([]);
+
+  // const [bussiness, setBussinessType] = useState([]);
+//Currencies 
+  const [currencies, setCurrencies] = useState([]);
+
+  // Plan 
+    const [plan, setPlan] = useState([]);
+
 
 
   //Contains the business logic to fetch all the companies
@@ -19,6 +31,7 @@ export const useSharedController = () => {
     console.log("The lead status response is :", data);
     setCompanies(data);
     };
+ 
 
   //Contains the business logic to fetch all the cities    
     const fetchAllCities = async () => {
@@ -26,6 +39,24 @@ export const useSharedController = () => {
       console.log("The lead status response is :", data);
       setCities(data);
     };
+    //containes the bussiness to fetch all currencies
+const fetchCurrencies = async () => {
+  const res = await model.getAllCurrencies();
+  console.log("The currency response is :", res);
+  setCurrencies(res.data.data);   // <-- pick the array inside
+};
+
+const fetchBussiness = async () => {
+  const res = await model.getAllBussiness();
+  console.log("The business response is :", res);
+  setBussinessType(res.data.data);  // <-- pick the array inside
+};
+    //Contains the business logic to fetch all the Subscription plan
+const fetchPlan = async () => {
+  const res = await model.getAllPlan();
+  console.log("The business response is :", res);
+  setPlan(res.data.data);  // <-- pick the array inside
+};
 
 
     // function to fetch the roles for an company
@@ -45,16 +76,26 @@ export const useSharedController = () => {
   //Use effect initially runs.
   useEffect(() => {
     fetchCompanies();
-    fetchAllCities();             
+    fetchAllCities(); 
+    fetchCurrencies();  
+    fetchBussiness();   
+    fetchPlan();       
   }, []);
 
   return {
-    fetchCompanies, //For manual refresh 
+    fetchCompanies, 
     companies,
     fetchAllCities,
     fetchRoles,
     roles,
-    cities
+    cities,
+    fetchCurrencies,
+    currencies,
+    fetchBussiness,
+    bussiness,
+    fetchPlan,
+    plan
+
 
     
   };
