@@ -42,6 +42,14 @@ export const useCompanyController = () => {
   }
 
 
+
+  const fetchCurrencies = async (companyId) => {
+    try{
+      const res = await companyModel.
+    } catch(err){}
+  }
+
+  const fetchBusinessType = async (companyId) => {}
   const fetchAuditLogs = async (company_id) => {
     try {
       const data = await companyModel.getAuditLogs(
@@ -109,19 +117,19 @@ export const useCompanyController = () => {
   }
 
  //function to create an admin user when the company is created
-  // const createAdminUser = async (data) => {
-  //   try {
-  //     console.log("Creating admin user with data:", data);
-  //     const res = await companyModel.addAdminUser(data);
-  //     console.log("The response is :", res);
-  //     await fetchAllCompanyData();
-  //     return true;
-  //   } catch (err) {
-  //     console.error('Failed to create admin user:', err);
-  //     setError(err.message || 'Could not create admin user');
-  //     return false;
-  //   }
-  // }
+  const createAdminUser = async (data) => {
+    try {
+      console.log("Creating admin user with data:", data);
+      const res = await companyModel.addAdminUser(data);
+      console.log("The response is :", res);
+      await fetchAllCompanyData();
+      return true;
+    } catch (err) {
+      console.error('Failed to create admin user:', err);
+      setError(err.message || 'Could not create admin user');
+      return false;
+    }
+  }
 
 
 

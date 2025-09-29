@@ -53,25 +53,25 @@ const CompanyGrid = ({ data }) => {
           <div className="flex justify-between items-center mb-3">
             <span className="font-medium text-gray-500">Plan:</span>
             <span
-              className={`
-                text-sm font-bold px-3 py-1.5 rounded-full
-                uppercase
-                ${
-                  data.pricing_plan.plan_name.toLowerCase() === 'gold'
-                    ? 'bg-yellow-50 text-yellow-700'
-                    : data.pricing_plan.plan_name.toLowerCase() === 'silver'
-                      ? 'bg-gray-100 text-gray-700'
-                      : data.pricing_plan.plan_name.toLowerCase() === 'bronze'
-                        ? 'bg-amber-50 text-amber-700'
-                        : 'bg-indigo-50 text-indigo-700'
-                }`}
+              // className={`
+              //   text-sm font-bold px-3 py-1.5 rounded-full
+              //   uppercase
+              //   ${
+              //     data.pricing_plan?.plan_name.toLowerCase() === 'gold'
+              //       ? 'bg-yellow-50 text-yellow-700'
+              //       : data.pricing_plan.plan_name.toLowerCase() === 'silver'
+              //         ? 'bg-gray-100 text-gray-700'
+              //         : data.pricing_plan.plan_name.toLowerCase() === 'bronze'
+              //           ? 'bg-amber-50 text-amber-700'
+              //           : 'bg-indigo-50 text-indigo-700'
+              //   }`}
             >
-              {data.pricing_plan.plan_name}
+              {data.pricing_plan?.plan_name}
             </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="font-medium text-gray-500">City:</span>
-            <span className="font-semibold text-gray-800">{data.city.cCity_name}</span>
+            <span className="font-semibold text-gray-800">{data.city?.cCity_name}</span>
           </div>
         </div>
         {/* Status Badge at the bottom, aligned to right */}
