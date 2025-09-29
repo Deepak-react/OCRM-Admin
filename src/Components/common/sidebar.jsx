@@ -16,7 +16,7 @@ const Sidebar = () => {
     { iconPath: '/images/nav/org.png', label: 'Company', route: '/company' },
     { iconPath: '/images/nav/calen.png', label: 'Reseller', route: '/reseller' },
     { iconPath: '/images/nav/settings.png', label: 'Masters', route: '/masters' },
-
+    { iconPath: '/images/nav/settings.png', label: 'Subscription', route: '/subscriptions' },
   ];
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useCountryController from './countryController';
-import CountryForm from './Sub-Component/CountryForm';
+// import CountryForm from './Sub-Component/CountryForm';
 
 const formatDate = (dateString) => {
   if (!dateString) return '-';
@@ -123,12 +123,12 @@ const handleFormSubmit = async (formData) => {
 
         {showForm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <CountryForm
+            {/* <CountryForm
   initialData={currentCountry || {}}
   onSubmit={handleFormSubmit}  // Make sure this is correct
   onClose={() => setShowForm(false)}
   loading={loading}
-/>
+/> */}
           </div>
         )}
 
