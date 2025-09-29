@@ -4,7 +4,6 @@ export const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Define all API endpoints relative to BASE_URL
 export const ENDPOINTS = {
-  BASE_URL_IS: BASE_URL,
   LOGIN: `${BASE_URL}/login`,
   DASHBOARD: `${BASE_URL}/admin/dashboard`,
   LEAD_STATUS: `${BASE_URL}/lead-status/`,
@@ -25,17 +24,15 @@ export const ENDPOINTS = {
   //Masters
 
   DISTRICT: `${BASE_URL}/district`,
-    DISTRICT_ID: `${BASE_URL}/district/`,
+  DISTRICT_ID: `${BASE_URL}/district/`,
 
   STATE: `${BASE_URL}/state`,
-  STATE_ID:`${BASE_URL}/state/`,
-  COUNTRY: `${BASE_URL}/country`, 
-  COUNTRY_ID:`${BASE_URL}/country/`,
-  CITIES:`${BASE_URL}/cities`, 
-  CITY_ID:`${BASE_URL}/cities/`, 
-  CURRENCY : `${BASE_URL}/currency`, 
-  CURRENCY_ID: `${BASE_URL}/currency/`, 
-  
-
+  STATE_ID: `${BASE_URL}/state/`,
+  COUNTRY: `${BASE_URL}/country`,
+  COUNTRY_ID: `${BASE_URL}/country/`,
+  CITIES: `${BASE_URL}/cities`,
+  CITY_ID: `${BASE_URL}/cities/`,
+  CURRENCY: `${BASE_URL}/currency`,
+  CURRENCY_ID: `${BASE_URL}/currency/`,
 };
 

@@ -13,6 +13,25 @@ export const getAllCompantData = async () => {
 };
 
 
+// to get all the currencies
+export const getAllCurrencies = async () => {
+  //console.log(ENDPOINTS.COMPANIES);
+  const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
+  //console.log("The errored response is :", res);
+  return res.data; 
+};
+
+
+
+// to get all the business types
+export const getAllBusinessTypes = async () => {
+  //console.log(ENDPOINTS.COMPANIES);
+  const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
+  //console.log("The errored response is :", res);
+  return res.data; 
+};
+
+
 export const getAuditLogs = async (company_id) => {
   //console.log(ENDPOINTS.COMPANIES);
   const res = await ApiHelper.getAll(ENDPOINTS.AUDIT_LOGS(company_id));
@@ -37,6 +56,7 @@ export const addNewCompany = async (data) => {
 
 
 
+
 export const editCompany = async (data, company_id) => {
   console.log("The company data and the company id are :", data, company_id);
   const res = await ApiHelper.update(company_id,data,ENDPOINTS.COMPANIES);
@@ -47,7 +67,8 @@ export const editCompany = async (data, company_id) => {
 
 //to add an admin user when the company is created
 export const addAdminUser= async (data) => {
-  return await ApiHelper.create(data, ENDPOINTS.USER);
+  const res = await ApiHelper.create(data, ENDPOINTS.USER);
+  return res.data;
 };
 
 //to get an company data based on the id.

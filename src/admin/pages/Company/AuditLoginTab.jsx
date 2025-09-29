@@ -106,7 +106,7 @@ const totalPages = Math.ceil(totalLogs.length / logsPerPage);
                       minute: '2-digit',
                       second: '2-digit',
                       hour12: true,
-                      timeZone: 'Asia/Kolkata' // Explicitly set for India Standard Time
+                      timeZone: 'Asia/Kolkata' 
                     })}
                   </TableCell>
                   <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">143.110.178.254</TableCell>

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useCompanyController } from '../Company/companyController';
-import { useSharedController } from '../../api/shared/controller';
-import { toast } from 'react-toastify'; 
+import React, { useState } from "react";
+import { useCompanyController } from "../Company/companyController";
+import { useSharedController } from "../../api/shared/controller";
+import { toast } from "react-toastify";
 
 const CompanyForm = ({ onClose, onSuccess }) => {
   const { createCompany } = useCompanyController();
@@ -15,75 +15,76 @@ const CompanyForm = ({ onClose, onSuccess }) => {
     caddress1: '',
     caddress2: '',
     caddress3: '',
-    cpincode:'',
     cGst_no: '',  
     icin_no: '',
-    cPan_no:'',
     bactive: true,
-    ireseller_id: 1,
-    ibusiness_type:'',
+    ireseller_id: 4,
     iUser_no: '', 
     icity_id: '',
-    isubscription_plan: '',
-    ireseller_admin: 1,
+    isubscription_plan: 1,
+    ireseller_admin: 11,
     email: '',
-    // cFull_name: '',  
-    // cUser_name: '',
-    // cemail_address: '',
-    // cPassword: '',
-    // irole_id: 1,
+    cFull_name: '',  // Create admin form fields
+    cUser_name: '',
+    cEmail: '',
+    cPassword: '',
+    irole_id: 1,
     cProfile_pic: '',
-              ireseller_id: 1,
-
-    // reports_to: 13,
-    fax_no:'',
-    industry:'',
+    reports_to: 13
 
   });
 
   const [errors, setErrors] = useState({});
   const [pageNumber, setPageNumber] = useState(1);
 
-  const validate = (values) => {``
+
+  // Fucntions to validate the form fields
+  const validate = (values) => {
+    ``;
     const newErrors = {};
 
     // Company Name Validation
     if (!values.cCompany_name.trim()) {
-        newErrors.cCompany_name = 'Company name is required';
+      newErrors.cCompany_name = "Company name is required";
     } else if (!/^[a-zA-Z0-9@ ]{1,25}$/.test(values.cCompany_name)) {
-      newErrors.cCompany_name = 'Only letters, numbers, spaces, and @ allowed (max 25 chars)';
+      newErrors.cCompany_name =
+        "Only letters, numbers, spaces, and @ allowed (max 25 chars)";
     }
 
     // Phone Number Validation
     if (!values.iPhone_no.trim()) {
-      newErrors.iPhone_no = 'Phone number is required';
+      newErrors.iPhone_no = "Phone number is required";
     } else {
-      const phoneNumber = values.iPhone_no.trim(); 
+      const phoneNumber = values.iPhone_no.trim();
       const startsWithNine = /^9/.test(phoneNumber);
       const isTenDigits = /^\d{10}$/.test(phoneNumber);
 
       if (!startsWithNine) {
-        newErrors.iPhone_no = 'Phone number must start with 9';
+        newErrors.iPhone_no = "Phone number must start with 9";
       } else if (!isTenDigits) {
-        newErrors.iPhone_no = 'Phone number must be exactly 10 digits';
+        newErrors.iPhone_no = "Phone number must be exactly 10 digits";
       }
     }
 
     // Email Validation
-    if (!values.email.trim()) { 
-        //newErrors.email = 'Email is required';
-    } else if (!/^[^@]+@[^@]+\.[^@]+$/.test(values.email) || values.email.length > 40) {
-      newErrors.email = 'Enter valid email (max 40 characters)';
+    if (!values.email.trim()) {
+      //newErrors.email = 'Email is required';
+    } else if (
+      !/^[^@]+@[^@]+\.[^@]+$/.test(values.email) ||
+      values.email.length > 40
+    ) {
+      newErrors.email = "Enter valid email (max 40 characters)";
     }
 
     // Website Validation
     if (values.cWebsite) {
-      const websitePattern = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/[^\s]*)?$/;
+      const websitePattern =
+        /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/[^\s]*)?$/;
 
       if (!websitePattern.test(values.cWebsite)) {
-        newErrors.cWebsite = 'Enter a valid website URL';
+        newErrors.cWebsite = "Enter a valid website URL";
       } else if (values.cWebsite.length > 100) {
-        newErrors.cWebsite = 'Website URL should be max 100 characters';
+        newErrors.cWebsite = "Website URL should be max 100 characters";
       }
     }
 
@@ -91,7 +92,8 @@ const CompanyForm = ({ onClose, onSuccess }) => {
     if (!values.cGst_no.trim()) {
       newErrors.cGst_no = "GST Number is required";
     } else {
-      const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
+      const gstRegex =
+        /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
       if (!gstRegex.test(values.cGst_no)) {
         newErrors.cGst_no = "Invalid GST format";
       }
@@ -108,28 +110,33 @@ const CompanyForm = ({ onClose, onSuccess }) => {
     }
 
     // User Count Validation
-    if (values.iUser_no === '' || isNaN(values.iUser_no) || parseInt(values.iUser_no, 10) < 0 || parseInt(values.iUser_no, 10) > 100000) {
-        newErrors.iUser_no = 'User count must be a number between 0 and 100000';
+    if (
+      values.iUser_no === "" ||
+      isNaN(values.iUser_no) ||
+      parseInt(values.iUser_no, 10) < 0 ||
+      parseInt(values.iUser_no, 10) > 100000
+    ) {
+      newErrors.iUser_no = "User count must be a number between 0 and 100000";
     }
 
     // Address Validations
     if (!values.caddress1.trim()) {
-        newErrors.caddress1 = 'Address Line 1 is required';
+      newErrors.caddress1 = "Address Line 1 is required";
     } else if (values.caddress1.length > 25) {
-        newErrors.caddress1 = 'Max 20 characters allowed';
+      newErrors.caddress1 = "Max 20 characters allowed";
     }
 
     // Address2 and Address3 are optional, so only validate max length if entered
     if (values.caddress2 && values.caddress2.length > 20) {
-        newErrors.caddress2 = 'Max 20 characters allowed';
+      newErrors.caddress2 = "Max 20 characters allowed";
     }
     if (values.caddress3 && values.caddress3.length > 20) {
-        newErrors.caddress3 = 'Max 20 characters allowed';
+      newErrors.caddress3 = "Max 20 characters allowed";
     }
 
     // City ID Validation
-    if (!values.icity_id) { 
-        newErrors.icity_id = 'City is required';
+    if (!values.icity_id) {
+      newErrors.icity_id = "City is required";
     }
 
     if (!values.ibusiness_type) newErrors.ibusiness_type = "Business type is required";
@@ -139,177 +146,184 @@ if (!values.isubscription_plan) newErrors.isubscription_plan = "Subscription pla
     return newErrors;
   };
 
+  // Function to handle the form fields changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     let processedValue = value;
 
     // Convert GST and CIN to uppercase as user types
-    if (name === 'cGst_no' || name === 'icin_no') {
+    if (name === "cGst_no" || name === "icin_no") {
       processedValue = value.toUpperCase();
     }
 
-const intFields = ['iUser_no', 'icity_id', 'ireseller_id', 'ireseller_admin', 'isubscription_plan', 'cpincode'];
+    const intFields = ['iUser_no', 'icity_id', 'ireseller_id', 'ireseller_admin', 'isubscription_plan'];
 
     setFormData((prev) => ({
       ...prev,
       // Parse integer fields with radix 10, default to '0' if value is empty
-      [name]: intFields.includes(name) ? parseInt(processedValue || '0', 10) : processedValue,
+      [name]: intFields.includes(name)
+        ? parseInt(processedValue || "0", 10)
+        : processedValue,
     }));
   };
 
+
+  // Function to handle the form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Data:", formData);
     console.log("Form is submitting");
 
-
     const newErrors = validate(formData);
     setErrors(newErrors);
     console.log("Form Data:", formData);
 
-      const success = await createCompany(formData);
+    const success = await createCompany(formData);
 
-      if (success) {
-        toast.success("Company created successfully!");
-        setTimeout(() => {
-          onSuccess?.();
-          onClose?.();
-        }, 3000); // 3 sec delay
-      } else {
-        toast.error("Failed to create company!");
-      }
-
+    if (success) {
+      toast.success("Company created successfully!");
+      setTimeout(() => {
+        onSuccess?.();
+        onClose?.();
+      }, 3000); // 3 sec delay
+    } else {
+      toast.error("Failed to create company!");
+    }
   };
+
+  const handleClose = async (e) => {
+    onClose();
+  }
 
   const renderError = (field) =>
     errors[field] && <p className="text-sm text-red-600">{errors[field]}</p>;
 
   return (
-    
     <>
-      <h1 className="text-2xl font-semibold mb-6 text-center">🚀 Begin Your Company Setup</h1>
+      <div className="flex justify-end ">
+        <button onClick={handleClose} className="font-bold hover:bg-gray-300">
+          ❌
+        </button>
+      </div>
+      <h1 className="text-2xl font-semibold mb-6 text-center">
+        🚀 Begin Your Company Setup
+      </h1>
 
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-white shadow rounded-xl max-w-5xl mx-auto">
+      <form className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-white   max-w-5xl mx-auto">
         {pageNumber === 1 && (
-        <>
-        <div>
-          <label className="block text-sm font-medium">Company Name <span className="text-red-600">*</span></label>
-          <input type="text" name="cCompany_name" value={formData.cCompany_name} onChange={handleChange} maxLength={25} className="w-full border p-2 rounded" />
-          {renderError('cCompany_name')}
-        </div>
+          <>
+            <div>
+              <label className="block text-sm font-medium">
+                Company Name <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="text"
+                name="cCompany_name"
+                value={formData.cCompany_name}
+                onChange={handleChange}
+                maxLength={25}
+                className="w-full border p-2 rounded"
+              />
+              {renderError("cCompany_name")}
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium">Phone Number <span className="text-red-600">*</span></label>
-          <input type="text" name="iPhone_no" value={formData.iPhone_no} onChange={handleChange} maxLength={10} className="w-full border p-2 rounded" />
-          {renderError('iPhone_no')}
-        </div>
+            <div>
+              <label className="block text-sm font-medium">
+                Phone Number <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="text"
+                name="iPhone_no"
+                value={formData.iPhone_no}
+                onChange={handleChange}
+                maxLength={10}
+                className="w-full border p-2 rounded"
+              />
+              {renderError("iPhone_no")}
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium">Email ID </label>
-          <input type="text" name="email" value={formData.email} onChange={handleChange} maxLength={40} className="w-full border p-2 rounded" />
-          {renderError('email')}
-        </div>
+             <div>
+              <label className="block text-sm font-medium">
+                Email<span className="text-red-600">*</span>
+              </label>
+              <input
+                type="number"
+                name="iUser_no"
+                value={formData.iUser_no}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+              {renderError("iUser_no")}
+            </div>
 
         <div>
           <label className="block text-sm font-medium">Website</label>
           <input type="text" name="cWebsite" value={formData.cWebsite} onChange={handleChange} maxLength={100} className="w-full border p-2 rounded" />
           {renderError('cWebsite')}
         </div>
-        <div>
-          <label className="block text-sm font-medium">Bussiness Type <span className="text-red-600">*</span></label>
-          <select
-            name="ibusiness_type"
-            value={formData.ibusiness_type}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          >
-            <option value="">Choose Type</option>
-            {bussinessType.map((type) => (
-              <option key={type.id} value={type.id}>
-                {type.name}
-              </option>
-            ))}
-          </select>
-          {renderError('id')}
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Subscription Plan <span className="text-red-600">*</span></label>
-          <select
-            name="isubscription_plan"
-            value={formData.isubscription_plan}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          >
-            <option value="">Choose Plan</option>
-            {plan.map((type) => (
-              <option key={type.plan_id} value={type.plan_id}>
-                {type.plan_name}
-              </option>
-            ))}
-          </select>
-          {renderError('id')}
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium">GST Number <span className="text-red-600">*</span></label>
-          <input type="text" name="cGst_no" value={formData.cGst_no} onChange={handleChange} maxLength={15} className="w-full border p-2 rounded" />
-          {renderError('cGst_no')}
-        </div>
+            <div>
+              <label className="block text-sm font-medium">
+                GST Number <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="text"
+                name="cGst_no"
+                value={formData.cGst_no}
+                onChange={handleChange}
+                maxLength={15}
+                className="w-full border p-2 rounded"
+              />
+              {renderError("cGst_no")}
+            </div>
 
         <div>
           <label className="block text-sm font-medium">CIN Number <span className="text-red-600">*</span></label>
           <input type="text" name="icin_no" value={formData.icin_no} onChange={handleChange} maxLength={21} className="w-full border p-2 rounded" />
           {renderError('icin_no')}
         </div>
+
         <div>
-          <label className="block text-sm font-medium">Fax Number <span className="text-red-600">*</span></label>
-          <input type="text" name="fax_no" value={formData.fax_no} onChange={handleChange} className="w-full border p-2 rounded" />
-          {renderError('fax_no')}
-        </div>
-         <div>
-          <label className="block text-sm font-medium">Pan Number <span className="text-red-600">*</span></label>
-          <input type="text" name="cPan_no" value={formData.cPan_no} onChange={handleChange} maxLength={17} className="w-full border p-2 rounded" />
-          {renderError('cPan_no')}
-        </div>
-
-       
-
-        
-  </>
-
-        )}
-
-        {pageNumber === 2 && (
-          <> 
-           <div>
           <label className="block text-sm font-medium">User Count <span className="text-red-600">*</span></label>
           <input type="number" name="iUser_no" value={formData.iUser_no} onChange={handleChange} className="w-full border p-2 rounded" />
           {renderError('iUser_no')}
         </div>
 
-         <div>
-          <label className="block text-sm font-medium">Industry <span className="text-red-600">*</span></label>
-          <input type="text" name="industry" value={formData.industry} onChange={handleChange} className="w-full border p-2 rounded" />
-          {renderError('industry')}
-        </div>
-
-          <div >
+        <div >
           <label className="block text-sm font-medium">Address Line 1 <span className="text-red-600">*</span></label>
           <input name="caddress1" value={formData.caddress1} onChange={handleChange} maxLength={25} className="w-full border p-2 rounded" />
           {renderError('caddress1')}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium">Address Line 2</label>
-          <input type="text" name="caddress2" value={formData.caddress2} onChange={handleChange} maxLength={20} className="w-full border p-2 rounded" />
-          {renderError('caddress2')}
-        </div>
+            <div>
+              <label className="block text-sm font-medium">
+                Address Line 2
+              </label>
+              <input
+                type="text"
+                name="caddress2"
+                value={formData.caddress2}
+                onChange={handleChange}
+                maxLength={20}
+                className="w-full border p-2 rounded"
+              />
+              {renderError("caddress2")}
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium">Address Line 3</label>
-          <input type="text" name="caddress3" value={formData.caddress3} onChange={handleChange} maxLength={20} className="w-full border p-2 rounded" />
-          {renderError('caddress3')}
-        </div>
+            <div>
+              <label className="block text-sm font-medium">
+                Address Line 3
+              </label>
+              <input
+                type="text"
+                name="caddress3"
+                value={formData.caddress3}
+                onChange={handleChange}
+                maxLength={20}
+                className="w-full border p-2 rounded"
+              />
+              {renderError("caddress3")}
+            </div>
 
         <div>
           <label className="block text-sm font-medium">City <span className="text-red-600">*</span></label>
@@ -328,92 +342,95 @@ const intFields = ['iUser_no', 'icity_id', 'ireseller_id', 'ireseller_admin', 'i
           </select>
           {renderError('icity_id')}
         </div>
-        <div>
-          <label className="block text-sm font-medium">Pincode</label>
-          <input type="text" name="cpincode" value={formData.cpincode} onChange={handleChange} maxLength={20} className="w-full border p-2 rounded" />
-          {renderError('cpincode')}
-        </div>
- 
-           {/* <div>
+
+  </>
+
+        )}
+
+        {pageNumber === 2 && (
+          <>  
+           <div>
         <label className="block text-sm font-medium">Full Name <span className="text-red-600">*</span></label>
         <input name="cFull_name" value={formData.cFull_name} onChange={handleChange} className="w-full border p-2 rounded" />
         {renderError('cFull_name')}
-      </div> */}
+      </div>
 
-      {/* <div>
+      <div>
         <label className="block text-sm font-medium">Username <span className="text-red-600">*</span></label>
         <input name="cUser_name" value={formData.cUser_name} onChange={handleChange} className="w-full border p-2 rounded" />
         {renderError('cUser_name')}
-      </div> */}
+      </div>
 
-      {/* <div>
+      <div>
         <label className="block text-sm font-medium">Email <span className="text-red-600">*</span></label>
         <input name="cEmail" value={formData.cEmail} onChange={handleChange} className="w-full border p-2 rounded" />
         {renderError('cEmail')}
-      </div> */}
+      </div>
 
-      {/* <div>
+      <div>
         <label className="block text-sm font-medium">Password <span className="text-red-600">*</span></label>
         <input type="password" name="cPassword" value={formData.cPassword} onChange={handleChange} className="w-full border p-2 rounded" />
         {renderError('cPassword')}
-      </div> */}
+      </div>
 
   
-{/* 
+
       <div>
         <label className="block text-sm font-medium">Profile Picture URL (optional)</label>
         <input name="cProfile_pic" value={formData.cProfile_pic} onChange={handleChange} className="w-full border p-2 rounded" />
-      </div> */}
+      </div>
 
-      {/* <div>
+      <div>
         <label className="block text-sm font-medium">Reports To (optional)</label>
         <input type="number" name="reports_to" value={formData.reports_to} onChange={handleChange} className="w-full border p-2 rounded" />
-      </div> */}
+      </div>
 
       
           </>
         )}
 
+        <div className="md:col-span-2 flex justify-between mt-6">
+          {pageNumber > 1 && (
+            <button
+              type="button"
+              onClick={() => setPageNumber(pageNumber - 1)}
+              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+            >
+              Back
+            </button>
+          )}
 
-      <div className="md:col-span-2 flex justify-between mt-6">
-  {pageNumber > 1 && (
-    <button
-  type="button"
-      onClick={() => setPageNumber(pageNumber - 1)}
-      className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-    >
-      Back
-    </button>
-  )}
+          {pageNumber < 2 ? (
+            <button
+              type="button"
+              onClick={() => {
+                // const currentErrors = validate(formData);
+                // const errorsForStep = pageNumber === 1
+                //   ? ['cCompany_name', 'iPhone_no', 'email']
+                //   : [];
 
-  {pageNumber < 2 ? (
-    <button   type="button"
-        onClick={() => {
-        // const currentErrors = validate(formData);
-        // const errorsForStep = pageNumber === 1
-        //   ? ['cCompany_name', 'iPhone_no', 'email']
-        //   : [];
+                // const hasStepErrors = errorsForStep.some((field) => currentErrors[field]);
 
-        // const hasStepErrors = errorsForStep.some((field) => currentErrors[field]);
-
-        // setErrors(currentErrors);
-        setPageNumber(pageNumber + 1);
-      }}
-      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-    >
-      Next
-    </button>
-  ) : (
-    
-          <button  type="button" onClick={handleSubmit} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Submit</button> 
-  )}
-</div>
+                // setErrors(currentErrors);
+                setPageNumber(pageNumber + 1);
+              }}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              Next
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Submit
+            </button>
+          )}
+        </div>
       </form>
     </>
   );
 };
 
-
 export default CompanyForm;
-
-

@@ -124,7 +124,7 @@ const Reseller = () => {
   // Fetch data on component mount
   useEffect(() => {
     fetchAllResellerData();
-  }, [fetchAllResellerData]); // Dependency array to prevent infinite loop
+  }, []); 
 
   const filteredData = resellerData.filter((reseller) =>
     `${reseller.cEmail} ${reseller.creseller_name}`.toLowerCase()

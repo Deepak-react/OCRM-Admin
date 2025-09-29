@@ -38,5 +38,10 @@ export const  getAllCities  = async ()=>{
   return res.data.cities;
 }
 
+export const  getAllRoles  = async ()=>{
+  const res = await ApiHelper.getAll(ENDPOINTS.ROLE);
+  return res.data;
+}
+
 
 
