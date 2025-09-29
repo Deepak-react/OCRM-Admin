@@ -11,6 +11,19 @@ export const useSharedController = () => {
     //contains cities data
   const [cities, setCities] = useState([]);
 
+  // contains roles data
+  const [roles, setRoles] = useState([]);
+
+  //  const [roles, setRoles] = useState([]);
+
+  // const [bussiness, setBussinessType] = useState([]);
+//Currencies 
+  const [currencies, setCurrencies] = useState([]);
+
+  // Plan 
+    const [plan, setPlan] = useState([]);
+
+
 
   //Contains the business logic to fetch all the companies
   const fetchCompanies = async () => {
@@ -18,6 +31,7 @@ export const useSharedController = () => {
     console.log("The lead status response is :", data);
     setCompanies(data);
     };
+ 
 
     //constain for bussiness type
 
@@ -47,6 +61,18 @@ export const useSharedController = () => {
       console.log("The lead status response is :", data);
       setCities(data);
     };
+    //containes the bussiness to fetch all currencies
+const fetchCurrencies = async () => {
+  const res = await model.getAllCurrencies();
+  console.log("The currency response is :", res);
+  setCurrencies(res.data.data);   // <-- pick the array inside
+};
+
+const fetchBussiness = async () => {
+  const res = await model.getAllBussiness();
+  console.log("The business response is :", res);
+  setBussinessType(res.data.data);  // <-- pick the array inside
+};
 
 
     // function to fetch the roles for an company
@@ -66,14 +92,26 @@ export const useSharedController = () => {
   //Use effect initially runs.
   useEffect(() => {
     fetchCompanies();
-    fetchAllCities();
+    fetchAllCities(); 
+    fetchCurrencies();  
+    fetchBussiness();   
+    fetchPlan();       
   }, []);
 
   return {
-    fetchCompanies, //For manual refresh 
+    fetchCompanies, 
     companies,
     fetchAllCities,
-    cities
+    fetchRoles,
+    roles,
+    cities,
+    fetchCurrencies,
+    currencies,
+    fetchBussiness,
+    bussiness,
+    fetchPlan,
+    plan
+
 
     
   };
