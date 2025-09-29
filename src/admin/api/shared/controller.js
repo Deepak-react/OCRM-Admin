@@ -70,10 +70,13 @@ export const useSharedController = () => {
   }, []);
 
   return {
-    fetchCompanies, //For manual refresh 
+    fetchCompanies, 
     companies,
     fetchAllCities,
-    cities
+    cities,
+    fetchRoles ,
+    fetchPlan,
+    fetchBussinessType
 
     
   };

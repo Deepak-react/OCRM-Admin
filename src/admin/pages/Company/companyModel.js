@@ -2,6 +2,7 @@
 import * as ApiHelper from '../../api/ApiHelper';
 // import { getAll, getById, create, update, deActive } from '../../api/ApiHelper';
 import { ENDPOINTS } from '../../api/ApiConstant';
+import { getAll } from "../../api/ApiHelper";       
 
 
 // to get all the company data.
@@ -81,18 +82,14 @@ export const getCompanyById = async (id) =>{
 
 // to get all the user data based on the company id.
 export const getUsersByCompanyId = async (companyId) => {
-  //console.log(`Fetching users for company ID: ${companyId} using new API structure`);
   try {
     const response = await getAll(ENDPOINTS.USER_TAB(companyId));
-    //console.log("Users fetched successfully:", response);
-    return response.data; 
+    return response.data;
   } catch (error) {
-    //console.error("Error fetching users:", error);
     throw error;
   }
-
-
 };
+
 
 
 // const getUsers = async () => {
