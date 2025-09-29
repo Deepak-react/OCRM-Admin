@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 const CompanyForm = ({ onClose, onSuccess }) => {
   const { createCompany } = useCompanyController();
-const { cities, currencies, bussinessType , plan } = useSharedController();
+const { cities, currencies, bussiness , plan } = useSharedController();
 
 
   const [formData, setFormData] = useState({
@@ -241,8 +241,8 @@ const { cities, currencies, bussinessType , plan } = useSharedController();
   className="w-full border px-3 py-2 rounded"
 >
   <option value="">Choose type</option>
-  {Array.isArray(bussinessType) &&
-    bussinessType.map((b) => (
+  {Array.isArray(bussiness) &&
+    bussiness.map((b) => (
       <option key={b.id} value={b.id}>
         {b.name}
       </option>

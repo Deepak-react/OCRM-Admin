@@ -6,7 +6,7 @@ export const useSharedController = () => {
     //contains comapies data 
   const [companies, setCompanies] = useState([]);
   //Bussiness type
-  const [bussinessType, setBussinessType] = useState([]);
+  // const [bussinessType, setBussinessType] = useState([]);
 
     //contains cities data
   const [cities, setCities] = useState([]);
@@ -16,7 +16,7 @@ export const useSharedController = () => {
 
   //  const [roles, setRoles] = useState([]);
 
-  // const [bussiness, setBussinessType] = useState([]);
+  const [bussiness, setBussiness] = useState([]);
 //Currencies 
   const [currencies, setCurrencies] = useState([]);
 
@@ -33,13 +33,13 @@ export const useSharedController = () => {
     };
  
 
-    //constain for bussiness type
+    // //constain for bussiness type
 
-    const fetchBussinessType = async () => {
-      const data = await model.getBussinessType();
-      console.log("The bussiness.types are", data);
-      setBussinessType(data.data)
-    }
+    // const fetchBussinessType = async () => {
+    //   const data = await model.getBussinessType();
+    //   console.log("The bussiness.types are", data);
+    // setBussinessType(Array.isArray(data) ? data : data.data || []);
+    // }
 
       //constain for bussiness type
 
@@ -62,16 +62,28 @@ export const useSharedController = () => {
       setCities(data);
     };
     //containes the bussiness to fetch all currencies
-const fetchCurrencies = async () => {
-  const res = await model.getAllCurrencies();
-  console.log("The currency response is :", res);
-  setCurrencies(res.data.data);   // <-- pick the array inside
+
+    const fetchCurrencies = async () => {
+  try {
+    const data = await model.getAllCurrencies();
+    console.log("Plan's are", data);
+    setCurrencies(Array.isArray(data) ? data : data.data || []);
+  } catch (err) {
+    console.error("Error fetching plans:", err);
+    setCurrencies([]); // fallback
+  }
 };
 
-const fetchBussiness = async () => {
-  const res = await model.getAllBussiness();
-  console.log("The business response is :", res);
-  setBussinessType(res.data.data);  // <-- pick the array inside
+
+    const fetchBussiness = async () => {
+  try {
+    const data = await model.getAllBussiness();
+    console.log("Plan's are", data);
+    setBussiness(Array.isArray(data) ? data : data.data || []);
+  } catch (err) {
+    console.error("Error fetching plans:", err);
+    setBussiness([]); // fallback
+  }
 };
 
 
@@ -95,7 +107,8 @@ const fetchBussiness = async () => {
     fetchAllCities(); 
     fetchCurrencies();  
     fetchBussiness();   
-    fetchPlan();       
+    fetchPlan();  
+    // fetchBussinessType();     
   }, []);
 
   return {
