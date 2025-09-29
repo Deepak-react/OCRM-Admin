@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const CompanyForm = ({ onClose, onSuccess }) => {
   const { createCompany } = useCompanyController();
-  const { cities } = useSharedController();
+  const { cities , bussinessType , plan } = useSharedController();
 
   const [formData, setFormData] = useState({
     cLogo_link: 'https://xcodefix.com/logo.png',
@@ -15,22 +15,29 @@ const CompanyForm = ({ onClose, onSuccess }) => {
     caddress1: '',
     caddress2: '',
     caddress3: '',
+    cpincode:'',
     cGst_no: '',  
     icin_no: '',
+    cPan_no:'',
     bactive: true,
-    ireseller_id: 4,
+    ireseller_id: 1,
+    ibusiness_type:'',
     iUser_no: '', 
     icity_id: '',
-    isubscription_plan: 1,
-    ireseller_admin: 11,
+    isubscription_plan: '',
+    ireseller_admin: 1,
     email: '',
-    cFull_name: '',  // Create admin form fields
-    cUser_name: '',
-    cEmail: '',
-    cPassword: '',
-    irole_id: 1,
+    // cFull_name: '',  
+    // cUser_name: '',
+    // cemail_address: '',
+    // cPassword: '',
+    // irole_id: 1,
     cProfile_pic: '',
-    reports_to: 13
+              ireseller_id: 1,
+
+    // reports_to: 13,
+    fax_no:'',
+    industry:'',
 
   });
 
@@ -125,6 +132,10 @@ const CompanyForm = ({ onClose, onSuccess }) => {
         newErrors.icity_id = 'City is required';
     }
 
+    if (!values.ibusiness_type) newErrors.ibusiness_type = "Business type is required";
+if (!values.isubscription_plan) newErrors.isubscription_plan = "Subscription plan is required";
+
+
     return newErrors;
   };
 
@@ -137,7 +148,7 @@ const CompanyForm = ({ onClose, onSuccess }) => {
       processedValue = value.toUpperCase();
     }
 
-    const intFields = ['iUser_no', 'icity_id', 'ireseller_id', 'ireseller_admin', 'isubscription_plan'];
+const intFields = ['iUser_no', 'icity_id', 'ireseller_id', 'ireseller_admin', 'isubscription_plan', 'cpincode'];
 
     setFormData((prev) => ({
       ...prev,
@@ -204,6 +215,40 @@ const CompanyForm = ({ onClose, onSuccess }) => {
           <input type="text" name="cWebsite" value={formData.cWebsite} onChange={handleChange} maxLength={100} className="w-full border p-2 rounded" />
           {renderError('cWebsite')}
         </div>
+        <div>
+          <label className="block text-sm font-medium">Bussiness Type <span className="text-red-600">*</span></label>
+          <select
+            name="ibusiness_type"
+            value={formData.ibusiness_type}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value="">Choose Type</option>
+            {bussinessType.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
+              </option>
+            ))}
+          </select>
+          {renderError('id')}
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Subscription Plan <span className="text-red-600">*</span></label>
+          <select
+            name="isubscription_plan"
+            value={formData.isubscription_plan}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value="">Choose Plan</option>
+            {plan.map((type) => (
+              <option key={type.plan_id} value={type.plan_id}>
+                {type.plan_name}
+              </option>
+            ))}
+          </select>
+          {renderError('id')}
+        </div>
 
         <div>
           <label className="block text-sm font-medium">GST Number <span className="text-red-600">*</span></label>
@@ -216,14 +261,39 @@ const CompanyForm = ({ onClose, onSuccess }) => {
           <input type="text" name="icin_no" value={formData.icin_no} onChange={handleChange} maxLength={21} className="w-full border p-2 rounded" />
           {renderError('icin_no')}
         </div>
-
         <div>
+          <label className="block text-sm font-medium">Fax Number <span className="text-red-600">*</span></label>
+          <input type="text" name="fax_no" value={formData.fax_no} onChange={handleChange} className="w-full border p-2 rounded" />
+          {renderError('fax_no')}
+        </div>
+         <div>
+          <label className="block text-sm font-medium">Pan Number <span className="text-red-600">*</span></label>
+          <input type="text" name="cPan_no" value={formData.cPan_no} onChange={handleChange} maxLength={17} className="w-full border p-2 rounded" />
+          {renderError('cPan_no')}
+        </div>
+
+       
+
+        
+  </>
+
+        )}
+
+        {pageNumber === 2 && (
+          <> 
+           <div>
           <label className="block text-sm font-medium">User Count <span className="text-red-600">*</span></label>
           <input type="number" name="iUser_no" value={formData.iUser_no} onChange={handleChange} className="w-full border p-2 rounded" />
           {renderError('iUser_no')}
         </div>
 
-        <div >
+         <div>
+          <label className="block text-sm font-medium">Industry <span className="text-red-600">*</span></label>
+          <input type="text" name="industry" value={formData.industry} onChange={handleChange} className="w-full border p-2 rounded" />
+          {renderError('industry')}
+        </div>
+
+          <div >
           <label className="block text-sm font-medium">Address Line 1 <span className="text-red-600">*</span></label>
           <input name="caddress1" value={formData.caddress1} onChange={handleChange} maxLength={25} className="w-full border p-2 rounded" />
           {renderError('caddress1')}
@@ -258,48 +328,47 @@ const CompanyForm = ({ onClose, onSuccess }) => {
           </select>
           {renderError('icity_id')}
         </div>
-
-  </>
-
-        )}
-
-        {pageNumber === 2 && (
-          <>  
-           <div>
+        <div>
+          <label className="block text-sm font-medium">Pincode</label>
+          <input type="text" name="cpincode" value={formData.cpincode} onChange={handleChange} maxLength={20} className="w-full border p-2 rounded" />
+          {renderError('cpincode')}
+        </div>
+ 
+           {/* <div>
         <label className="block text-sm font-medium">Full Name <span className="text-red-600">*</span></label>
         <input name="cFull_name" value={formData.cFull_name} onChange={handleChange} className="w-full border p-2 rounded" />
         {renderError('cFull_name')}
-      </div>
+      </div> */}
 
-      <div>
+      {/* <div>
         <label className="block text-sm font-medium">Username <span className="text-red-600">*</span></label>
         <input name="cUser_name" value={formData.cUser_name} onChange={handleChange} className="w-full border p-2 rounded" />
         {renderError('cUser_name')}
-      </div>
+      </div> */}
 
-      <div>
+      {/* <div>
         <label className="block text-sm font-medium">Email <span className="text-red-600">*</span></label>
         <input name="cEmail" value={formData.cEmail} onChange={handleChange} className="w-full border p-2 rounded" />
         {renderError('cEmail')}
-      </div>
+      </div> */}
 
-      <div>
+      {/* <div>
         <label className="block text-sm font-medium">Password <span className="text-red-600">*</span></label>
         <input type="password" name="cPassword" value={formData.cPassword} onChange={handleChange} className="w-full border p-2 rounded" />
         {renderError('cPassword')}
-      </div>
+      </div> */}
 
   
-
+{/* 
       <div>
         <label className="block text-sm font-medium">Profile Picture URL (optional)</label>
         <input name="cProfile_pic" value={formData.cProfile_pic} onChange={handleChange} className="w-full border p-2 rounded" />
-      </div>
+      </div> */}
 
-      <div>
+      {/* <div>
         <label className="block text-sm font-medium">Reports To (optional)</label>
         <input type="number" name="reports_to" value={formData.reports_to} onChange={handleChange} className="w-full border p-2 rounded" />
-      </div>
+      </div> */}
 
       
           </>

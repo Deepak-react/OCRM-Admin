@@ -12,6 +12,7 @@ export const ENDPOINTS = {
   // LEAD: `${BASE_URL}/lead/user/`,
   // USERS: `${BASE_URL}/users`,
   ROLE: `${BASE_URL}/role`,
+  COMPANY: `${BASE_URL}/company`,
   // FOLLOW_UP: `${BASE_URL}/calender-event`,
   // DASHBOARD_USER: `${BASE_URL}/lead/dashboard`,
   // CREATE_EVENT: `${BASE_URL}/calender-event`,

@@ -64,47 +64,48 @@ export const useCompanyController = () => {
     }
   }
 
-  // Function to create a new company
-  const createCompany = async (data) => {
-    try {
-      const res = await companyModel.addNewCompany({
-          bactive: data.bactive,
-          cCompany_name: data.cCompany_name,
-          cGst_no: data.cGst_no,
-          cLogo_link: data.cLogo_link,
-          cWebsite: data.cWebsite,
-          caddress1: data.caddress1,
-          caddress2: data.caddress2,
-          caddress3: data.caddress3,
-          email: data.email,
-          iPhone_no: data.iPhone_no,
-          iUser_no: data.iUser_no,
-          icin_no: data.icin_no,
-          icity_id: data.icity_id,
-          ireseller_admin: data.ireseller_admin,
-          ireseller_id: data.ireseller_id,
-          isubscription_plan: data.isubscription_plan
-      });
-      console.log("The response is :", res.data.iCompany_id);
-      console.log("The data to create company data are :", data);
-      // await fetchAllCompanyData();
-      await createAdminUser({
-        iCompany_id: res.data.iCompany_id, // Assuming the response contains the new company ID
-        cFull_name : data.cFull_name,
-        cProfile_pic : "Place holder for profile pic",
-        cUser_name: data.cUser_name,
-        cPassword: data.cPassword,
-        cEmail: data.cEmail,
-        irole_id: 1, //Admin ID
-        reports_to: 13
-      });
-      return true;
-    } catch (err) {
-      console.error('Failed to create company:', err);
-      setError(err.message || 'Could not create company');
-      return false;
-    }
+const createCompany = async (data) => {
+  try {
+    // Prepare payload for Prisma
+    const payload = {
+      cCompany_name: data.cCompany_name,
+      iPhone_no: data.iPhone_no,
+      cWebsite: data.cWebsite,
+      caddress1: data.caddress1,
+      caddress2: data.caddress2,
+      caddress3: data.caddress3,
+      cpincode: data.cpincode,
+      cLogo_link: data.cLogo_link,
+      cGst_no: data.cGst_no,
+      icin_no: data.icin_no,
+      cPan_no: data.cPan_no,
+      industry: data.industry,
+      iUser_no: data.iUser_no,
+      bactive: data.bactive,
+    };
+
+    // Optional relations only if IDs exist
+    if (data.ireseller_id) payload.reseller = { connect: { ireseller_id: data.ireseller_id } };
+    if (data.icity_id) payload.city = { connect: { icity_id: data.icity_id } };
+    if (data.ireseller_admin) payload.resellerAdmin = { connect: { iUser_id: data.ireseller_admin } };
+    if (data.isubscription_plan) payload.pricing_plan = { connect: { plan_id: data.isubscription_plan } };
+    if (data.ibusiness_type) payload.businessType = { connect: { id: data.ibusiness_type } };
+    if (data.icurrency_id) payload.currency = { connect: { icurrency_id: data.icurrency_id } };
+
+    // Call model function to insert company into DB
+    const res = await companyModel.addNewCompany(payload);
+
+    console.log("Company created with ID:", res.data.iCompany_id);
+    return true;
+
+  } catch (err) {
+    console.error("Failed to create company:", err);
+    return false;
   }
+};
+
+
+
 
  //function to create an admin user when the company is created
   const createAdminUser = async (data) => {
@@ -127,18 +128,32 @@ export const useCompanyController = () => {
     console.log("Editing company with data:", data, "and company_id:", company_id);
     try {
       const res = await companyModel.editCompany({
-        cCompany_name: data.cCompany_name,
-        iPhone_no: data.iPhone_no,
-        cemail_address: data.cemail_address,
-        cWebsite: data.cWebsite,
-        iReseller_id: data.iReseller_id,
-        iUser_no: data.iUser_no,
-        cGst_no: data.cGst_no,
-        icin_no: data.icin_no,
-        caddress3: data.caddress3,
-        caddress2: data.caddress2,
-        caddress1: data.caddress1,
-        icity_id : data.city.icity_id
+      bactive: data.bactive,
+          cCompany_name: data.cCompany_name,
+          cGst_no: data.cGst_no,
+          cLogo_link: data.cLogo_link,
+          cWebsite: data.cWebsite,
+          caddress1: data.caddress1,
+          caddress2: data.caddress2,
+          caddress3: data.caddress3,
+          email: data.email,
+          iPhone_no: data.iPhone_no,
+          iUser_no: data.iUser_no,
+          icin_no: data.icin_no,
+          icity_id: data.icity_id,
+          // ireseller_admin: data.ireseller_admin,
+          ireseller_id: 1,
+          isubscription_plan: data.isubscription_plan,
+    cpincode:data.cpincode,
+    cPan_no:data.cPan_no,
+    ibusiness_type:data.ibusiness_type,
+   
+    // cPassword: '',
+    irole_id: 1,
+    // cProfile_pic: '',
+    // reports_to: 13,
+    fax_no:'',
+    industry:'',
 
       }, company_id);
       //console.log("The response is :", res);

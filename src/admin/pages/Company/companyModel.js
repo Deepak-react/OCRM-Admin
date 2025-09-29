@@ -1,6 +1,6 @@
 // models/UserModel.js
 import * as ApiHelper from '../../api/ApiHelper';
-import { getAll, getById, create, update, deActive } from '../../api/ApiHelper';
+// import { getAll, getById, create, update, deActive } from '../../api/ApiHelper';
 import { ENDPOINTS } from '../../api/ApiConstant';
 
 
