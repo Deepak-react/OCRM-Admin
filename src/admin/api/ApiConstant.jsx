@@ -11,6 +11,7 @@ export const ENDPOINTS = {
   DASHBOARD: `${BASE_URL}/admin/dashboard`,
   LEAD_STATUS: `${BASE_URL}/lead-status/`,
   COMPANIES : `${BASE_URL}/company`,
+  COMPANIES_ID : `${BASE_URL}/company/`,
   BUSSINESS_TYPE:`${BASE_URL}/business-type`,
   LEAD_POTENTIAL : `${BASE_URL}/lead-potential/`,
   INDUSTRY : `${BASE_URL}/lead-industry/`,
@@ -27,7 +28,6 @@ export const ENDPOINTS = {
 
   DISTRICT: `${BASE_URL}/district`,
   DISTRICT_ID: `${BASE_URL}/district/`,
-
   STATE: `${BASE_URL}/state`,
   STATE_ID: `${BASE_URL}/state/`,
   COUNTRY: `${BASE_URL}/country`,
@@ -36,5 +36,10 @@ export const ENDPOINTS = {
   CITY_ID: `${BASE_URL}/cities/`,
   CURRENCY: `${BASE_URL}/currency`,
   CURRENCY_ID: `${BASE_URL}/currency/`,
+  //SUBSCRIPTION API ENDPOINT 
+  SUBSCRIPTION_CREATE:`${BASE_URL}/subscription/createSubscription`,
+  ALL_SUBSCRIPTION_GET:`${BASE_URL}/subscription/getAllSubscription`,
+  EDIT_SUBSCRIPTION:`${BASE_URL}/subscription/updateSubscription`,
+  SUBSCRIPTION_STATUS_CHANGE:`${BASE_URL}/subscription/changeStatus`
 };
 

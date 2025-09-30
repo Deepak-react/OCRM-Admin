@@ -107,11 +107,13 @@ import { getAll } from "../../api/ApiHelper";  
     return res.data; 
   };
 
-  // to get all the business types
-  export const getAllBusinessTypes = async () => {
-    const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
-    return res.data; 
-  };
+// // to get all the business types
+// export const getAllBusinessTypes = async () => {
+//   //console.log(ENDPOINTS.COMPANIES);
+//   const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
+//   //console.log("The errored response is :", res);
+//   return res.data; 
+// };
 
   export const getAuditLogs = async (company_id) => {
     const res = await ApiHelper.getAll(ENDPOINTS.AUDIT_LOGS(company_id));

@@ -223,7 +223,7 @@ const Company = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [viewType, setViewType] = useState('grid'); 
-  const [sortConfig, setSortConfig] = useState({ key: 'dModifiedDate', direction: 'descending' }); // Default sort by latest modified
+  const [sortConfig, setSortConfig] = useState({ key: 'dModifiedDate', direction: 'descending' });
 
   const { companyData, fetchAllCompanyData, createCompany } = useCompanyController();
 
@@ -231,17 +231,29 @@ const Company = () => {
     fetchAllCompanyData();
   }, []);
 
+    useEffect(() => {
+    console.log("🔍 Company Data Debug:", {
+      companyData,
+      type: typeof companyData,
+      isArray: Array.isArray(companyData),
+      keys: companyData ? Object.keys(companyData) : 'no data'
+    });
+  }, [companyData]);
+
   // Filter data based on search query
-  const filteredData = useMemo(() => {
-    return companyData.filter((company) => {
+const filteredData = useMemo(() => {
+    // Ensure companyData is always an array
+    const dataArray = Array.isArray(companyData) ? companyData : [];
+    
+    return dataArray.filter((company) => {
       // Ensure all properties exist before calling .toLowerCase()
       const companyName = company.cCompany_name || '';
       const website = company.cWebsite || '';
       const phone = company.iPhone_no || '';
       const cityName = company.city?.cCity_name || '';
       const planName = company.pricing_plan?.plan_name || '';
-      const org = company.cOrg || ''; // Add cOrg to search
-      const email = company.cEmail || ''; // Add cEmail to search
+      const org = company.cOrg || '';
+      const email = company.cEmail || '';
 
       return `${companyName} ${website} ${phone} ${cityName} ${planName} ${org} ${email}`
         .toLowerCase()
