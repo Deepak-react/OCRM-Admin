@@ -14,23 +14,23 @@ export const getAllCompantData = async () => {
 };
 
 
-// to get all the currencies
-export const getAllCurrencies = async () => {
-  //console.log(ENDPOINTS.COMPANIES);
-  const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
-  //console.log("The errored response is :", res);
-  return res.data; 
-};
+// // to get all the currencies
+// export const getAllCurrencies = async () => {
+//   //console.log(ENDPOINTS.COMPANIES);
+//   const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
+//   //console.log("The errored response is :", res);
+//   return res.data; 
+// };
 
 
 
-// to get all the business types
-export const getAllBusinessTypes = async () => {
-  //console.log(ENDPOINTS.COMPANIES);
-  const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
-  //console.log("The errored response is :", res);
-  return res.data; 
-};
+// // to get all the business types
+// export const getAllBusinessTypes = async () => {
+//   //console.log(ENDPOINTS.COMPANIES);
+//   const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
+//   //console.log("The errored response is :", res);
+//   return res.data; 
+// };
 
 
 export const getAuditLogs = async (company_id) => {
@@ -75,9 +75,9 @@ export const addAdminUser= async (data) => {
 //to get an company data based on the id.
 export const getCompanyById = async (id) =>{
   //console.log(ENDPOINTS.COMPANIES);
-  const res = await ApiHelper.getById(id, ENDPOINTS.COMPANIES);
+  const res = await ApiHelper.getById(id, ENDPOINTS.COMPANIES_ID);
   //console.log("The company data are :", res);  
-  return res.data;
+  return res.data.result;
 }
 
 // to get all the user data based on the company id.

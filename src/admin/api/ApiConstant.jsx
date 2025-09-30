@@ -8,6 +8,7 @@ export const ENDPOINTS = {
   DASHBOARD: `${BASE_URL}/admin/dashboard`,
   LEAD_STATUS: `${BASE_URL}/lead-status/`,
   COMPANIES : `${BASE_URL}/company`,
+  COMPANIES_ID : `${BASE_URL}/company/`,
   BUSSINESS_TYPE:`${BASE_URL}/business-type`,
   LEAD_POTENTIAL : `${BASE_URL}/lead-potential/`,
   INDUSTRY : `${BASE_URL}/lead-industry/`,
