@@ -876,6 +876,9 @@ const handleOpenEditDialog = async (company) => {
         </div>
       )}
 
+
+
+
       {/* User Actions Menu */}
       <Menu id="user-actions-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
         <MenuItem onClick={handleOpenStatusConfirmation}>{userToModify?.bactive ? "Deactivate" : "Activate"}</MenuItem>

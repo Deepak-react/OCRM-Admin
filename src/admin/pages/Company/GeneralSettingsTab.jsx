@@ -20,6 +20,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import EditIcon from '@mui/icons-material/Edit';
 
+import ToggleButton from '../../components/ToggleSwitch'
+
 // --- Constants & Utilities ---
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const APP_PASSWORD_REGEX = /^[a-z]*$/; // Lowercase letters only
@@ -67,12 +69,16 @@ const GeneralSettingsSection = ({ formData, handleChange }) => (
           All pricing and reports will use this currency.
         </Typography>
       </Box>
-      <FormControl variant="outlined" sx={{ minWidth: 120, mt: { xs: 2, sm: 0 } }}>
+
+      <FormControl
+        variant="outlined"
+        sx={{ minWidth: 120, mt: { xs: 2, sm: 0 } }}
+      >
         <Select
           name="currency"
-          value={formData.currency || 'INR'} // Default to INR if not set
+          value={formData.currency || "INR"} // Default to INR if not set
           onChange={handleChange}
-          inputProps={{ 'aria-label': 'Preferred Currency' }}
+          inputProps={{ "aria-label": "Preferred Currency" }}
           size="small"
         >
           <MenuItem value="INR">₹ INR</MenuItem>
@@ -91,12 +97,15 @@ const GeneralSettingsSection = ({ formData, handleChange }) => (
           Define the current state of the admin account.
         </Typography>
       </Box>
-      <FormControl variant="outlined" sx={{ minWidth: 120, mt: { xs: 2, sm: 0 } }}>
+      <FormControl
+        variant="outlined"
+        sx={{ minWidth: 120, mt: { xs: 2, sm: 0 } }}
+      >
         <Select
           name="status"
-          value={formData.status || 'active'} // Default to active if not set
+          value={formData.status || "active"} // Default to active if not set
           onChange={handleChange}
-          inputProps={{ 'aria-label': 'Account Status' }}
+          inputProps={{ "aria-label": "Account Status" }}
           size="small"
         >
           <MenuItem value="active">Active</MenuItem>
@@ -104,6 +113,13 @@ const GeneralSettingsSection = ({ formData, handleChange }) => (
           <MenuItem value="trial">Trial</MenuItem>
         </Select>
       </FormControl>
+    </div>
+    <div>
+      <div className='flex justify-between'>
+        <span>DCRM</span>
+      <ToggleButton />
+      </div>
+      
     </div>
   </>
 );
@@ -468,7 +484,6 @@ const EnabledModulesSection = () => {
 const GeneralSettingsTab = ({
   company,
   openCompanyStatusDialog,
-  handleOpenCompanyStatusDialog, // Kept for consistency if parent needs to trigger
   handleCloseCompanyStatusDialog,
   handleToggleCompanyStatus,
 }) => {
