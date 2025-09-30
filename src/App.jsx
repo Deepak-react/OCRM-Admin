@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import ForgetPassword from "./Components/ForgetPassword";
 import { ToastProvider } from "./context/ToastContext";
 import SuccessMessage from "./pages/credential/SuccessMessage";
@@ -29,7 +28,6 @@ import LeadDetailView from "./context/leaddetailsview";
 import UserProfile from "./pages/userPage/userProfile";
 import CreateUserForm from "./Components/registerUser";
 import AppLayout from "./Components/AppLayout";
-
 import SettingsPage from "./pages/settings/settingsPage";
 import AccountSettings from "./pages/settings/accountSettings";
 import NotificationSettings from "./pages/settings/notificationSettings";
@@ -52,6 +50,7 @@ import DistrictMaster from "./admin/pages/Masters/district/districtMasters";
 import LeadPotentail from "./admin/pages/Masters/Potential/leadPotential";
 import Indsutry from "./admin/pages/Masters/Industry/industry";
 import CompanyProfile from "./admin/pages/Company/companyProfile";
+import CompanyUser from "./admin/pages/Company/companyUser";
 import { NotFoundPage } from "./admin/components/404";
 import Reseller from "./admin/pages/Reseller/reseller";
 import ResellerProfile from "./admin/pages/Reseller/resellerProfile";
@@ -80,13 +79,12 @@ function App() {
             <Route path="/signupres" element={<SignupRes />} />
             <Route path="/UpdatePassword" element={<UpdatePassword/>}/>
 
-            {/* Protected Routes with Layout */}
-            <Route element={<AppLayout />}>
+              {/* Protected Routes with Layout */}
+              <Route element={<AppLayout />}>
               <Route path="calenderpage" element={<CalendarPage />} />
-                <Route path="/reportpage" element={<CardsPage />} />
-          <Route path="/sales-by-stage-analytics" element={<SalesByStageReportPage />} />
-
-          <Route path="/lead-lost-analytics" element={<LostLeadReportPage />} />
+              <Route path="/reportpage" element={<CardsPage />} />
+              <Route path="/sales-by-stage-analytics" element={<SalesByStageReportPage />} />
+              <Route path="/lead-lost-analytics" element={<LostLeadReportPage />} />
               <Route path="userpage" element={<UserPage />} />
               <Route path="commandpage" element={<Commandpage />} />
               <Route path="users" element={<CreateUserForm />} />
@@ -109,12 +107,11 @@ function App() {
               <Route path="/industry" element={<Indsutry />} />
               <Route path="/404" element={<NotFoundPage />} />              
               <Route path="/company-profile/:id" element={<CompanyProfile />} />
+              {/* <Route path="/companyUser" element = {<CompanyUser />} /> */}
+              <Route path="/companyUser/:userId" element={<CompanyUser />} />
               <Route path="/reseller" element={<Reseller />} />
               <Route path="/reseller-profile/:id" element={<ResellerProfile />} />
               <Route path="/alerts" element={<AlertScreen />} />
-
-
-
               <Route path="leads" element={<LeadsDashboard />} />
               <Route path="leadlistview" element={<LeadListViewPage />} />
               <Route path="leadcardview" element={<LeadCardViewPage />} />
@@ -130,21 +127,17 @@ function App() {
               <Route path="leaddetailview/:leadId" element={<LeadDetailView />} />
               <Route path="userprofile/:userId" element={<UserProfile />}/>
               <Route path="/companydashboard" element={<CompanyDashboard />} />
-
-
-
-
               <Route path="settingspage" element={<SettingsPage />}>
-                <Route path="account" element={<AccountSettings />} />
-                <Route path="notification" element={<NotificationSettings />} />
-                <Route path="billing" element={<BillingSettings />} />
-                <Route path="members" element={<MembersSettings />} />
-                <Route path="support" element={<SupportSettings />} />
-                <Route path="smtpsettings" element={<SmtpSettings />} />
-                
+              <Route path="account" element={<AccountSettings />} />
+              <Route path="notification" element={<NotificationSettings />} />
+              <Route path="billing" element={<BillingSettings />} />
+              <Route path="members" element={<MembersSettings />} />
+              <Route path="support" element={<SupportSettings />} />
+              <Route path="smtpsettings" element={<SmtpSettings />} />
+
+                </Route>
               </Route>
-            </Route>
-          </Routes>
+            </Routes>
           </>
             </UserProvider>
         </TabProvider>

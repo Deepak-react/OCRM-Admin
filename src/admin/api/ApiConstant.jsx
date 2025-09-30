@@ -5,9 +5,13 @@ export const BASE_URL = import.meta.env.VITE_API_URL;
 // Define all API endpoints relative to BASE_URL
 export const ENDPOINTS = {
   LOGIN: `${BASE_URL}/login`,
+  GET_ATTRIBUTE: `${BASE_URL}/attribute`,
+  GET_ATTRIBUTE_USER_ID: `${BASE_URL}/user-attribute/user`,
+  UPDATE_ATTRIBUTE_USER_ID: `${BASE_URL}/user-attribute`,
   DASHBOARD: `${BASE_URL}/admin/dashboard`,
   LEAD_STATUS: `${BASE_URL}/lead-status/`,
   COMPANIES : `${BASE_URL}/company`,
+  COMPANIES_ID : `${BASE_URL}/company/`,
   BUSSINESS_TYPE:`${BASE_URL}/business-type`,
   LEAD_POTENTIAL : `${BASE_URL}/lead-potential/`,
   INDUSTRY : `${BASE_URL}/lead-industry/`,
@@ -15,11 +19,10 @@ export const ENDPOINTS = {
   CITY : `${BASE_URL}/city`, 
   USER : `${BASE_URL}/users/`,
   PLAN: `${BASE_URL}/pricing-plan`,
-  ADMIN_DASHBOARD : `${BASE_URL}/admin-dashboard/`,
+  ADMIN_DASHBOARD : `${BASE_URL}/admin-dashboard`,
   RESELLER : `${BASE_URL}/reseller/`, 
   USER_TAB : (companyId) => `${BASE_URL}/users/company/${companyId}`,
   AUDIT_LOGS : (companyId) => `${BASE_URL}/admin-dashboard/userAudit/${companyId}`,
-  
 
   //Masters
 

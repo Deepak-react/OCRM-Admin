@@ -5,13 +5,15 @@ import { create } from "../../api/ApiHelper";
 export const useCompanyController = () => {
 
   const [companyData, setCompanyData] = useState([]);
+  const [attributes, setAttributes] = useState([]);
+  const [userAttributes, setUserAttributes] = useState([]);
   const [error, setError] = useState(null);
   const [usersByCompany, setUsersByCompany] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
   // Function to fetch all company details
-  const fetchAllCompanyData = async () => {
+  const fetchAllCompanyData = useCallback(async () => {
     try {
       const data = await companyModel.getAllCompantData();``
       console.log("Fetched company data:", data);
@@ -20,7 +22,11 @@ export const useCompanyController = () => {
       console.error('Failed to fetch company data:', err);
       setError(err.message || 'Something went wrong');
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    fetchAllCompanyData();
+  }, [fetchAllCompanyData]);
 
   const changeUserStatus = async (userId, newStatus) => {
     try { 
@@ -35,8 +41,7 @@ export const useCompanyController = () => {
       )
     );
       }
-    }
-  catch (err) {
+    } catch (err) {
       console.error('Failed to change user status:', err);  
     }
   }
@@ -45,8 +50,9 @@ export const useCompanyController = () => {
 
 const fetchCurrencies = async (companyId) => {
   try {
-    const res = await companyModel.getCurrencies(companyId); 
-    return res;
+    const res = await companyModel.getCurrencies(); 
+    setCurrencies(res.data || []);
+    return res.data || [];
   } catch (err) {
     console.error("Failed to fetch currencies:", err);
     setError(err.message || "Something went wrong");
@@ -58,21 +64,19 @@ const fetchCurrencies = async (companyId) => {
   const fetchBusinessType = async (companyId) => {}
   const fetchAuditLogs = async (company_id) => {
     try {
-      const data = await companyModel.getAuditLogs(
-      );
+      const data = await companyModel.getAuditLogs();
       return data;
     } catch (err) {
       console.error('Failed to fetch company data:', err);
       setError(err.message || 'Something went wrong');
     }
   }
-
 
   // Function to fetch company by ID
   const fetchCompanyDataById = async (id) => {
     try {
       const data = await companyModel.getCompanyById(id);
-      console.log("Company details are:", data);
+      // console.log("Company details are:", data);
       return data;
     } catch (err) {
       console.error('Failed to fetch company data:', err);
@@ -80,33 +84,33 @@ const fetchCurrencies = async (companyId) => {
     }
   }
 
-const createCompany = async (data) => {
-  try {
-    // Prepare payload for Prisma
-    const payload = {
-      cCompany_name: data.cCompany_name,
-      iPhone_no: data.iPhone_no,
-      cWebsite: data.cWebsite,
-      caddress1: data.caddress1,
-      caddress2: data.caddress2,
-      caddress3: data.caddress3,
-      cpincode: data.cpincode,
-      cLogo_link: data.cLogo_link,
-      cGst_no: data.cGst_no,
-      icin_no: data.icin_no,
-      cPan_no: data.cPan_no,
-      industry: data.industry,
-      iUser_no: data.iUser_no,
-      bactive: data.bactive,
-    };
+  const createCompany = async (data) => {
+    try {
+      // Prepare payload for Prisma
+      const payload = {
+        cCompany_name: data.cCompany_name,
+        iPhone_no: data.iPhone_no,
+        cWebsite: data.cWebsite,
+        caddress1: data.caddress1,
+        caddress2: data.caddress2,
+        caddress3: data.caddress3,
+        cpincode: data.cpincode,
+        cLogo_link: data.cLogo_link,
+        cGst_no: data.cGst_no,
+        icin_no: data.icin_no,
+        cPan_no: data.cPan_no,
+        industry: data.industry,
+        iUser_no: data.iUser_no,
+        bactive: data.bactive,
+      };
 
-    // Optional relations only if IDs exist
-    if (data.ireseller_id) payload.reseller = { connect: { ireseller_id: data.ireseller_id } };
-    if (data.icity_id) payload.city = { connect: { icity_id: data.icity_id } };
-    if (data.ireseller_admin) payload.resellerAdmin = { connect: { iUser_id: data.ireseller_admin } };
-    if (data.isubscription_plan) payload.pricing_plan = { connect: { plan_id: data.isubscription_plan } };
-    if (data.ibusiness_type) payload.businessType = { connect: { id: data.ibusiness_type } };
-    if (data.icurrency_id) payload.currency = { connect: { icurrency_id: data.icurrency_id } };
+      // Optional relations only if IDs exist
+      if (data.ireseller_id) payload.reseller = { connect: { ireseller_id: data.ireseller_id } };
+      if (data.icity_id) payload.city = { connect: { icity_id: data.icity_id } };
+      if (data.ireseller_admin) payload.resellerAdmin = { connect: { iUser_id: data.ireseller_admin } };
+      if (data.isubscription_plan) payload.pricing_plan = { connect: { plan_id: data.isubscription_plan } };
+      if (data.ibusiness_type) payload.businessType = { connect: { id: data.ibusiness_type } };
+      if (data.icurrency_id) payload.currency = { connect: { icurrency_id: data.icurrency_id } };
 
     // Call model function to insert company into DB
     const res = await companyModel.addNewCompany(payload);
@@ -202,21 +206,18 @@ const createCompany = async (data) => {
     }
   }
 
-
-  // Function to fetch users by company ID}
-const fetchUsersByCompanyId = async (companyId) => {
-  try {
-    const res = await companyModel.getUsersByCompanyId(companyId);
-    //console.log("Setting usersByCompany with:", res.data); 
-    setUsersByCompany(res.data); 
-    setError(null);
-    return res.data;
-  } catch (err) {
-    console.error("Failed to fetch users by company:", err);
-    setError(err.message || "Something went wrong");
-    return [];
-  }
-
+  // Function to fetch users by company ID
+  const fetchUsersByCompanyId = async (companyId) => {
+    try {
+      const res = await companyModel.getUsersByCompanyId(companyId);
+      setUsersByCompany(res.data); 
+      setError(null);
+      return res.data;
+    } catch (err) {
+      console.error("Failed to fetch users by company:", err);
+      setError(err.message || "Something went wrong");
+      return [];
+    }
   };
 
   useEffect(() => {

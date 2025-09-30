@@ -1,10 +1,13 @@
 export const BASE_URL = import.meta.env.VITE_API_URL;
+console.log("BASE_URL:", BASE_URL);
+
 
 export const ENDPOINTS = {
   BASE_URL_IS: BASE_URL,
   LOGIN: `${BASE_URL}/login`,
   FORGOT_PASSWORD: `${BASE_URL}/forgot-password`,
   UPDATE_PASSWORD: `${BASE_URL}/update-password`,
+  // UPDATE_PASSWORD: `${BASE_URL}/update-password`,
   // PLAN_TYPE: `${BASE_URL}/pricing-plans`,
   // RESELLER: `${BASE_URL}/reseller`,
   // LEAD_STATUS: `${BASE_URL}/lead-status/company-lead`, // UPDATED 20/6
@@ -25,28 +28,12 @@ export const ENDPOINTS = {
   // GET_USERS: `${BASE_URL}/users`,
   // CONVERT_TO_LOST: `${BASE_URL}/lead`,
   // EXPORT_LEADS: `${BASE_URL}/lead/download`,
-  // LOST_LEADS: `${BASE_URL}/reports/lost-leads`,
   // STAGE_LEADS: `${BASE_URL}/reports/sales-stage-leads`,
   // COMPANY_GET: `${BASE_URL}/lead/company-dashboard/`,
   USER_GET: `${BASE_URL}/users`,
-  // NOTIFICATIONS: `${BASE_URL}/notifications`,
-  // TERRITORY_LEADS: `${BASE_URL}/reports/territory-leads`,
-  // FEEDBACK: `${BASE_URL}/reports/feedback`,
   
   
 };
 
-// export const BASE_URL = import.meta.env.VITE_API_URL;
 
-// console.log("Base URL:", BASE_URL);
-
-// // Define all API endpoints relative to BASE_URL
-// export const ENDPOINTS = {
-//   BASE_URL_IS: BASE_URL,
-//   LOGIN: `${BASE_URL}/login`,
-//   SIGNUP: `${BASE_URL}/admin/dashboard`,
-
-
-//   // Add more endpoints here as needed
-// };
 
