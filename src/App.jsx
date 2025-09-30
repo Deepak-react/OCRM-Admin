@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -62,6 +61,7 @@ import CountryMaster from "./admin/pages/Masters/country/countryMaster";
 import CityMaster from "./admin/pages/Masters/city/cityMaster";
 import CurrencyMaster from "./admin/pages/Masters/currency/currencyMaster";
 import SubscriptionPage from "./admin/pages/Subscription_plan/subscription_components";
+import ModulePage from "./admin/pages/Module/module_components";
 
 function App() {
   return (
@@ -94,6 +94,9 @@ function App() {
               <Route path="/company" element={<Company />} />
               {/* Subscription route */}
               <Route path="/subscriptions" element={<SubscriptionPage />} />
+              {/* Module route */}
+              <Route path="/module" element={<ModulePage />} />
+
               <Route path="/masters" element={<MasterData />} />
               <Route path="/dashboard-admin" element={<AdminDashboard />} />
               <Route path="/lead-status" element={<LeadStatus />} />

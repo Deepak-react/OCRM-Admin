@@ -37,6 +37,10 @@ export const ENDPOINTS = {
   SUBSCRIPTION_CREATE:`${BASE_URL}/subscription/createSubscription`,
   ALL_SUBSCRIPTION_GET:`${BASE_URL}/subscription/getAllSubscription`,
   EDIT_SUBSCRIPTION:`${BASE_URL}/subscription/updateSubscription`,
-  SUBSCRIPTION_STATUS_CHANGE:`${BASE_URL}/subscription/changeStatus`
+  SUBSCRIPTION_STATUS_CHANGE:`${BASE_URL}/subscription/changeStatus`,
+  CREATE_MODULE:`${BASE_URL}/module`,
+      GET_ALL_MODULES:`${BASE_URL}/module`,
+      EDIT_MODULE:`${BASE_URL}/module`,
+      CHANGE_MODULE_STATUS:`${BASE_URL}/module/changeSts`
 };
 

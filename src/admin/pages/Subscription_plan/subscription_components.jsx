@@ -12,13 +12,13 @@ export default function SubscriptionPage() {
     addSubscription,
     editSubscription,
     changeSubscriptionStatusController,
+    currencies
   } = subscriptionCRUDOperation();
 
   const [editing, setEditing] = useState(null);
-
   if (loading) return <p className="text-gray-600">Loading...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
-
+  console.log("Currency in com: ", currencies)
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Subscriptions</h2>
@@ -27,13 +27,14 @@ export default function SubscriptionPage() {
       <SubscriptionForm
         onSubmit={(sub) => {
           if (editing) {
-            editSubscription(editing.plan_id, sub);
+            editSubscription(editing.plan_id, { ...sub, planDurationId: editing.planDurationId, });
             setEditing(null);
           } else {
             addSubscription(sub);
           }
         }}
         initialData={editing}
+        currencyList={currencies}
       />
 
       {/* Subscription Table */}
@@ -77,7 +78,7 @@ export default function SubscriptionPage() {
                   </button>
                   <button
                     onClick={() =>
-                      changeSubscriptionStatusController(sub.plan_id)
+                      changeSubscriptionStatusController(sub.plan_id, { status: !sub.bactive })
                     }
                     className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                   >
