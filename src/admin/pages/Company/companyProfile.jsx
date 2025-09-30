@@ -18,6 +18,7 @@ import EventIcon from "@mui/icons-material/Event";
 import EditDocumentIcon from "@mui/icons-material/EditDocument";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import { useParams } from "react-router-dom";
 import {
   Chart as ChartJS,
@@ -39,6 +40,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import GeneralSettingsTab from "./GeneralSettingsTab";
+import CompanyUser from "./companyUser.jsx"
 import LeadStatus from "../Masters/Status/leadStauts.jsx";
 import LeadPotential from "../Masters/Potential/leadPotential.jsx";
 import LeadSource from "../Masters/Source/leadSource.jsx";
@@ -47,10 +49,7 @@ import DistrictMaster from "../Masters/district/districtMasters.jsx"
 import CountryMaster from "../Masters/country/countryMaster.jsx"
 import StateMaster from "../Masters/States/StateMaster.jsx"
 import CurrencyMaster from "../Masters/currency/currencyMaster.jsx"
-
-
 import AuditLoginTab from "./AuditLoginTab";
-
 import { useToast } from "../../../context/ToastContext.jsx";
 import LeadServices from "../Masters/Services/Services.jsx";
 import SubIndustry from "../Masters/Sub-Industry/SubIndustry.jsx";
@@ -170,7 +169,7 @@ const MasterDataPanel = ({ companyData }) => {
   ];
 
   const renderComponent = () => {
-    console.log("Selected company:", companyData.cCompany_name);
+    // console.log("Selected company:", companyData.cCompany_name);
     switch (selectedComponent) {
       case "LeadStatus":
         return <LeadStatus company={companyData.cCompany_name} />;
@@ -199,7 +198,7 @@ const MasterDataPanel = ({ companyData }) => {
     }
   };
 
-  // Step 1: If a card is selected, show its component
+  //  If a card is selected, show its component
   if (selectedComponent) {
     return (
       <div className="p-4">
@@ -214,7 +213,7 @@ const MasterDataPanel = ({ companyData }) => {
     );
   }
 
-  // Step 2: Show cards when no component is selected
+  // Show cards when no component is selected
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       {cardData.map((card) => (
@@ -243,6 +242,7 @@ const MasterDataPanel = ({ companyData }) => {
 };
 
 const CompanyProfile = () => {
+  const navigate = useNavigate();
   const {
     fetchCompanyDataById,
     usersByCompany,
@@ -345,7 +345,6 @@ const CompanyProfile = () => {
     },
   ]);
 
-  //funciton to calculate the total number of pages
   // Calculate total pages
   const totalPages = Math.ceil(
     (Array.isArray(usersByCompany) ? usersByCompany.length : 0) / usersPerPage
@@ -382,9 +381,9 @@ const CompanyProfile = () => {
     const loadCompany = async () => {
       try {
         const data = await fetchCompanyDataById(id);
-        console.log("The company data is:", data);
+        // console.log("The company data is:", data);
         setCompany(data);
-        console.log("Rendered with id:", id);
+        // console.log("Rendered with id:", id);
       } catch (error) {
         console.error("Failed to fetch company data:", error);
         setCompany(null);
@@ -399,7 +398,7 @@ const CompanyProfile = () => {
     if (activeTab === 2 && id) {
       // Only fetch when 'Users' tab is active and a company ID is available
       //console.log("Fetching users for company ID:", id);
-      console.log("Fetching users for company ID:", id);
+      // console.log("Fetching users for company ID:", id);
       fetchUsersByCompanyId(id);
       fetchRoles();
     }
@@ -411,14 +410,14 @@ const CompanyProfile = () => {
   const [editCompanyData, setEditCompanyData] = useState({});
 
   const handleOpenEditDialog = async () => {
-    console.log("Opening edit dialog with company data:", company);
+    // console.log("Opening edit dialog with company data:", company);
     await fetchAllCities(); // Fetch cities when opening the edit dialog
     setEditCompanyData(company.result);
     setOpenEditDialog(true);
   };
 
   const handleUserCreateDialog = async () => {
-    console.log("Open the user create dialog");
+    // console.log("Open the user create dialog");
     setOpenUserCreateDialog(false);
   };
 
@@ -432,7 +431,7 @@ const CompanyProfile = () => {
 
   const handleUserCreate = async (e) => {
     e.preventDefault(); // prevent page reload
-    console.log("Form Data Submitted:", userFormData);
+    // console.log("Form Data Submitted:", userFormData);
 
     const jsonData = {
       cFull_name: userFormData.fullName,
@@ -445,11 +444,11 @@ const CompanyProfile = () => {
       irole_id: parseInt(userFormData.role),
     };
     const res = await createUser(jsonData);
-    console.log(res);
+    // console.log(res);
     res
       ? showToast("success", "User created successfully.")
       : showToast("error", error);
-    console.log("User created response is:", error);
+    // console.log("User created response is:", error);
     setUsersByCompany((prev) => [...prev,   {
         cFull_name: userFormData.fullName,
         cEmail: userFormData.email,
@@ -541,12 +540,12 @@ const CompanyProfile = () => {
 
   const handleToggleUserStatus = async () => {
     if (userToModify) {
-      console.log(userToModify);
+      // console.log(userToModify);
       await changeUserStatus(userToModify.iUser_id);
       const newStatus = userToModify.bactive ? "Inactive" : "Active";
-      console.log(
-        `Attempting to ${newStatus} user: ${userToModify.cFull_name}. (Implement API call here)`
-      );
+      // console.log(
+      //   `Attempting to ${newStatus} user: ${userToModify.cFull_name}. (Implement API call here)`
+      // );
       handleCloseUserStatusDialog();
     }
   };
@@ -568,11 +567,11 @@ const CompanyProfile = () => {
   const handleToggleCompanyStatus = () => {
     if (company) {
       const newBactiveStatus = !company.result.bactive;
-      console.log(
-        `Toggling company status to: ${
-          newBactiveStatus ? "Active" : "Inactive"
-        }`
-      );
+      // console.log(
+      //   `Toggling company status to: ${
+      //     newBactiveStatus ? "Active" : "Inactive"
+      //   }`
+      // );
       setCompany((prevCompany) => ({
         ...prevCompany,
         bactive: newBactiveStatus,
@@ -718,7 +717,7 @@ const CompanyProfile = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center"> {/* Rounded-xl, shadow-sm */}
             <h3 className="text-base font-semibold text-gray-700 mb-2">Total Users</h3>
-            <p className="text-4xl font-extrabold text-blue-600">321</p> {/* Consistent blue */}
+            <p className="text-4xl font-extrabold text-blue-600">300</p> {/* Consistent blue */}
           </div>
           <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center">
             <h3 className="text-base font-semibold text-gray-700 mb-2">Total Leads</h3>
@@ -921,7 +920,7 @@ const CompanyProfile = () => {
               className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors duration-200 shadow-sm"
               onClick={setOpenUserCreateDialog}
             >
-              {/* Changed to indigo, reduced shadow */}+ Create user
+              + Create user
             </button>
           </div>
           {/* Display error from the controller */}
@@ -932,7 +931,7 @@ const CompanyProfile = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Name
+                      User Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Email
@@ -951,10 +950,17 @@ const CompanyProfile = () => {
                     </th>
                   </tr>
                 </thead>
+
                 <tbody className="bg-white divide-y divide-gray-200">
                   {/* Iterate over usersByCompany fetched from the API */}
                   {paginatedUsers.map((user) => (
-                    <tr key={user.iUser_id}>
+                    // <tr key={user.iUser_id}>
+                     <tr
+                      key={user.iUser_id}
+                      className="cursor-pointer hover:bg-gray-100"
+                      onClick={() => navigate(`/companyUser/${user.iUser_id}`)}
+                      // onClick={() => navigate(`/companyUser`)} 
+                    >
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {user.cFull_name}
                       </td>
@@ -1074,10 +1080,10 @@ const CompanyProfile = () => {
       <CustomTabPanel value={activeTab} index={3}>
         {/* New index for Masters */}
         {/* <MasterData /> */}
-        {console.log(
+        {/* {console.log(
           "Company data in MasterDataPanel:",
           company?.result.cCompany_name
-        )}
+        )} */}
         <MasterDataPanel companyData={company?.result} />
       </CustomTabPanel>
       <CustomTabPanel value={activeTab} index={4}>
