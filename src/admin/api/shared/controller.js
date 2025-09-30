@@ -8,6 +8,9 @@ export const useSharedController = () => {
   //Bussiness type
   const [bussinessType, setBussinessType] = useState([]);
 
+  // Roles data
+  const [roles, setRoles] = useState([]);
+
     //contains cities data
   const [cities, setCities] = useState([]);
 
@@ -73,8 +76,8 @@ export const useSharedController = () => {
     fetchCompanies, //For manual refresh 
     companies,
     fetchAllCities,
-    cities
-
-    
+    cities,
+    fetchRoles,
+    roles
   };
 };

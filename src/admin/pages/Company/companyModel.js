@@ -83,8 +83,8 @@ export const getCompanyById = async (id) =>{
 export const getUsersByCompanyId = async (companyId) => {
   //console.log(`Fetching users for company ID: ${companyId} using new API structure`);
   try {
-    const response = await getAll(ENDPOINTS.USER_TAB(companyId));
-    //console.log("Users fetched successfully:", response);
+    const response = await ApiHelper.getAll(ENDPOINTS.USER_TAB(companyId));
+    console.log("Users fetched successfully:", response);
     return response.data; 
   } catch (error) {
     //console.error("Error fetching users:", error);

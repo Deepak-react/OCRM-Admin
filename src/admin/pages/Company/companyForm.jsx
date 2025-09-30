@@ -374,7 +374,7 @@ if (!values.isubscription_plan) newErrors.isubscription_plan = "Subscription pla
       </div>
 
   
-
+  
       <div>
         <label className="block text-sm font-medium">Profile Picture URL (optional)</label>
         <input name="cProfile_pic" value={formData.cProfile_pic} onChange={handleChange} className="w-full border p-2 rounded" />
@@ -404,14 +404,6 @@ if (!values.isubscription_plan) newErrors.isubscription_plan = "Subscription pla
             <button
               type="button"
               onClick={() => {
-                // const currentErrors = validate(formData);
-                // const errorsForStep = pageNumber === 1
-                //   ? ['cCompany_name', 'iPhone_no', 'email']
-                //   : [];
-
-                // const hasStepErrors = errorsForStep.some((field) => currentErrors[field]);
-
-                // setErrors(currentErrors);
                 setPageNumber(pageNumber + 1);
               }}
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"

@@ -50,7 +50,6 @@ import CurrencyMaster from "../Masters/currency/currencyMaster.jsx"
 
 
 import AuditLoginTab from "./AuditLoginTab";
-
 import { useToast } from "../../../context/ToastContext.jsx";
 import LeadServices from "../Masters/Services/Services.jsx";
 import SubIndustry from "../Masters/Sub-Industry/SubIndustry.jsx";
@@ -91,8 +90,7 @@ function a11yProps(index) {
 }
 
 const MasterDataPanel = ({ companyData }) => {
-  const [selectedComponent, setSelectedComponent] = useState(null);
-
+  const [selectedComponent, setSelectedComponent] = useState(null);  
   const cardData = [
     {
       id: 1,
@@ -1076,7 +1074,7 @@ const CompanyProfile = () => {
         {/* <MasterData /> */}
         {console.log(
           "Company data in MasterDataPanel:",
-          company?.result.cCompany_name
+          company
         )}
         <MasterDataPanel companyData={company?.result} />
       </CustomTabPanel>
@@ -1455,6 +1453,7 @@ const CompanyProfile = () => {
                       <option value="" disabled className="text-gray-400">
                         Choose role
                       </option>
+                      {console.log("The roles are:", roles)}
                       {roles.map((role) => (
                         <option key={role.irole_id} value={role.irole_id}>
                           {role.cRole_name}

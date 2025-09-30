@@ -42,7 +42,6 @@ export const useCompanyController = () => {
   }
 
 
-
 const fetchCurrencies = async (companyId) => {
   try {
     const res = await companyModel.getCurrencies(companyId); 
@@ -71,6 +70,7 @@ const fetchCurrencies = async (companyId) => {
   // Function to fetch company by ID
   const fetchCompanyDataById = async (id) => {
     try {
+      console.log("This is the company data function!")
       const data = await companyModel.getCompanyById(id);
       console.log("Company details are:", data);
       return data;
@@ -207,7 +207,7 @@ const createCompany = async (data) => {
 const fetchUsersByCompanyId = async (companyId) => {
   try {
     const res = await companyModel.getUsersByCompanyId(companyId);
-    //console.log("Setting usersByCompany with:", res.data); 
+    console.log("Setting usersByCompany with:", res.data); 
     setUsersByCompany(res.data); 
     setError(null);
     return res.data;
