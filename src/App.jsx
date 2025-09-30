@@ -61,6 +61,7 @@ import StateMaster from "./admin/pages/Masters/States/StateMaster";
 import CountryMaster from "./admin/pages/Masters/country/countryMaster";
 import CityMaster from "./admin/pages/Masters/city/cityMaster";
 import CurrencyMaster from "./admin/pages/Masters/currency/currencyMaster";
+import SubscriptionPage from "./admin/pages/Subscription_plan/subscription_components";
 
 function App() {
   return (
@@ -91,6 +92,8 @@ function App() {
               <Route path="users" element={<CreateUserForm />} />
               <Route path="/notifications" element={<NotificationPage />} />
               <Route path="/company" element={<Company />} />
+              {/* Subscription route */}
+              <Route path="/subscriptions" element={<SubscriptionPage />} />
               <Route path="/masters" element={<MasterData />} />
               <Route path="/dashboard-admin" element={<AdminDashboard />} />
               <Route path="/lead-status" element={<LeadStatus />} />
