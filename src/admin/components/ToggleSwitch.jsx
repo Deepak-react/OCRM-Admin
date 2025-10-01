@@ -1,9 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function ToggleSwitch() {
-  const [isOn, setIsOn] = useState(false);
+function ToggleSwitch({ status, name, onToggle }) {
+  const [isOn, setIsOn] = useState(status || false);
 
-  const handleToggle = () => setIsOn(!isOn);
+  // Sync with external status if it changes
+  useEffect(() => {
+    setIsOn(status);
+  }, [status]);
+
+  const handleToggle = () => {
+    const newState = !isOn;
+    setIsOn(newState);
+
+    // Call parent function if provided
+    if (onToggle) {
+      onToggle(name, newState);
+    }
+  };
 
   return (
     <button

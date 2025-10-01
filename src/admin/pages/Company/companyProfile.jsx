@@ -672,7 +672,7 @@ const handleOpenEditDialog = async (company) => {
 
         {/* General Settings Tab */}
         <CustomTabPanel value={activeTab} index={1}>
-          <GeneralSettingsTab />
+          <GeneralSettingsTab company = {company}/>
         </CustomTabPanel>
 
         {/* Users Tab */}

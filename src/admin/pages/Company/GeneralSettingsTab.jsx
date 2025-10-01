@@ -21,6 +21,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import EditIcon from '@mui/icons-material/Edit';
 
 import ToggleButton from '../../components/ToggleSwitch'
+import Collapsible from '../../components/Collipsable'
 
 // --- Constants & Utilities ---
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,8 +58,12 @@ const emailFormReducer = (state, action) => {
   }
 };
 
+const handleToggleChange = (name, status) => {
+  
+}
+
 // --- Sub-component: General Settings Section ---
-const GeneralSettingsSection = ({ formData, handleChange }) => (
+const GeneralSettingsSection = ({ formData, handleChange, settings }) => (
   <>
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
       <Box>
@@ -115,11 +120,38 @@ const GeneralSettingsSection = ({ formData, handleChange }) => (
       </FormControl>
     </div>
     <div>
-      <div className='flex justify-between'>
-        <span>DCRM</span>
-      <ToggleButton />
-      </div>
-      
+      {toggleSection("DCRM" , settings.DCRM, "DCRM")}
+      {toggleSection("Poster generator",settings.PosterGenerator, "PosterGenerator")}
+      {toggleSection("Reminder", settings.Reminder, "Reminder")}
+      {toggleSection("Website lead tab", settings.WebsiteLead, "WebsiteLead")}
+      {toggleSection("Import", settings.Import, "Import")}
+      {toggleSection("Export", settings.Export, "Export")}
+      {toggleSection("File attachement", settings.FileAttachment, "FileAttachment")}
+      {toggleSection("File attachement", settings.Email ,"Email")}
+
+      {/* Collapsable button to hide the reports and master  */}    
+      <Collapsible title="Report" className="mt-5">
+        {toggleSection("Lead lost", settings.Reports.LostLeadReport,  "LostLeadReport")}
+        {toggleSection("Sales by stage", settings.Reports.SalesStageReport, "SalesStageReport")}
+        {toggleSection("Lead by territory", settings.Reports.TerritoryLeadReport, "TerritoryLeadReport")}
+        {toggleSection("Lead conversion", settings.Reports.LeadConversionReport, "LeadConversionReport")}
+        {toggleSection("Lead owner activity", settings.Reports.LeadOwnerActivityReport, "LeadOwnerActivityReport")}
+        {toggleSection("Prospects lost lead", settings.Reports.ProspectsLostLeadsReport, "ProspectsLostLeadsReport")}
+        {toggleSection("First response time oppertunity", settings.Reports.FirstResponseTimeOppurtunityReport, "FirstResponseTimeOppurtunityReport")}
+        {toggleSection("Company Overall report", settings.Reports.CompanyOverallReport, "CompanyOverallReport")}
+      </Collapsible>
+
+      <Collapsible title="Master" className="mt-5">
+        {toggleSection("Status master", settings.Masters.StatusMaster, "StatusMaster")}
+        {toggleSection("Currency master", settings.Masters.CurrencyMaster, "CurrencyMaster")}
+        {toggleSection("Potential master", settings.Masters.PotentialMaster, "PotentialMaster")}
+        {toggleSection("Industry master", settings.Masters.IndustryMaster, "IndustryMaster")}
+        {toggleSection("Lead source master", settings.Masters.SourceMaster, "SourceMaster")}
+        {toggleSection("Service master", settings.Masters.ServiceMaster, "ServiceMaster")}
+        {toggleSection("Proposal send mode master", settings.Masters.ProposalModeMaster, "ProposalModeMaster")}
+        {toggleSection("Email template master", settings.Masters.EmailTemplateMaster, "EmailTemplateMaster")}
+        {toggleSection("Lead Lost reason", settings.Masters.LeasLostReasonMaster, "LeasLostReasonMaster")}
+      </Collapsible>
     </div>
   </>
 );
@@ -332,6 +364,15 @@ const DefaultEmailAccountSection = () => {
   );
 };
 
+const toggleSection = (label, status, name) => {
+  return (
+     <div className='flex justify-between mt-4'>
+        <Typography>{label}</Typography>
+      <ToggleButton status = {status} name = {name} onToggle={handleToggleChange} />
+      </div>
+  )
+}
+
 // --- Sub-component: Enabled Modules Section ---
 const EnabledModulesSection = () => {
   const [modules, setModules] = useState([
@@ -500,12 +541,15 @@ const GeneralSettingsTab = ({
       [name]: value,
     }));
   }, []);
-
+  const companySettings = company?.companySettings;
+  console.log('The company details are:', companySettings);
+  
   return (
     <Box className="space-y-8">
       <GeneralSettingsSection
         formData={generalSettingsFormData}
         handleChange={handleGeneralSettingsChange}
+        settings = {companySettings}
       />
       <Divider sx={{ my: 4 }} />
       <DefaultEmailAccountSection />

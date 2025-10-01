@@ -87,6 +87,10 @@ export const useCompanyController = () => {
     }
   }
 
+  const changeSettingsStatus = async (name, status) => {
+    
+  }
+
   // Function to fetch company by ID
   const fetchCompanyDataById = async (id) => {
     try {
