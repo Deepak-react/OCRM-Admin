@@ -44,6 +44,8 @@ export const ENDPOINTS = {
   CREATE_MODULE:`${BASE_URL}/module`,
       GET_ALL_MODULES:`${BASE_URL}/module`,
       EDIT_MODULE:`${BASE_URL}/module`,
-      CHANGE_MODULE_STATUS:`${BASE_URL}/module/changeSts`
+      CHANGE_MODULE_STATUS:`${BASE_URL}/module/changeSts`,
+      GET_ALL_ALLOCATED_MODULES:`${BASE_URL}/subscriptionPlanModule/getAllocateModule`,
+      
 };
 

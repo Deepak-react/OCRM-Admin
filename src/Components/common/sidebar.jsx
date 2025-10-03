@@ -18,7 +18,8 @@ const Sidebar = () => {
     { iconPath: '/images/nav/settings.png', label: 'Masters', route: '/masters' },
     { iconPath: '/images/nav/settings.png', label: 'Subscription', route: '/subscriptions' },
     { iconPath: '/images/nav/settings.png', label: 'Module', route: '/module' },
-
+    { iconPath: '/images/nav/settings.png', label: 'Module Allocation', route: '/moduleAllocation' },
+    
   ];
 
   useEffect(() => {

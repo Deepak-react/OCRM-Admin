@@ -36,6 +36,8 @@ export const getAllCurrencies = async () => {
   } catch (error) {
     console.error("Error fetching plan types:", error);
     return [];
+  }
+}
   
 
 export const  getAllCities  = async ()=>{

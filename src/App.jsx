@@ -61,6 +61,7 @@ import CityMaster from "./admin/pages/Masters/city/cityMaster";
 import CurrencyMaster from "./admin/pages/Masters/currency/currencyMaster";
 import SubscriptionPage from "./admin/pages/Subscription_plan/subscription_components";
 import ModulePage from "./admin/pages/Module/module_components";
+import { ModuleAllocation } from "./admin/pages/Module_allocation/module_alllocation_component";
 
 function App() {
   return (
@@ -94,7 +95,8 @@ function App() {
               <Route path="/subscriptions" element={<SubscriptionPage />} />
               {/* Module route */}
               <Route path="/module" element={<ModulePage />} />
-
+              {/* Module allocation route */}
+              <Route path="/moduleAllocation" element={<ModuleAllocation />} />
               <Route path="/masters" element={<MasterData />} />
               <Route path="/dashboard-admin" element={<AdminDashboard />} />
               <Route path="/lead-status" element={<LeadStatus />} />

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import * as moduleModel from "../Module/module_mode"
-import { requestFormReset } from "react-dom";
 //MODULE CONTROLLER 
 export function moduleController() {
      //VARIABLES 

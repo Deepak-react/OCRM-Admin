@@ -26,17 +26,19 @@ export default function ModuleForm({ onSubmit, module }) {
   };
 
   return (
-    <div>
+    <div className="p-8">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={moduleName}
+          className="border border-black mr-4 p-2 rounded"
           onChange={(e) => setModuleName(e.target.value)}
           placeholder="Enter module name"
         />
-        <button type="submit">
+        <button type="submit" className="bg-black rounded text-white p-2">
           {module ? "Update Module" : "Create Module"}
         </button>
+        <button className="bg-black rounded m-1 text-white p-2">Cancle</button>
       </form>
     </div>
   );
