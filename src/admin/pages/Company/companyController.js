@@ -87,8 +87,15 @@ export const useCompanyController = () => {
     }
   }
 
-  const changeSettingsStatus = async (name, status) => {
-    
+  const changeSettingsStatus = async (settingsData,  companId) => {
+     try { 
+      const response = await companyModel.changeSettingStatus(settingsData, companId);
+      if(response.status === 200) {
+        console.log("User status changed successfully:", response);
+      }
+    } catch (err) {
+      console.error('Failed to change user status:', err);  
+    }
   }
 
   // Function to fetch company by ID
@@ -169,7 +176,7 @@ export const useCompanyController = () => {
         isubscription_plan: data.isubscription_plan,
         ibusiness_type: data.ibusiness_type,
         ireseller_id: data.ireseller_id,
-        icurrency_id: data.icurrency_id,
+        icurrency_id: data.icurrency_id
       };
 
       console.log("Sending edit payload:", payload);
@@ -240,6 +247,7 @@ export const useCompanyController = () => {
     createCompany,
     fetchAllCompanyData,
     changeUserStatus,
+    changeSettingsStatus,
     editCompanyDetails,
     createUser,
     error,

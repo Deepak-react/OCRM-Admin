@@ -22,10 +22,12 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import ToggleButton from '../../components/ToggleSwitch'
 import Collapsible from '../../components/Collipsable'
+import { useCompanyController } from './companyController';
 
 // --- Constants & Utilities ---
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const APP_PASSWORD_REGEX = /^[a-z]*$/; // Lowercase letters only
+
 
 // --- Reducer for Default Email Account Form ---
 const emailFormReducer = (state, action) => {
@@ -58,9 +60,6 @@ const emailFormReducer = (state, action) => {
   }
 };
 
-const handleToggleChange = (name, status) => {
-  
-}
 
 // --- Sub-component: General Settings Section ---
 const GeneralSettingsSection = ({ formData, handleChange, settings }) => (
@@ -120,37 +119,179 @@ const GeneralSettingsSection = ({ formData, handleChange, settings }) => (
       </FormControl>
     </div>
     <div>
-      {toggleSection("DCRM" , settings.DCRM, "DCRM")}
-      {toggleSection("Poster generator",settings.PosterGenerator, "PosterGenerator")}
-      {toggleSection("Reminder", settings.Reminder, "Reminder")}
-      {toggleSection("Website lead tab", settings.WebsiteLead, "WebsiteLead")}
-      {toggleSection("Import", settings.Import, "Import")}
-      {toggleSection("Export", settings.Export, "Export")}
-      {toggleSection("File attachement", settings.FileAttachment, "FileAttachment")}
-      {toggleSection("File attachement", settings.Email ,"Email")}
+      <ToggleSection
+        label="DCRM"
+        status={settings.DCRM}
+       companyId={settings.companyId}
+      />
+      <ToggleSection
+        label="Poster generator"
+        status={settings.PosterGenerator}
+        name="PosterGenerator"
+        companyId={settings.companyId}
+      />
+      <ToggleSection
+        label="Reminder"
+        status={settings.Reminder}
+        name="Reminder"
+        companyId={settings.companyId}
+      />
+      <ToggleSection
+        label="Website lead tab"
+        status={settings.WebsiteLead}
+        name="WebsiteLead"
+        companyId={settings.companyId}
+      />
+      <ToggleSection
+        label="Import"
+        status={settings.Import}
+        name="Import"
+        companyId={settings.companyId}
+      />
+      <ToggleSection
+        label="Export"
+        status={settings.Export}
+        name="Export"
+        companyId={settings.companyId}
+      />
+      <ToggleSection
+        label="File attachment"
+        status={settings.FileAttachment}
+        name="FileAttachment"
+        companyId={settings.companyId}
+      />
+      <ToggleSection
+        label="Email"
+        status={settings.Email}
+        name="Email"
+        companyId={settings.companyId}
+      />
 
-      {/* Collapsable button to hide the reports and master  */}    
+      {/* Collapsible Reports */}
       <Collapsible title="Report" className="mt-5">
-        {toggleSection("Lead lost", settings.Reports.LostLeadReport,  "LostLeadReport")}
-        {toggleSection("Sales by stage", settings.Reports.SalesStageReport, "SalesStageReport")}
-        {toggleSection("Lead by territory", settings.Reports.TerritoryLeadReport, "TerritoryLeadReport")}
-        {toggleSection("Lead conversion", settings.Reports.LeadConversionReport, "LeadConversionReport")}
-        {toggleSection("Lead owner activity", settings.Reports.LeadOwnerActivityReport, "LeadOwnerActivityReport")}
-        {toggleSection("Prospects lost lead", settings.Reports.ProspectsLostLeadsReport, "ProspectsLostLeadsReport")}
-        {toggleSection("First response time oppertunity", settings.Reports.FirstResponseTimeOppurtunityReport, "FirstResponseTimeOppurtunityReport")}
-        {toggleSection("Company Overall report", settings.Reports.CompanyOverallReport, "CompanyOverallReport")}
+        <ToggleSection
+          label="Lead lost"
+          status={settings.Reports.LostLeadReport}
+          name="LostLeadReport"
+          sub_name="Reports"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Sales by stage"
+          status={settings.Reports.SalesStageReport}
+          name="SalesStageReport"
+          sub_name="Reports"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Lead by territory"
+          status={settings.Reports.TerritoryLeadReport}
+          name="TerritoryLeadReport"
+          sub_name="Reports"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Lead conversion"
+          status={settings.Reports.LeadConversionReport}
+          name="LeadConversionReport"
+          sub_name="Reports"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Lead owner activity"
+          status={settings.Reports.LeadOwnerActivityReport}
+          name="LeadOwnerActivityReport"
+          sub_name="Reports"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Prospects lost lead"
+          status={settings.Reports.ProspectsLostLeadsReport}
+          name="ProspectsLostLeadsReport"
+          sub_name="Reports"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="First response time opportunity"
+          status={settings.Reports.FirstResponseTimeOppurtunityReport}
+          name="FirstResponseTimeOppurtunityReport"
+          sub_name="Reports"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Company Overall report"
+          status={settings.Reports.CompanyOverallReport}
+          name="CompanyOverallReport"
+          sub_name="Reports"
+          companyId={settings.companyId}
+        />
       </Collapsible>
 
+      {/* Collapsible Masters */}
       <Collapsible title="Master" className="mt-5">
-        {toggleSection("Status master", settings.Masters.StatusMaster, "StatusMaster")}
-        {toggleSection("Currency master", settings.Masters.CurrencyMaster, "CurrencyMaster")}
-        {toggleSection("Potential master", settings.Masters.PotentialMaster, "PotentialMaster")}
-        {toggleSection("Industry master", settings.Masters.IndustryMaster, "IndustryMaster")}
-        {toggleSection("Lead source master", settings.Masters.SourceMaster, "SourceMaster")}
-        {toggleSection("Service master", settings.Masters.ServiceMaster, "ServiceMaster")}
-        {toggleSection("Proposal send mode master", settings.Masters.ProposalModeMaster, "ProposalModeMaster")}
-        {toggleSection("Email template master", settings.Masters.EmailTemplateMaster, "EmailTemplateMaster")}
-        {toggleSection("Lead Lost reason", settings.Masters.LeasLostReasonMaster, "LeasLostReasonMaster")}
+        <ToggleSection
+          label="Status master"
+          status={settings.Masters.StatusMaster}
+          name="StatusMaster"
+          sub_name="Masters"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Currency master"
+          status={settings.Masters.CurrencyMaster}
+          name="CurrencyMaster"
+          sub_name="Masters"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Potential master"
+          status={settings.Masters.PotentialMaster}
+          name="PotentialMaster"
+          sub_name="Masters"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Industry master"
+          status={settings.Masters.IndustryMaster}
+          name="IndustryMaster"
+          sub_name="Masters"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Lead source master"
+          status={settings.Masters.SourceMaster}
+          name="SourceMaster"
+          sub_name="Masters"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Service master"
+          status={settings.Masters.ServiceMaster}
+          name="ServiceMaster"
+          sub_name="Masters"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Proposal send mode master"
+          status={settings.Masters.ProposalModeMaster}
+          name="ProposalModeMaster"
+          sub_name="Masters"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Email template master"
+          status={settings.Masters.EmailTemplateMaster}
+          name="EmailTemplateMaster"
+          sub_name="Masters"
+          companyId={settings.companyId}
+        />
+        <ToggleSection
+          label="Lead Lost reason"
+          status={settings.Masters.LeasLostReasonMaster}
+          name="LeasLostReasonMaster"
+          sub_name="Masters"
+          companyId={settings.companyId}
+        />
       </Collapsible>
     </div>
   </>
@@ -364,14 +505,35 @@ const DefaultEmailAccountSection = () => {
   );
 };
 
-const toggleSection = (label, status, name) => {
+
+
+const ToggleSection = ({ label, status, name, companyId, sub_name }) => {
+  const { changeSettingsStatus } = useCompanyController();
+
+  const handleToggleChange = (status) => {
+    let data;
+    if (!name) {
+      data = {
+        [name]: {
+          [sub_name]: status,
+        },
+      };
+    }
+    data = {
+     [name] : status
+    };
+    const jsonData = JSON.stringify(data);
+    console.log("The json data is:", companyId, jsonData);
+    changeSettingsStatus(jsonData, companyId);
+  };
+
   return (
-     <div className='flex justify-between mt-4'>
-        <Typography>{label}</Typography>
-      <ToggleButton status = {status} name = {name} onToggle={handleToggleChange} />
-      </div>
-  )
-}
+    <div className="flex justify-between mt-4">
+      <Typography>{label}</Typography>
+      <ToggleButton status={status} name={name} onToggle={handleToggleChange} />
+    </div>
+  );
+};
 
 // --- Sub-component: Enabled Modules Section ---
 const EnabledModulesSection = () => {

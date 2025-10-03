@@ -33,6 +33,14 @@ export const getAllCompantData = async () => {
 // };
 
 
+export const changeSettingStatus = async (data, company_id) => {
+  //console.log(ENDPOINTS.COMPANIES);
+  const res = await ApiHelper.update_patch(company_id, ENDPOINTS.COMPANY_SETTINGS,  data);
+  console.log("The errored response is :", res);
+  return res.data; 
+}
+
+
 export const getAuditLogs = async (company_id) => {
   //console.log(ENDPOINTS.COMPANIES);
   const res = await ApiHelper.getAll(ENDPOINTS.AUDIT_LOGS(company_id));
