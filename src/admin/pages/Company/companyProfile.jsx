@@ -18,6 +18,7 @@ import EventIcon from "@mui/icons-material/Event";
 import EditDocumentIcon from "@mui/icons-material/EditDocument";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import { useParams } from "react-router-dom";
 import {
   Chart as ChartJS,
@@ -39,6 +40,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import GeneralSettingsTab from "./GeneralSettingsTab";
+import CompanyUser from "./companyUser.jsx"
 import LeadStatus from "../Masters/Status/leadStauts.jsx";
 import LeadPotential from "../Masters/Potential/leadPotential.jsx";
 import LeadSource from "../Masters/Source/leadSource.jsx";
@@ -232,6 +234,7 @@ const MasterDataPanel = ({ companyData }) => {
 };
 
 const CompanyProfile = () => {
+  const navigate = useNavigate();
   const {
     fetchCompanyDataById,
     usersByCompany,
@@ -691,20 +694,45 @@ const handleOpenEditDialog = async (company) => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Title</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      User Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Job Title
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Created At
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="relative px-6 py-3">
+                      <span className="sr-only">Actions</span>
+                    </th>
                   </tr>
                 </thead>
+
                 <tbody className="bg-white divide-y divide-gray-200">
                   {paginatedUsers.map((user) => (
-                    <tr key={user.iUser_id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.cFull_name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.cEmail}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.role}</td>
+                    // <tr key={user.iUser_id}>
+                     <tr
+                      key={user.iUser_id}
+                      className="cursor-pointer hover:bg-gray-100"
+                      onClick={() => navigate(`/companyUser/${user.iUser_id}`)}
+                      // onClick={() => navigate(`/companyUser`)} 
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {user.cFull_name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.cEmail}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.role}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {new Date(user.dCreate_dt).toLocaleDateString("en-IN", {
                           day: "2-digit",

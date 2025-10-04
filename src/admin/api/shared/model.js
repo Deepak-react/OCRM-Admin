@@ -2,7 +2,6 @@
 import * as ApiHelper from '../ApiHelper';
 import { ENDPOINTS } from '../ApiConstant';
 
-
 // to get all the companies.
 export const getAllCompanies = async () => {
   const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
@@ -37,10 +36,9 @@ export const getAllCurrencies = async () => {
   } catch (error) {
     console.error("Error fetching plan types:", error);
     return [];
+  }
+}
   
-
-  }};
-
 
 export const  getAllCities  = async ()=>{
   const res = await ApiHelper.getAll(ENDPOINTS.CITY);

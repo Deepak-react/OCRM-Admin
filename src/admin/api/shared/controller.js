@@ -3,34 +3,18 @@ import { useEffect, useState } from 'react';
 import * as model from './model';
 
 export const useSharedController = () => {
-    //contains comapies data 
   const [companies, setCompanies] = useState([]);
-  //Bussiness type
-  // const [bussinessType, setBussinessType] = useState([]);
-
-  // Roles data
-
-    //contains cities data
+  const [bussinessType, setBussinessType] = useState([]);
   const [cities, setCities] = useState([]);
-
-  // contains roles data
-  const [roles, setRoles] = useState([]);
-
+  const [roles, setRoles] = useState([]); 
+  const [plan, setPlan] = useState([]);
   //  const [roles, setRoles] = useState([]);
-
   const [bussiness, setBussiness] = useState([]);
-//Currencies 
   const [currencies, setCurrencies] = useState([]);
-
-  // Plan 
-    const [plan, setPlan] = useState([]);
-
-
 
   //Contains the business logic to fetch all the companies
   const fetchCompanies = async () => {
       const data = await model.getAllCompanies();
-    console.log("The lead status response is :", data);
     setCompanies(data);
     };
  
@@ -48,19 +32,17 @@ export const useSharedController = () => {
     const fetchPlan = async () => {
   try {
     const data = await model.getPlan();
-    console.log("Plan's are", data);
     setPlan(Array.isArray(data) ? data : data.data || []);
   } catch (err) {
     console.error("Error fetching plans:", err);
-    setPlan([]); // fallback
+    setPlan([]);
   }
 };
-
 
   //Contains the business logic to fetch all the cities    
     const fetchAllCities = async () => {
       const data = await model.getAllCities();
-      console.log("The lead status response is :", data);
+      // console.log("The lead status response is :", data);
       setCities(data);
     };
     //containes the bussiness to fetch all currencies
@@ -88,12 +70,11 @@ export const useSharedController = () => {
   }
 };
 
-
     // function to fetch the roles for an company
     const fetchRoles = async () => {
       try {
         const data = await model.getAllRoles();
-        console.log("The user roles are:", data )
+        // console.log("The user roles are:", data )
         setRoles(data);
         return data;
       } catch (err) {
@@ -101,7 +82,6 @@ export const useSharedController = () => {
         setError(err.message || "Something went wrong");
       }
     };
-
 
   //Use effect initially runs.
   useEffect(() => {
@@ -120,14 +100,13 @@ export const useSharedController = () => {
     fetchRoles,
     roles,
     cities,
+    plan,
+    bussinessType,
+    fetchRoles ,
     fetchCurrencies,
     currencies,
     fetchBussiness,
     bussiness,
     fetchPlan,
-    plan
-
-
-    
   };
 };

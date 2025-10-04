@@ -1,5 +1,6 @@
 import * as ApiHelper from '../../../api/ApiHelper';
 import { ENDPOINTS } from '../../../api/ApiConstant';
+
 export const getAllCurrency = async () => {
   try {
     const response = await ApiHelper.getAll(ENDPOINTS.CURRENCY);
@@ -10,6 +11,7 @@ export const getAllCurrency = async () => {
     throw error;
   }
 };
+
 export const addNewCurrency = async (data) => {
   try {
     const payload = {

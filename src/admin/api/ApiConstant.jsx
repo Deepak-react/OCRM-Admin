@@ -5,6 +5,9 @@ export const BASE_URL = import.meta.env.VITE_API_URL;
 // Define all API endpoints relative to BASE_URL
 export const ENDPOINTS = {
   LOGIN: `${BASE_URL}/login`,
+  GET_ATTRIBUTE: `${BASE_URL}/attribute`,
+  GET_ATTRIBUTE_USER_ID: `${BASE_URL}/user-attribute/user`,
+  UPDATE_ATTRIBUTE_USER_ID: `${BASE_URL}/user-attribute`,
   DASHBOARD: `${BASE_URL}/admin/dashboard`,
   LEAD_STATUS: `${BASE_URL}/lead-status/`,
   COMPANIES : `${BASE_URL}/company`,
@@ -18,11 +21,10 @@ export const ENDPOINTS = {
   USER : `${BASE_URL}/users/`,
   ROLE : `${BASE_URL}/role/`,  
   PLAN: `${BASE_URL}/pricing-plan`,
-  ADMIN_DASHBOARD : `${BASE_URL}/admin-dashboard/`,
+  ADMIN_DASHBOARD : `${BASE_URL}/admin-dashboard`,
   RESELLER : `${BASE_URL}/reseller/`, 
   USER_TAB : (companyId) => `${BASE_URL}/users/company/${companyId}`,
   AUDIT_LOGS : (companyId) => `${BASE_URL}/admin-dashboard/userAudit/${companyId}`,
-  
 
   //Masters
 
@@ -40,6 +42,12 @@ export const ENDPOINTS = {
   SUBSCRIPTION_CREATE:`${BASE_URL}/subscription/createSubscription`,
   ALL_SUBSCRIPTION_GET:`${BASE_URL}/subscription/getAllSubscription`,
   EDIT_SUBSCRIPTION:`${BASE_URL}/subscription/updateSubscription`,
-  SUBSCRIPTION_STATUS_CHANGE:`${BASE_URL}/subscription/changeStatus`
+  SUBSCRIPTION_STATUS_CHANGE:`${BASE_URL}/subscription/changeStatus`,
+  CREATE_MODULE:`${BASE_URL}/module`,
+      GET_ALL_MODULES:`${BASE_URL}/module`,
+      EDIT_MODULE:`${BASE_URL}/module`,
+      CHANGE_MODULE_STATUS:`${BASE_URL}/module/changeSts`,
+      GET_ALL_ALLOCATED_MODULES:`${BASE_URL}/subscriptionPlanModule/getAllocateModule`,
+      
 };
 

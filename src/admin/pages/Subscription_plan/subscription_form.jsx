@@ -1,16 +1,14 @@
-// views/SubscriptionForm.jsx
+
 import React, { useState, useEffect } from "react";
 
-export default function SubscriptionForm({ onSubmit, initialData }) {
-  // Map currencies to numeric IDs
-  const currencyMap = { INR: 1, USD: 2, EUR: 3 };
-  const reverseCurrencyMap = { 1: "INR", 2: "USD", 3: "EUR" };
-
+export default function SubscriptionForm({ onSubmit, initialData, currencyList }) {
+ 
+    console.log("Currency list : ",currencyList)
   const [form, setForm] = useState({
     planName: "",
-    maxUserCount: 0,
-    price: 0,
-    currencyId: 2, // default to INR
+    maxUserCount: "",
+    price: "",
+    currencyId:"",
     durationType: 'monthly',
   });
 
@@ -19,10 +17,11 @@ export default function SubscriptionForm({ onSubmit, initialData }) {
     if (initialData) {
       setForm({
         planName: initialData.plan_name || "",
-        maxUserCount: Number(initialData.iMax_users) || 0,
-        price: Number(initialData.price) || 0,
-        currencyId: Number(initialData.currency) ,
+        maxUserCount: Number(initialData.iMax_users) || "",
+        price: Number(initialData.price) || "",
+        currencyId: Number(initialData.currency_id) || "",
         durationType: initialData.duration_type || "monthly",
+
       });
     }
   }, [initialData]);
@@ -40,14 +39,13 @@ export default function SubscriptionForm({ onSubmit, initialData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(form); // already numbers for numeric fields
-
+    onSubmit(form);
     // Reset form
     setForm({
       planName: "",
-      maxUserCount: 0,
-      price: 0,
-      currencyId: 2,
+      maxUserCount: "",
+      price: "",
+      currencyId: "",
       durationType: "monthly",
     });
   };
@@ -106,9 +104,17 @@ export default function SubscriptionForm({ onSubmit, initialData }) {
             onChange={handleChange}
             className="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-300"
           >
-            <option value={2}>INR</option>
-            <option value={3}>USD</option>
-            
+            {currencyList.length > 0 ?
+              (
+              currencyList.map(currency =>
+              <option key={currency.icurrency_id} value={currency.icurrency_id}>
+               {currency.currency_code} - {currency.country_name}
+              </option>
+              )
+             )
+              : (<option disabled>No currency found</option>)
+            }
+
           </select>
         </div>
 
@@ -121,7 +127,6 @@ export default function SubscriptionForm({ onSubmit, initialData }) {
             className="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-300"
           >
             <option value="monthly">Monthly</option>
-            <option value="quarterly">Quarterly</option>
             <option value="annually">Annually</option>
           </select>
         </div>

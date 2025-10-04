@@ -1,6 +1,6 @@
 // /src/admin/utils/formatDate.js
 export const formatDate = (dateString) => {
-  if (!dateString) return 'N/A';
+  if (!dateString) return '-';
   
   try {
     const date = new Date(dateString);
