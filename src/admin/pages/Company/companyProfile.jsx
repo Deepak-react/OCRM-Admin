@@ -90,8 +90,7 @@ function a11yProps(index) {
 }
 
 const MasterDataPanel = ({ companyData }) => {
-  const [selectedComponent, setSelectedComponent] = useState(null);
-
+  const [selectedComponent, setSelectedComponent] = useState(null);  
   const cardData = [
     {
       id: 1,
@@ -676,7 +675,7 @@ const handleOpenEditDialog = async (company) => {
 
         {/* General Settings Tab */}
         <CustomTabPanel value={activeTab} index={1}>
-          <GeneralSettingsTab />
+          <GeneralSettingsTab company = {company}/>
         </CustomTabPanel>
 
         {/* Users Tab */}
@@ -904,6 +903,9 @@ const handleOpenEditDialog = async (company) => {
           </div>
         </div>
       )}
+
+
+
 
       {/* User Actions Menu */}
       <Menu id="user-actions-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>

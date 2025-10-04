@@ -72,9 +72,21 @@ const fetchCurrencies = async (companyId) => {
     }
   }
 
+  const changeSettingsStatus = async (settingsData,  companId) => {
+     try { 
+      const response = await companyModel.changeSettingStatus(settingsData, companId);
+      if(response.status === 200) {
+        console.log("User status changed successfully:", response);
+      }
+    } catch (err) {
+      console.error('Failed to change user status:', err);  
+    }
+  }
+
   // Function to fetch company by ID
   const fetchCompanyDataById = async (id) => {
     try {
+      console.log("This is the company data function!")
       const data = await companyModel.getCompanyById(id);
       // console.log("Company details are:", data);
       return data;
@@ -230,6 +242,7 @@ const fetchCurrencies = async (companyId) => {
     createCompany,
     fetchAllCompanyData,
     changeUserStatus,
+    changeSettingsStatus,
     editCompanyDetails,
     createUser,
     error,
