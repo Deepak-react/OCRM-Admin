@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function ToggleSwitch({ status, name, onToggle }) {
+function ToggleSwitch({ status, name, onToggle, data }) {
   const [isOn, setIsOn] = useState(status || false);
 
   // Sync with external status if it changes
@@ -14,7 +14,7 @@ function ToggleSwitch({ status, name, onToggle }) {
 
     // Call parent function if provided
     if (onToggle) {
-      onToggle(name, newState);
+      onToggle(name, newState, data );
     }
   };
 

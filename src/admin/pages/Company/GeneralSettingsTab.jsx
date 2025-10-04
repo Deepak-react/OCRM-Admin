@@ -62,8 +62,76 @@ const emailFormReducer = (state, action) => {
 
 
 // --- Sub-component: General Settings Section ---
-const GeneralSettingsSection = ({ formData, handleChange, settings }) => (
-  <>
+const GeneralSettingsSection = ({ formData, handleChange, settings }) => {
+const [localSettings, setLocalSettings] = useState(settings);
+
+
+  const ToggleSection = ({ label, status, name, companyId, sub_name }) => {
+  const { changeSettingsStatus } = useCompanyController();
+  console.log("The toggle section props are11:", label, status, name, sub_name, companyId);
+
+
+  // const handleToggleChange = (name, status, toggleData) => {
+  //     console.log(
+  //       "The toggle props are22:",
+  //       toggleData
+  //     );
+      
+  //     console.log("Toggle changed:", name, status, toggleData);
+
+  //     let data;
+  //     if (toggleData.sub_name) {
+  //       data = {
+  //         [toggleData.sub_name]: {
+  //           [name]: status,
+  //         },
+  //       };
+  //     } else {
+  //       data = {
+  //         [name]: status,
+  //       };
+  //     }
+
+  //   console.log("The data is:", data);
+  //   const jsonData = JSON.stringify(data);
+  //   console.log("The json data is:", toggleData.companyId, jsonData);
+  //   changeSettingsStatus(jsonData, companyId);
+  // };
+
+
+  const handleToggleChange = (status) => {
+  setLocalSettings((prev) => {
+    // copy previous state
+    const updated = { ...prev };
+
+    if (sub_name) {
+      updated[sub_name] = {
+        ...updated[sub_name],
+        [name]: status,
+      };
+    } else {
+      updated[name] = status;
+    }
+
+    // send full updated object to backend
+    changeSettingsStatus(JSON.stringify(updated), companyId);
+
+    return updated;
+  });
+};
+
+
+
+  return (
+    <div className="flex justify-between mt-4">
+      <Typography>{label}</Typography>
+      <ToggleButton status={status} name={name} data = {{companyId , sub_name}} onToggle={handleToggleChange} />
+    </div>
+  );
+}
+  
+  return (
+    <>
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
       <Box>
         <Typography variant="subtitle1" className="font-semibold text-gray-800">
@@ -118,10 +186,11 @@ const GeneralSettingsSection = ({ formData, handleChange, settings }) => (
         </Select>
       </FormControl>
     </div>
-    <div>
+    <div> {console.log("The settings are:", settings)}
       <ToggleSection
         label="DCRM"
         status={settings.DCRM}
+        name="DCRM"
        companyId={settings.companyId}
       />
       <ToggleSection
@@ -171,56 +240,56 @@ const GeneralSettingsSection = ({ formData, handleChange, settings }) => (
       <Collapsible title="Report" className="mt-5">
         <ToggleSection
           label="Lead lost"
-          status={settings.Reports.LostLeadReport}
+          status={localSettings.Reports.LostLeadReport}
           name="LostLeadReport"
           sub_name="Reports"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Sales by stage"
-          status={settings.Reports.SalesStageReport}
+          status={localSettings.Reports.SalesStageReport}
           name="SalesStageReport"
           sub_name="Reports"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Lead by territory"
-          status={settings.Reports.TerritoryLeadReport}
+          status={localSettings.Reports.TerritoryLeadReport}
           name="TerritoryLeadReport"
           sub_name="Reports"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Lead conversion"
-          status={settings.Reports.LeadConversionReport}
+          status={localSettings.Reports.LeadConversionReport}
           name="LeadConversionReport"
           sub_name="Reports"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Lead owner activity"
-          status={settings.Reports.LeadOwnerActivityReport}
+          status={localSettings.Reports.LeadOwnerActivityReport}
           name="LeadOwnerActivityReport"
           sub_name="Reports"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Prospects lost lead"
-          status={settings.Reports.ProspectsLostLeadsReport}
+          status={localSettings.Reports.ProspectsLostLeadsReport}
           name="ProspectsLostLeadsReport"
           sub_name="Reports"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="First response time opportunity"
-          status={settings.Reports.FirstResponseTimeOppurtunityReport}
+          status={localSettings.Reports.FirstResponseTimeOppurtunityReport}
           name="FirstResponseTimeOppurtunityReport"
           sub_name="Reports"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Company Overall report"
-          status={settings.Reports.CompanyOverallReport}
+          status={localSettings.Reports.CompanyOverallReport}
           name="CompanyOverallReport"
           sub_name="Reports"
           companyId={settings.companyId}
@@ -231,63 +300,63 @@ const GeneralSettingsSection = ({ formData, handleChange, settings }) => (
       <Collapsible title="Master" className="mt-5">
         <ToggleSection
           label="Status master"
-          status={settings.Masters.StatusMaster}
+          status={localSettings.Masters.StatusMaster}
           name="StatusMaster"
           sub_name="Masters"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Currency master"
-          status={settings.Masters.CurrencyMaster}
+          status={localSettings.Masters.CurrencyMaster}
           name="CurrencyMaster"
           sub_name="Masters"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Potential master"
-          status={settings.Masters.PotentialMaster}
+          status={localSettings.Masters.PotentialMaster}
           name="PotentialMaster"
           sub_name="Masters"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Industry master"
-          status={settings.Masters.IndustryMaster}
+          status={localSettings.Masters.IndustryMaster}
           name="IndustryMaster"
           sub_name="Masters"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Lead source master"
-          status={settings.Masters.SourceMaster}
+          status={localSettings.Masters.SourceMaster}
           name="SourceMaster"
           sub_name="Masters"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Service master"
-          status={settings.Masters.ServiceMaster}
+          status={localSettings.Masters.ServiceMaster}
           name="ServiceMaster"
           sub_name="Masters"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Proposal send mode master"
-          status={settings.Masters.ProposalModeMaster}
+          status={localSettings.Masters.ProposalModeMaster}
           name="ProposalModeMaster"
           sub_name="Masters"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Email template master"
-          status={settings.Masters.EmailTemplateMaster}
+          status={localSettings.Masters.EmailTemplateMaster}
           name="EmailTemplateMaster"
           sub_name="Masters"
           companyId={settings.companyId}
         />
         <ToggleSection
           label="Lead Lost reason"
-          status={settings.Masters.LeasLostReasonMaster}
+          status={localSettings.Masters.LeasLostReasonMaster}
           name="LeasLostReasonMaster"
           sub_name="Masters"
           companyId={settings.companyId}
@@ -295,7 +364,8 @@ const GeneralSettingsSection = ({ formData, handleChange, settings }) => (
       </Collapsible>
     </div>
   </>
-);
+  ) 
+}
 
 // --- Sub-component: Default Email Account Section ---
 const DefaultEmailAccountSection = () => {
@@ -507,33 +577,7 @@ const DefaultEmailAccountSection = () => {
 
 
 
-const ToggleSection = ({ label, status, name, companyId, sub_name }) => {
-  const { changeSettingsStatus } = useCompanyController();
-
-  const handleToggleChange = (status) => {
-    let data;
-    if (!name) {
-      data = {
-        [name]: {
-          [sub_name]: status,
-        },
-      };
-    }
-    data = {
-     [name] : status
-    };
-    const jsonData = JSON.stringify(data);
-    console.log("The json data is:", companyId, jsonData);
-    changeSettingsStatus(jsonData, companyId);
-  };
-
-  return (
-    <div className="flex justify-between mt-4">
-      <Typography>{label}</Typography>
-      <ToggleButton status={status} name={name} onToggle={handleToggleChange} />
-    </div>
-  );
-};
+;
 
 // --- Sub-component: Enabled Modules Section ---
 const EnabledModulesSection = () => {
