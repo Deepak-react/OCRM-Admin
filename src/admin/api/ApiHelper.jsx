@@ -12,6 +12,12 @@ export const updateWithQueryParams = (queryParams, endpoint, data) => {
   const url = `${endpoint}?${queryString}`;
   return API.put(url, data);
 };
+//GET THE DATA BY AND ID AND DATA(ONLY NEEDED DATA)
+export const getByIdAndType = (id,type, endpoint) => API.get(`${endpoint}/${id}/${type}`);
+//EDIT API FUNCTION ONLY BY REQUEST BODY 
+export const editWithReqBody = ( endpoint,requestBody) => API.put(`${endpoint}`,requestBody);
+
+
 
 
     

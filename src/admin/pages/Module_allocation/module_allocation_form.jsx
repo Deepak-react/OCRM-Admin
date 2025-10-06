@@ -55,7 +55,7 @@ export default function ModuleAllocationForm({ onSubmit, moduleAllocationObj }) 
           onChange={handleSubscriptionChange}
           className="border rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
         >
-          <option value="">-- Select Subscription --</option>
+          <option value="" disabled>-- Select Subscription --</option>
           {moduleAllocationObj.subscription?.length > 0 ? (
             moduleAllocationObj.subscription.map((subscription) => (
               <option key={subscription.plan_id} value={subscription.plan_id}>

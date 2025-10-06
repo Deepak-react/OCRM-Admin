@@ -22,7 +22,7 @@ export async function getActiveSubscription() {
     if(returnData.success) return returnData.data;
     throw new Error (returnData.message)
 }
-//FETCHING ALL ACTIVE SUBSCRIPTION PLAN  
+//CREATE MODULE ALLOCATION 
 export async function moduleAllocationCreate(data) {
   const res = await ApiHelper.create(data, ENDPOINTS.CREATE_MODULE_ALLOCATION);
 
@@ -34,15 +34,14 @@ export async function moduleAllocationCreate(data) {
     throw new Error(res.data?.message || "Failed to create module allocation");
   }
 }
-
-//FETCHING ALL ACTIVE SUBSCRIPTION PLAN  
+//EDIT MODULE ALLOCATION
 export async function moduleAllocationEdit() {
     const res=await ApiHelper.update(ENDPOINTS.GET_ACTIVE_SUBSCRIPTION);
     //RETURN SUCCESS TRUE IF API RESPONSE IS SUCCEED
     if(res.data?.success) return res.data?.success;
     throw new Error (res.data?.message)
 }
-//FETCHING ALL ACTIVE SUBSCRIPTION PLAN  
+//CHANGE MODULE ALLOCATIONS STATUS 
 export async function moduleAllocationChangSts(id,reqBody) {
     const res=await ApiHelper.update(id,ENDPOINTS.CHANGE_MODULE_ALLOCATION_STATUS,reqBody);
     //RETURN SUCCESS TRUE IF API RESPONSE IS SUCCEED
@@ -54,10 +53,17 @@ export async function moduleAllocationChangSts(id,reqBody) {
     }
   
 }
-//FETCHING ALL ACTIVE SUBSCRIPTION PLAN  
-export async function getModuleAllocationBySubscriptionId() {
-    const res=await ApiHelper.GET(ENDPOINTS.GET_ACTIVE_SUBSCRIPTION);
+//GET ALLOCATED MODULES BY SUSBCRIPTION ID 
+export async function getModuleAllocationBySubscriptionId(susbcriptionId,type) {
+    const res=await ApiHelper.getByIdAndType(susbcriptionId,type,ENDPOINTS.GET_ALLOCATED_MODULES_BY_SUBSC_ID);
     //RETURN SUCCESS TRUE IF API RESPONSE IS SUCCEED
-    if(res.data?.success) return res.data?.message ;
+    if(res.data?.success) return res.data?.data ;
+    throw new Error (res.data?.message)
+}
+//EDIT ALLOCATED MODULES 
+export async function editAllocatedModules(requestData) {
+    const res=await ApiHelper.editWithReqBody(ENDPOINTS.EDIT_MODULE_ALLOCATION,requestData);
+    //RETURN SUCCESS TRUE IF API RESPONSE IS SUCCEED
+    if(res.data?.success) return res.data?.data ;
     throw new Error (res.data?.message)
 }

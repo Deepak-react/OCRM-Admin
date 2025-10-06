@@ -3,9 +3,10 @@
     //MODULE ALLOCATION CONTROLLER 
     export  function moduleAllocationController() {
         //VARIABLES 
-        const[moduleAllocation,setModuleAllocation]=useState([])
+        const[moduleAllocation,setModuleAllocation]=useState([]);
         const[activeModules,setActiveModules]=useState([]);
-        const [activeSubscription,setActiveSubscription]=useState([])
+        const [activeSubscription,setActiveSubscription]=useState([]);
+        const [subscriptionModuleAllocation,setSubscriptionModuleAllocation]=useState([])
         const [error,setError]=useState(null)
         const [loading,setLoading]=useState(true)
         //FUNCTION TO FETCH ALL MODULE ALLOCATIONS 
@@ -63,7 +64,24 @@
                 setError(e.message)
             }
         }
-
+        //GET ALLOCATED MODULES BY SUBSCRIPTION 
+        async function getAllocatedModulesBySubsId(subscriptionId,type) {
+            try {
+                const result=await ModuleALlocationModel.getModuleAllocationBySubscriptionId(subscriptionId,type);
+                setSubscriptionModuleAllocation(result)
+            } catch (e) {
+                setError(e.message)
+            }
+        }
+        //EDIT ALLOCATED MODULES AND ALLOCATE NEW MODULES 
+          async function editModuleAllocationController(reqBody) {
+            try {
+                await ModuleALlocationModel.editAllocatedModules(reqBody)
+                
+            } catch (e) {
+                setError(e.message)
+            }
+        }
 
     useEffect(()=>{
         getAllModuleAllocation();
@@ -74,6 +92,7 @@
 
     return {
         moduleAllocation,
+        subscriptionModuleAllocation,
         activeModules,
         activeSubscription,
         error,
@@ -82,6 +101,8 @@
         getActivSubscription,
         createModuleAllocation,
         changeAllocationSts,
-        getAllModuleAllocation
+        getAllModuleAllocation,
+        editModuleAllocationController,
+        getAllocatedModulesBySubsId
     }
     }
