@@ -14,7 +14,7 @@ export const ToastProvider = ({ children }) => {
   };
 
   const getToastStyles = () => {
-    const base = "fixed bottom-5 right-5 px-4 py-3 rounded-lg text-white shadow-lg transition-all duration-300 z-50";
+    const base = "fixed bottom-5 right-5 px-4 py-3 rounded-lg text-white shadow-lg transition-all duration-300 z-50 w-auto max-w-xs";
     switch (toast.type) {
       case "success":
         return `${base} bg-green-600`;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSharedController } from '../../../../api/shared/controller';
 import { useLeadStatusController } from '../leadStatusController';
 
@@ -8,20 +8,34 @@ const LeadStatusForm = ({onClose, onSuccess}) => {
   //custom hooks function to create an lead status 
   const { createLeadStatus } = useLeadStatusController();
 
+
+
+
+
+
+
   //local state varaibles
   const [formData, setFormData] = useState({
     clead_name: '',
     icompany_id: '',
+    orderId : 0,
     ccolor : 1
   });
+
+    useEffect(() => {
+  console.log("Updated formData:", formData);
+  console.log("Type of orderId:", typeof formData.orderId);
+}, [formData]);
 
   // Handle change for all input fields
     const handleChange = (e) => {
       const { name, value } = e.target;
+      console.log('The form data are:', name, typeof(value), value);
+      
 
       setFormData(prev => ({
         ...prev,
-        [name]: name === 'icompany_id' || name === 'ccolor' ? parseInt(value) : value
+        [name]: name === 'icompany_id' || name === 'ccolor' || name ==='orderId' ? parseInt(value) : value
       }));
     };
 
@@ -56,6 +70,16 @@ const LeadStatusForm = ({onClose, onSuccess}) => {
           type="text"
           name="clead_name"
           value={formData.clead_name}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+        />
+      </div>  
+        <div>
+        <label className="block text-sm font-medium">Sort order</label>
+        <input
+          type="number"              // ✅ this makes the browser return numeric input
+          name="orderId"
+          value={formData.orderId}
           onChange={handleChange}
           className="w-full border p-2 rounded"
         />

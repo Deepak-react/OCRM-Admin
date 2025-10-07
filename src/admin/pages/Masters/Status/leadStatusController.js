@@ -19,7 +19,7 @@ export const useLeadStatusController = () => {
   // Create a new lead status
   const createLeadStatus = async (formData) => {
     try {
-      await leadStatusModel.addNewLeadStatus(formData);
+      await leadStatusModel.addNewLeadStatus(JSON.stringify(formData));
       await fetchLeadStatus();
       return true;
     } catch (err) {

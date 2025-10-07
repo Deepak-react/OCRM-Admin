@@ -14,7 +14,7 @@ function ToggleSwitch({ status, name, onToggle, data }) {
 
     // Call parent function if provided
     if (onToggle) {
-      onToggle(name, newState, data );
+      onToggle(name, newState, data);
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import * as companyModel from './companyModel'; // This is the only model import needed
 import { create } from "../../api/ApiHelper";
 
@@ -61,6 +61,7 @@ const fetchCurrencies = async (companyId) => {
 };
 
 
+
   const fetchBusinessType = async (companyId) => {}
   const fetchAuditLogs = async (company_id) => {
     try {
@@ -82,6 +83,21 @@ const fetchCurrencies = async (companyId) => {
       console.error('Failed to change user status:', err);  
     }
   }
+
+
+  const changeUserSettingsStatus  = async (settingsData) => {
+     try { 
+      const response = await companyModel.changeUserSettingsStatus(settingsData);
+      if(response.status === 200) {
+        console.log("User status changed successfully:", response);
+        return true;
+      }
+    } catch (err) {
+      console.error('Failed to change user status:', err);
+      return false;
+    }
+  }
+
 
   // Function to fetch company by ID
   const fetchCompanyDataById = async (id) => {
@@ -232,6 +248,39 @@ const fetchCurrencies = async (companyId) => {
     }
   };
 
+
+  const fetchAttributes = async (companyId) => {
+    try {
+      const res = await companyModel.getAllAttributes(companyId);
+      console.log("Attributes fetched:", res);
+      setAttributes(res); 
+      setError(null);
+      return res.data;
+    } catch (err) {
+      console.error("Failed to fetch attributes  :", err);
+      setError(err.message || "Something went wrong");
+      return [];
+    }
+  };
+
+
+  const fetchUserAttributes = async (userId) => {
+    try {
+      const res = await companyModel.getUserAttributes(userId);
+      console.log('User related attributes fetched:', res);
+      
+      setUserAttributes(res); 
+      setError(null);
+      return res.data;
+    } catch (err) {
+      console.error("Failed to fetch users related attributes:", err);
+      setError(err.message || "Something went wrong");
+      return [];
+    }
+  };
+
+
+
   useEffect(() => {
     fetchAllCompanyData();
   }, []);
@@ -239,11 +288,16 @@ const fetchCurrencies = async (companyId) => {
   return {
     companyData,
     fetchCompanyDataById,
+    fetchAttributes,
+    fetchUserAttributes,
+    attributes,
+    userAttributes,
     createCompany,
     fetchAllCompanyData,
     changeUserStatus,
     changeSettingsStatus,
     editCompanyDetails,
+    changeUserSettingsStatus,
     createUser,
     error,
     message,

@@ -1,4 +1,5 @@
 import React, { useState, useReducer, useCallback } from 'react';
+
 import {
   Box,
   Typography,
@@ -62,75 +63,57 @@ const emailFormReducer = (state, action) => {
 
 // --- Sub-component: General Settings Section ---
 const GeneralSettingsSection = ({ formData, handleChange, settings }) => {
-const [localSettings, setLocalSettings] = useState(settings);
 
+  const [localSettings, setLocalSettings] = useState(settings || {});
 
   const ToggleSection = ({ label, status, name, companyId, sub_name }) => {
-  const { changeSettingsStatus } = useCompanyController();
-  console.log("The toggle section props are11:", label, status, name, sub_name, companyId);
+    const { changeSettingsStatus } = useCompanyController();
+    console.log(
+      "The toggle section props are11:",
+      label,
+      status,
+      name,
+      sub_name,
+      companyId
+    );
 
+    const handleToggleChange = (name, status, data) => {
+      setLocalSettings((prev) => {
+        // copy previous state
+        const updated = { ...prev };
 
-  // const handleToggleChange = (name, status, toggleData) => {
-  //     console.log(
-  //       "The toggle props are22:",
-  //       toggleData
-  //     );
-      
-  //     console.log("Toggle changed:", name, status, toggleData);
+        if (data.sub_name) {
+          updated[data.sub_name] = {
+            ...updated[data.sub_name],
+            [name]: status,
+          };
+        } else {
+          updated[name] = status;
+        }
 
-  //     let data;
-  //     if (toggleData.sub_name) {
-  //       data = {
-  //         [toggleData.sub_name]: {
-  //           [name]: status,
-  //         },
-  //       };
-  //     } else {
-  //       data = {
-  //         [name]: status,
-  //       };
-  //     }
+        // send full updated object to backend
+        changeSettingsStatus(JSON.stringify(updated), data.companyId);
 
-  //   console.log("The data is:", data);
-  //   const jsonData = JSON.stringify(data);
-  //   console.log("The json data is:", toggleData.companyId, jsonData);
-  //   changeSettingsStatus(jsonData, companyId);
-  // };
+        return updated;
+      });
+    };
 
-
-  const handleToggleChange = (status) => {
-  setLocalSettings((prev) => {
-    // copy previous state
-    const updated = { ...prev };
-
-    if (sub_name) {
-      updated[sub_name] = {
-        ...updated[sub_name],
-        [name]: status,
-      };
-    } else {
-      updated[name] = status;
-    }
-
-    // send full updated object to backend
-    changeSettingsStatus(JSON.stringify(updated), companyId);
-
-    return updated;
-  });
-};
-
+    return (
+      <div className="flex justify-between mt-4">
+        <Typography>{label}</Typography>
+        <ToggleButton
+          status={status}
+          name={name}
+          data={{ companyId, sub_name }}
+          onToggle={handleToggleChange}
+        />
+      </div>
+    );
+  };
 
 
   return (
-    <div className="flex justify-between mt-4">
-      <Typography>{label}</Typography>
-      <ToggleButton status={status} name={name} data = {{companyId , sub_name}} onToggle={handleToggleChange} />
-    </div>
-  );
-}
-  
-  return (
-    <>
+  <>
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
       <Box>
         <Typography variant="subtitle1" className="font-semibold text-gray-800">
@@ -185,52 +168,52 @@ const [localSettings, setLocalSettings] = useState(settings);
         </Select>
       </FormControl>
     </div>
-    <div> {console.log("The settings are:", settings)}
+      <div> {console.log("The settings are:", settings)}
       <ToggleSection
         label="DCRM"
-        status={settings.DCRM}
+        status={localSettings.DCRM}
         name="DCRM"
        companyId={settings.companyId}
       />
       <ToggleSection
         label="Poster generator"
-        status={settings.PosterGenerator}
+        status={localSettings.PosterGenerator}
         name="PosterGenerator"
         companyId={settings.companyId}
       />
       <ToggleSection
         label="Reminder"
-        status={settings.Reminder}
+        status={localSettings.Reminder}
         name="Reminder"
         companyId={settings.companyId}
       />
       <ToggleSection
         label="Website lead tab"
-        status={settings.WebsiteLead}
+        status={localSettings.WebsiteLead}
         name="WebsiteLead"
         companyId={settings.companyId}
       />
       <ToggleSection
         label="Import"
-        status={settings.Import}
+        status={localSettings.Import}
         name="Import"
         companyId={settings.companyId}
       />
       <ToggleSection
         label="Export"
-        status={settings.Export}
+        status={localSettings.Export}
         name="Export"
         companyId={settings.companyId}
       />
       <ToggleSection
         label="File attachment"
-        status={settings.FileAttachment}
+        status={localSettings.FileAttachment}
         name="FileAttachment"
         companyId={settings.companyId}
       />
       <ToggleSection
         label="Email"
-        status={settings.Email}
+        status={localSettings.Email}
         name="Email"
         companyId={settings.companyId}
       />
@@ -363,7 +346,7 @@ const [localSettings, setLocalSettings] = useState(settings);
       </Collapsible>
     </div>
   </>
-  ) 
+  );
 }
 
 // --- Sub-component: Default Email Account Section ---
@@ -573,10 +556,6 @@ const DefaultEmailAccountSection = () => {
     </>
   );
 };
-
-
-
-;
 
 // --- Sub-component: Enabled Modules Section ---
 const EnabledModulesSection = () => {

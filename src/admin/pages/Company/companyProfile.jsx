@@ -65,6 +65,8 @@ ChartJS.register(
   Legend
 );
 
+import { ArrowLeft } from "lucide-react";
+
 // A simple panel component to show content based on active tab
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -253,6 +255,9 @@ const CompanyProfile = () => {
 
   const { fetchAllCities, cities, fetchRoles, roles } = useSharedController();
   const { showToast } = useToast();
+  const [showProfile, setShowProfile] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null); 
+
 
   const [company, setCompany] = useState(null);
   const [activeTab, setActiveTab] = useState(0);
@@ -680,7 +685,22 @@ const handleOpenEditDialog = async (company) => {
 
         {/* Users Tab */}
         <CustomTabPanel value={activeTab} index={2}>
-          <div className="flex justify-end mb-4">
+          
+          {error && <p className="text-red-500 mb-4">Error: {error}</p>}
+
+
+      <div className="p-6 h-screen bg-white overflow-y-auto">
+    {showProfile ? (
+      // 👉 PROFILE VIEW
+      <div>
+        {console.log('Selected User:', selectedUser)}
+        
+          <CompanyUser user={selectedUser} companyId={company?.iCompany_id}   setShowProfile={setShowProfile}  />
+      </div>
+    ) : (
+      // 👉 USER LIST VIEW
+      <div className="overflow-x-auto">
+        <div className="flex justify-end mb-4">
             <button
               className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors duration-200 shadow-sm"
               onClick={() => setOpenUserCreateDialog(true)}
@@ -688,92 +708,100 @@ const handleOpenEditDialog = async (company) => {
               + Create user
             </button>
           </div>
-          {error && <p className="text-red-500 mb-4">Error: {error}</p>}
-          {paginatedUsers.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      User Name
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Job Title
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Created At
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="relative px-6 py-3">
-                      <span className="sr-only">Actions</span>
-                    </th>
-                  </tr>
-                </thead>
+          
+        {paginatedUsers.length > 0 ? (
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200 border-rounded-lg">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Title</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
+              </tr>
+            </thead>
 
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {paginatedUsers.map((user) => (
-                    // <tr key={user.iUser_id}>
-                     <tr
-                      key={user.iUser_id}
-                      className="cursor-pointer hover:bg-gray-100"
-                      onClick={() => navigate(`/companyUser/${user.iUser_id}`)}
-                      // onClick={() => navigate(`/companyUser`)} 
+            <tbody className="bg-white divide-y divide-gray-200">
+              {paginatedUsers.map((user) => (
+                <tr
+                  key={user.iUser_id}
+                  className="cursor-pointer hover:bg-gray-100"
+                  onClick={() => {
+                    setSelectedUser(user); // Save clicked user
+                    setShowProfile(true);  // Switch to profile view
+                  }}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {user.cFull_name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {user.cEmail}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {user.role}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(user.dCreate_dt).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        user.bactive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                      }`}
                     >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {user.cFull_name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {user.cEmail}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {user.role}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(user.dCreate_dt).toLocaleDateString("en-IN", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          user.bactive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                        }`}>
-                          {user.bactive ? "Active" : "Deactivated"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        {user.bactive && (
-                          <IconButton
-                            aria-label="more"
-                            onClick={(event) => handleMenuOpen(event, user)}
-                          >
-                            <MoreVertIcon />
-                          </IconButton>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="flex justify-center mt-4 space-x-2">
-                <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50">Prev</button>
-                {[...Array(totalPages)].map((_, i) => (
-                  <button key={i} onClick={() => setCurrentPage(i + 1)} className={`px-3 py-1 rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`}>{i + 1}</button>
-                ))}
-                <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50">Next</button>
-              </div>
-            </div>
-          ) : (
-            <div className="p-6 text-center">
-              <p className="text-red-500">No user data available for this company.</p>
-            </div>
-          )}
+                      {user.bactive ? "Active" : "Deactivated"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    {/* Optional Action Button */}
+                    <button className="text-blue-600 hover:text-blue-800">⋮</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="p-6 text-center">
+            <p className="text-red-500">No user data available for this company.</p>
+          </div>
+        )}
+
+        {/* Pagination */}
+        <div className="flex justify-center mt-4 space-x-2">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
         </CustomTabPanel>
 
           {/* Masters Tab */}
