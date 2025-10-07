@@ -55,6 +55,7 @@ export const ENDPOINTS = {
   EDIT_MODULE_ALLOCATION:`${BASE_URL}/subscriptionPlanModule/editAllocatedModules`,
   CHANGE_MODULE_ALLOCATION_STATUS:`${BASE_URL}/subscriptionPlanModule/changeModuleAllocationSts`,
   GET_ALLOCATED_MODULES_BY_SUBSC_ID:`${BASE_URL}/subscriptionPlanModule/getAllocatedModulesBySubsId`,
-      
+  //STORAGE  DETAILS  API ENDPOINT 
+  GET_STORAGE_DETAILS:`${BASE_URL}/fileSizeTracking`    
 };
 

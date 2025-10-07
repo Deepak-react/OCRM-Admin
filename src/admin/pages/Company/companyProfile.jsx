@@ -30,6 +30,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { PieChart } from '@mui/x-charts/PieChart';
+
 import { useCompanyController } from "./companyController";
 import { useSharedController } from "../../api/shared/controller";
 import formatDate from "../../utils/formatDate";
@@ -251,6 +253,8 @@ const CompanyProfile = () => {
     currencies,
     bussiness,
     plan,
+    storageDetailsController,
+    storageDetails
   } = useCompanyController();
 
   const { fetchAllCities, cities, fetchRoles, roles } = useSharedController();
@@ -481,6 +485,10 @@ const handleOpenEditDialog = async (company) => {
     const loadCompany = async () => {
       try {
         const data = await fetchCompanyDataById(id);
+        //call the controller function to get storage details 
+        const storageData= await storageDetailsController(id)
+        
+        console.log("The storage company data is:", storageData);
         console.log("The company data is:", data);
         setCompany(data);
       } catch (error) {
@@ -676,6 +684,23 @@ const handleOpenEditDialog = async (company) => {
               </div>
             </div>
           </div>
+          <div>here the storage chart </div>
+{console.log("The company daaaaaaattaaaa is :", company)}
+    <PieChart
+      series={[
+        {
+          data: [
+            { id: 0, value: storageDetails.percentageUsed, label: `Storage Used : ${storageDetails.storageUsed}` },
+            { id: 1, value: storageDetails.percentageAvailable, label: `Available Storage : ${storageDetails.storageAlloted}` },
+          ],
+        },
+      ]}
+      width={200}
+      height={200}
+    />
+  
+
+
         </CustomTabPanel>
 
         {/* General Settings Tab */}
