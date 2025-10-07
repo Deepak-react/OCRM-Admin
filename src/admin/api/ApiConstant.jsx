@@ -45,10 +45,16 @@ export const ENDPOINTS = {
   EDIT_SUBSCRIPTION:`${BASE_URL}/subscription/updateSubscription`,
   SUBSCRIPTION_STATUS_CHANGE:`${BASE_URL}/subscription/changeStatus`,
   CREATE_MODULE:`${BASE_URL}/module`,
-      GET_ALL_MODULES:`${BASE_URL}/module`,
-      EDIT_MODULE:`${BASE_URL}/module`,
-      CHANGE_MODULE_STATUS:`${BASE_URL}/module/changeSts`,
-      GET_ALL_ALLOCATED_MODULES:`${BASE_URL}/subscriptionPlanModule/getAllocateModule`,
+  GET_ALL_MODULES:`${BASE_URL}/module`,
+  EDIT_MODULE:`${BASE_URL}/module`,
+  CHANGE_MODULE_STATUS:`${BASE_URL}/module/changeSts`,
+  GET_ACTIVE_MODULES:`${BASE_URL}/module/fetchActiveModules`,
+  GET_ACTIVE_SUBSCRIPTION:`${BASE_URL}/subscription/getActiveSubscription`,
+  GET_ALL_ALLOCATED_MODULES:`${BASE_URL}/subscriptionPlanModule/getAllocateModule`,
+  CREATE_MODULE_ALLOCATION:`${BASE_URL}/subscriptionPlanModule/allocateModule`,
+  EDIT_MODULE_ALLOCATION:`${BASE_URL}/subscriptionPlanModule/editAllocatedModules`,
+  CHANGE_MODULE_ALLOCATION_STATUS:`${BASE_URL}/subscriptionPlanModule/changeModuleAllocationSts`,
+  GET_ALLOCATED_MODULES_BY_SUBSC_ID:`${BASE_URL}/subscriptionPlanModule/getAllocatedModulesBySubsId`,
       
 };
 
