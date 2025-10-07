@@ -11,12 +11,14 @@ const MasterData = () => {
     { id: 7, title: 'District', description: 'Represents the district within the selected state.', image_path: '/icons/industrial-park.svg', route:'/district'},
     { id: 8, title: 'City', description: 'Identifies the specific city of the business.', image_path: '/icons/industrial-park.svg', route:'/city' },
     { id: 9, title: 'Currency', description: 'Specifies the type of currency used in the business location.', image_path: '/icons/currency.svg', route:'/currency'},
+    { id: 10, title: 'Proposal Sent Mode', description: 'Specifies the type of currency used in the business location.', image_path: '/icons/currency.svg', route:'/proposal-sent-mode'},
+    
 
   ];
 
   return (
     <div className="min-h-screen bg-white p-6 sm:p-8 font-sans antialiased">
-      <div className="max-w-7xl mx-auto"> 
+      <div className="max-w-7xl mx-auto">   
         <h1 className="text-4xl font-extrabold text-gray-800 mb-12 leading-tight">
           Masters 
         </h1>
