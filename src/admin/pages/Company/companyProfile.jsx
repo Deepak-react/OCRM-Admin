@@ -56,6 +56,7 @@ import { useToast } from "../../../context/ToastContext.jsx";
 import LeadServices from "../Masters/Services/Services.jsx";
 import SubIndustry from "../Masters/Sub-Industry/SubIndustry.jsx";
 import SubService from "../Masters/Sub-service/SubService.jsx";
+import ProposalSentMode from "../Masters/Proposal Sent Mode/proposalSentMode.jsx";
 
 ChartJS.register(
   ArcElement,
@@ -166,6 +167,13 @@ const MasterDataPanel = ({ companyData }) => {
       icon: "/icons/industrial-park.svg",
       component: "sub-service",
     },
+    {
+      id: 11,
+      title: "Proposal Sent Mode",
+      description: "proposal modes like email, whatsapp etc",
+      icon: "/icons/industrial-park.svg",
+      component: "proposal-sent-mode",
+    },
   ];
 
    const renderComponent = () => {
@@ -191,6 +199,8 @@ const MasterDataPanel = ({ companyData }) => {
         return <LeadServices company={companyData}/>;
       case 'sub-service':
         return <SubService company={companyData}/>;
+      case 'proposal-sent-mode':
+        return <ProposalSentMode company={companyData}/>;  
       default:
         return null;
     }
@@ -733,7 +743,7 @@ const handleOpenEditDialog = async (company) => {
               + Create user
             </button>
           </div>
-          
+
         {paginatedUsers.length > 0 ? (
           <table className="min-w-full divide-y divide-gray-200 border border-gray-200 border-rounded-lg">
             <thead className="bg-gray-50">

@@ -5,10 +5,10 @@ import formatDate from '../../../utils/formatDate';
 
 const ProposalSentMode = ({company=""}) => {
   // Custom hooks for CRUD operations
-  const { fetchProposalSentMode, proposalSentMode } = useProposalSentMode();
+  const { fetchProposalSentMode, proposalSentMode, loading, error } = useProposalSentMode();
 
   // State to set the company values from the lead status list.
-  const [selectedCompany, setSelectedCompany] = useState(company);
+  const [selectedCompany, setSelectedCompany] = useState(company?.cCompany_name);
   // State to control the form visibility
   const [showForm, setShowForm] = useState(false);
   
@@ -23,9 +23,11 @@ const ProposalSentMode = ({company=""}) => {
 
   // Generate a unique list of companies from the lead potential response
   // Memoize to re-calculate only when leadPotential changes
+  console.log('The proposal sent mode data is:', proposalSentMode);
+  
   const companies = useMemo(() => {
     if (!proposalSentMode || proposalSentMode.length === 0) return [];
-    return [...new Set(proposalSentMode.map(sentMode => sentMode.company?.cCompany_name || "Unknown Company"))];
+    return [...new Set(proposalSentMode.map(sentMode => sentMode?.company?.cCompany_name || "Unknown Company"))];
   }, [proposalSentMode]);
 
   // Filter the data based on the dropdown menu
@@ -96,7 +98,7 @@ const ProposalSentMode = ({company=""}) => {
             className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200"
             onClick={() => setShowForm(true)}
           >
-            + Add Lead Potential
+            + Add proposal send mode
           </button>
         </div>
 
@@ -118,7 +120,7 @@ const ProposalSentMode = ({company=""}) => {
                   S.No
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Status Name
+                  Proposal send mode
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   Company
@@ -132,20 +134,20 @@ const ProposalSentMode = ({company=""}) => {
               {currentItems.length === 0 ? (
                 <tr>
                   <td colSpan="4" className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                    No lead potentials found for the selected criteria.
+                    No proposal send mode found for the selected criteria.
                   </td>
                 </tr>
               ) : (
                 currentItems.map((potential, index) => (
                   <tr
-                    key={potential.ilead_potential_id || `potential-${indexOfFirstItem + index}`} // Using a stable ID or generated one
+                    key={potential.proposal_send_mode_id || `potential-${indexOfFirstItem + index}`} // Using a stable ID or generated one
                     className="hover:bg-blue-50 transition-colors duration-150 ease-in-out"
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {indexOfFirstItem + index + 1}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      {potential.clead_name || "Unknown"}
+                      {potential.name || "Unknown"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                       <span className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
@@ -153,7 +155,7 @@ const ProposalSentMode = ({company=""}) => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatDate(potential.dcreated_dt) || "Unknown Date"}
+                      {formatDate(potential.created_dt) || "Unknown Date"}
                     </td>
                   </tr>
                 ))
@@ -199,4 +201,4 @@ const ProposalSentMode = ({company=""}) => {
   );
 };
 
-export default LeadPotential;
+export default ProposalSentMode;
