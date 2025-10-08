@@ -23,7 +23,6 @@ const LeadIndustry = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;  
   const currentIndustries = industries.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(industries.length / itemsPerPage);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (

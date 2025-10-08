@@ -16,6 +16,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import EventIcon from "@mui/icons-material/Event";
 import EditDocumentIcon from "@mui/icons-material/EditDocument";
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
@@ -69,6 +70,7 @@ ChartJS.register(
 );
 
 import { ArrowLeft } from "lucide-react";
+import { LeadLostReason } from "../Masters/lead_lost_reason/lead_lost_reason_component.jsx";
 
 // A simple panel component to show content based on active tab
 function CustomTabPanel(props) {
@@ -174,6 +176,13 @@ const MasterDataPanel = ({ companyData }) => {
       icon: "/icons/industrial-park.svg",
       component: "proposal-sent-mode",
     },
+     {
+      id: 12,
+      title: "Lead Lost Reason",
+      description: "Lead lost resaon is for adding the lost reason of the lead ",
+      icon: "/icons/industrial-park.svg",
+      component: "lead-lost-reason",
+    },
   ];
 
    const renderComponent = () => {
@@ -201,6 +210,8 @@ const MasterDataPanel = ({ companyData }) => {
         return <SubService company={companyData}/>;
       case 'proposal-sent-mode':
         return <ProposalSentMode company={companyData}/>;  
+          case 'lead-lost-reason':
+        return <LeadLostReason company={companyData.iCompany_id}/>;  
       default:
         return null;
     }
@@ -673,7 +684,7 @@ const handleOpenEditDialog = async (company) => {
                 </p>
                 <p className="flex items-center gap-2">
                   <img src="/icons/cin.png" alt="CIN Number" width={30} height={30} />
-                  <span className="font-semibold">{company?.icin_no || "-"}</span> {/* Removed .result */}
+                  <span className="font-semibold">{company?.icin_no || "-"}</span> 
                 </p>
                 <p className="md:col-span-2 lg:col-span-1 flex items-start gap-2">
                   <LocationOnIcon className="text-gray-500 mt-1" />
@@ -689,7 +700,7 @@ const handleOpenEditDialog = async (company) => {
                 </p>
                 <p className="flex items-center gap-2">
                   <EditDocumentIcon className="text-gray-500" />
-                  <span className="font-semibold">{company?.totalLeads || "-"}</span> {/* Removed .result */}
+                  <span className="font-semibold">{company?.totalLeads || "-"}</span> 
                 </p>
               </div>
             </div>
