@@ -11,7 +11,7 @@ export const ENDPOINTS = {
   UPDATE_ATTRIBUTE_USER_ID: `${BASE_URL}/user-attribute`,
   DASHBOARD: `${BASE_URL}/admin/dashboard`,
   LEAD_STATUS: `${BASE_URL}/lead-status/`,
-  PROPOSAL_SENT_MODE: `${BASE_URL}/proposal-send-mode/`,
+  PROPOSAL_SENT_MODE: `${BASE_URL}/proposal-send-mode`,
   COMPANIES : `${BASE_URL}/company`,
   COMPANY_SETTINGS : `${BASE_URL}/company/settings`,
   COMPANIES_ID : `${BASE_URL}/company`,

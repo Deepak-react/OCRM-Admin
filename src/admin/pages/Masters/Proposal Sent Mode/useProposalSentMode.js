@@ -24,11 +24,17 @@ export const useProposalSentMode = () => {
   const updateProposalSentMode = async (proposalData, id) => {
     setLoading(true);
     try {
-      const data = await proposalSentModeModel.editProposalSentMode(proposalData, id);
+      console.log("The proposal sent mode id is:", id);
+      const data = await proposalSentModeModel.editProposalSentMode(id, proposalData);
       console.log("The proposal sent mode data is:", data);
       setLoading(false);
-      return true;
+      if (data.status === 200) {
+        return true;
+      }
+      return false;
+
     } catch (err) {
+      setError(err.message || "Something went wrong");
       console.error("Error fetching plans:", err);
       return false;
     }
@@ -37,9 +43,15 @@ export const useProposalSentMode = () => {
   const addProposalSentMode = async (proposalData) => {
     setLoading(true);
     try {
-      const data = await proposalSentModeModel.createProposalSentMode(proposalData);
+      const data = await proposalSentModeModel.createProposalSentMode(
+        proposalData
+      );
       setLoading(false);
-      return data;
+      console.log("The proposal sent mode data is:", data);
+      if (data.status === 201) {
+        return true;
+      }
+      return false;
     } catch (err) {
       console.error("Error fetching plans:", err);
       return false;

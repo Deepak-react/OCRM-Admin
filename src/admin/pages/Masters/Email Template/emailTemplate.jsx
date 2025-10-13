@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react'; // Added useEffect and useMemo
-import ProposalSentForm from './Sub-Components/proposalSentModeForm';
+import EmailTemplateForm from './Sub-Components/proposalSentModeForm';
 import { useProposalSentMode } from './useProposalSentMode'; // Assuming this hook provides loading/error states
 import formatDate from '../../../utils/formatDate';
 
-const ProposalSentMode = ({company=""}) => {
+const EmailTemplate = ({company=""}) => {
   // Custom hooks for CRUD operations
-  const { fetchProposalSentMode, proposalSentMode, loading, error } = useProposalSentMode();
+  const {  loading, error } = useProposalSentMode();
 
   // State to set the company values from the lead status list.
   const [selectedCompany, setSelectedCompany] = useState(company?.cCompany_name);
@@ -247,4 +247,4 @@ const ProposalSentMode = ({company=""}) => {
   );
 };
 
-export default ProposalSentMode;
+export default EmailTemplate;
