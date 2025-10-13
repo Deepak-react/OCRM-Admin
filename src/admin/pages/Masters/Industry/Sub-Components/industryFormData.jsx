@@ -17,7 +17,7 @@ const LeadPotentialForm = ({onClose, onSuccess}) => {
 
   setFormData(prev => ({
     ...prev,
-    [name]: value   // ⬅️ sets the correct field to the entered value
+    [name]: value   
   }));
 };
 
@@ -67,7 +67,6 @@ const LeadPotentialForm = ({onClose, onSuccess}) => {
         <button
             type="submit"
             className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
-
         >
             Submit
         </button>

@@ -11,12 +11,11 @@ export const useCompanyController = () => {
   const [usersByCompany, setUsersByCompany] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
+  const[storageDetails,setStorageDetails]=useState([])
   // Function to fetch all company details
   const fetchAllCompanyData = useCallback(async () => {
     try {
       const data = await companyModel.getAllCompantData();``
-      console.log("Fetched company data:", data);
       setCompanyData(data);
     } catch (err) {
       console.error('Failed to fetch company data:', err);
@@ -278,7 +277,19 @@ const fetchCurrencies = async (companyId) => {
       return [];
     }
   };
-
+  
+  //FUNCTION TO CALL THE STORAGE API BINDING MODEL 
+  const storageDetailsController=async(companyId)=>{
+    try {
+      const result=await companyModel.getStorageDetails(companyId)
+      console.log("Company id in storage function :",companyId)
+      setError(null);
+      setStorageDetails(result);
+    } catch (e) {
+      setError(e.message||"Something went wrong")
+      return []
+    }
+  }
 
 
   useEffect(() => {
@@ -306,6 +317,8 @@ const fetchCurrencies = async (companyId) => {
     setUsersByCompany,
     fetchUsersByCompanyId,
     fetchAuditLogs,
+    storageDetailsController,
+    storageDetails,
   };
 }
 

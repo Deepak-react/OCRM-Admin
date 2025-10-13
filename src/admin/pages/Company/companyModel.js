@@ -184,3 +184,15 @@ export const getCompanyById = async (id) =>{
       throw error;
     }
   };
+
+  //To the storage details based on the company id 
+  export const getStorageDetails=async(companyId)=>{
+    try {
+      const response=await ApiHelper.getById(companyId,ENDPOINTS.GET_STORAGE_DETAILS);
+      const data=response.data;
+      if(data.success) return data.data;
+      throw new Error(data.message)
+    } catch (e) {
+      return e.message
+    }
+  }
