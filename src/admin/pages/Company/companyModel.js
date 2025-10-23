@@ -112,33 +112,6 @@ import { getAll } from "../../api/ApiHelper";  
   };
 
 
-  // to get all the currencies
-  // export const getAllCurrencies = async () => {
-  //   const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
-  //   return res.data; 
-  // };
-
-  //  Corrected getAllCurrencies function
-export const getAllCurrencies = async () => {
-  const res = await ApiHelper.getAll(ENDPOINTS.CURRENCY);
-  console.log("The currencies fetched are :", res);
-  const allCurrencies = res.data?.data || [];
-
-  // Return only active currencies
-  const activeCurrencies = allCurrencies.filter(currency => currency.bactive === true);
-  console.log("The active currencies are :", activeCurrencies);
-  return activeCurrencies;
-};
-
-
-// // to get all the business types BUSSINESS_TYPE:`${BASE_URL}/business-type`,
-// export const getAllBusinessTypes = async () => {
-//   //console.log(ENDPOINTS.COMPANIES);
-//   const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
-//   //console.log("The errored response is :", res);
-//   return res.data; 
-// };
-
   export const getAuditLogs = async (company_id) => {
     const res = await ApiHelper.getAll(ENDPOINTS.AUDIT_LOGS(company_id));
     return res.data; 
@@ -178,9 +151,7 @@ export const editCompany = async (data, company_id) => {
 
 //to get an company data based on the id.
 export const getCompanyById = async (id) =>{
-  //console.log(ENDPOINTS.COMPANIES);
   const res = await ApiHelper.getById(id, ENDPOINTS.COMPANIES_ID);
-  //console.log("The company data are :", res);  
   return res.data.result;
 }
 

@@ -9,7 +9,6 @@ export const deActive = (id, endpoint) => API.delete(`${endpoint}${id}`);
 
 //UPDATE WITH QUERY PARAMS
 export const updateWithQueryParams = (queryParams, endpoint, data) => {
-  // Build query string from object
   const queryString = new URLSearchParams(queryParams).toString();
   const url = `${endpoint}?${queryString}`;
   return API.put(url, data);
@@ -18,8 +17,3 @@ export const updateWithQueryParams = (queryParams, endpoint, data) => {
 export const getByIdAndType = (id,type, endpoint) => API.get(`${endpoint}/${id}/${type}`);
 //EDIT API FUNCTION ONLY BY REQUEST BODY 
 export const editWithReqBody = ( endpoint,requestBody) => API.put(`${endpoint}`,requestBody);
-
-
-
-
-    

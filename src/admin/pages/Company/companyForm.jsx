@@ -5,8 +5,7 @@ import { toast } from "react-toastify";
 
 const CompanyForm = ({ onClose, onSuccess }) => {
   const { createCompany } = useCompanyController();
-const { cities, currencies, bussiness , plan } = useSharedController();
-
+  const { cities, currencies, bussiness , plan } = useSharedController();
 
   const [formData, setFormData] = useState({
      cCompany_name: "",
@@ -66,7 +65,9 @@ const { cities, currencies, bussiness , plan } = useSharedController();
 
     setFormData((prev) => ({
       ...prev,
-      [name]: intFields.includes(name) ? parseInt(processedValue || "0", 10) : processedValue,
+      [name]: intFields.includes(name) 
+    ? (processedValue ? parseInt(processedValue, 10) : null) 
+    : processedValue,
     }));
   };
 
@@ -217,58 +218,58 @@ const { cities, currencies, bussiness , plan } = useSharedController();
 
             <div>
               <label className="block text-sm font-medium">Currency</label>
-              <select
-  name="icurrency_id"
-  value={formData.icurrency_id}
-  onChange={handleChange}
-  className="w-full border px-3 py-2 rounded text-black"
->
-  <option value="">Choose currency</option>
-  {Array.isArray(currencies) &&
-    currencies.map((currency) => (
-      <option key={currency.icurrency_id} value={currency.icurrency_id}>
-        {currency.currency_code}
-      </option>
-    ))}
-</select>
+                <select
+                  name="icurrency_id"
+                  value={formData.icurrency_id}
+                  onChange={handleChange}
+                  className="w-full border px-3 py-2 rounded text-black"
+                >
+                  <option value="">Choose currency</option>
+                  {Array.isArray(currencies) &&
+                    currencies.map((currency) => (
+                      <option key={currency.icurrency_id} value={currency.icurrency_id}>
+                        {currency.currency_code}
+                      </option>
+                    ))}
+                </select>
 
             </div>
 
             <div>
               <label className="block text-sm font-medium">Business Type</label>
-              <select
-  name="ibusiness_type"
-  value={formData.ibusiness_type}
-  onChange={handleChange}
-  className="w-full border px-3 py-2 rounded"
->
-  <option value="">Choose type</option>
-  {Array.isArray(bussiness) &&
-    bussiness.map((b) => (
-      <option key={b.id} value={b.id}>
-        {b.name}
-      </option>
-    ))}
-</select>
+                <select
+                  name="ibusiness_type"
+                  value={formData.ibusiness_type}
+                  onChange={handleChange}
+                  className="w-full border px-3 py-2 rounded"
+                >
+                  <option value="">Choose type</option>
+                  {Array.isArray(bussiness) &&
+                    bussiness.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name}
+                      </option>
+                    ))}
+                </select>
 
             </div>
             
             <div>
               <label className="block text-sm font-medium">Subscription Plan </label>
-              <select
-  name="isubscription_plan"
-  value={formData.isubscription_plan}
-  onChange={handleChange}
-  className="w-full border px-3 py-2 rounded"
->
-  <option value="">Choose type</option>
-  {Array.isArray(plan) &&
-    plan.map((p) => (
-      <option key={p.plan_id} value={p.plan_id}>
-        {p.plan_name}
-      </option>
-    ))}
-</select>
+                <select
+                  name="isubscription_plan"
+                  value={formData.isubscription_plan}
+                  onChange={handleChange}
+                  className="w-full border px-3 py-2 rounded"
+                >
+                  <option value="">Choose type</option>
+                  {Array.isArray(plan) &&
+                    plan.map((p) => (
+                      <option key={p.plan_id} value={p.plan_id}>
+                        {p.plan_name}
+                      </option>
+                    ))}
+                </select>
 
             </div>
 

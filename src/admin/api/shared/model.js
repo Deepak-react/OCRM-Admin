@@ -11,7 +11,7 @@ export const getAllCompanies = async () => {
 export const getAllBussiness = async () => {
   try {
     const res = await ApiHelper.getAll(ENDPOINTS.BUSSINESS_TYPE);
-    console.log("bussinesstype", res.data);
+    // console.log("bussinesstype", res.data);
     return res.data.data;
   } catch (error) {
     console.error("Error fetching business types:", error);
@@ -21,7 +21,7 @@ export const getAllBussiness = async () => {
 export const getPlan = async () => {
   try {
     const res = await ApiHelper.getAll(ENDPOINTS.PLAN);
-    console.log("PLAN:", res.data);
+    // console.log("PLAN:", res.data);
     return res.data.data;
   } catch (error) {
     console.error("Error fetching plan types:", error);
@@ -31,14 +31,13 @@ export const getPlan = async () => {
 export const getAllCurrencies = async () => {
   try {
     const res = await ApiHelper.getAll(ENDPOINTS.CURRENCY);
-    console.log("currency:", res.data);
+    // console.log("currency:", res.data);
     return res.data.data;
   } catch (error) {
     console.error("Error fetching plan types:", error);
     return [];
   }
 }
-  
 
 export const  getAllCities  = async ()=>{
   const res = await ApiHelper.getAll(ENDPOINTS.CITY);

@@ -12,7 +12,6 @@ export const useCompanyController = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [storageDetails,setStorageDetails]=useState([]);
-  const [currencies,setCurrencies]=useState([]);
 
 
   // Function to fetch all company details
@@ -38,7 +37,7 @@ export const useCompanyController = () => {
        setUsersByCompany(prevUsers =>
       prevUsers.map(user =>
         user.iUser_id === userId
-          ? { ...user, bactive: newStatus } // Update only the status
+          ? { ...user, bactive: newStatus } 
           : user
       )
     );
@@ -48,47 +47,7 @@ export const useCompanyController = () => {
     }
   }
 
-  const fetchCurrencies = async () => {
-  try {
-    const currencies = await companyModel.getAllCurrencies();
-    setCurrencies(currencies);
-    return currencies;
-  } catch (err) {
-    console.error("Failed to fetch currencies:", err);
-    setError(err.message || "Something went wrong");
-    return [];
-  }
-};
 
-const fetchBusinessType = async () => {
-  try {
-    const businessTypes = await companyModel.getAllBusinessTypes();
-    return businessTypes;
-  } catch (err) {
-    console.error("Failed to fetch business types:", err);
-    setError(err.message || "Something went wrong");
-    return [];
-  }
-};
-
-
-
-// const fetchCurrencies = async (companyId) => {
-//   try {
-//     const res = await companyModel.getCurrencies(); 
-//     setCurrencies(res.data || []);
-//     return res.data || [];
-//   } catch (err) {
-//     console.error("Failed to fetch currencies:", err);
-//     setError(err.message || "Something went wrong");
-//     return [];
-//   }
-// };
-
-
-
-  // const fetchBusinessType = async (companyId) => {
-  // }
   const fetchAuditLogs = async (company_id) => {
     try {
       const data = await companyModel.getAuditLogs();
@@ -138,48 +97,81 @@ const fetchBusinessType = async () => {
     }
   }
 
-  const createCompany = async (data) => {
+const createCompany = async (data) => {
     try {
-      // Prepare payload for Prisma
-      const payload = {
-        cCompany_name: data.cCompany_name,
-        iPhone_no: data.iPhone_no,
-        cWebsite: data.cWebsite,
-        caddress1: data.caddress1,
-        caddress2: data.caddress2,
-        caddress3: data.caddress3,
-        cpincode: data.cpincode,
-        cLogo_link: data.cLogo_link,
-        cGst_no: data.cGst_no,
-        icin_no: data.icin_no,
-        cPan_no: data.cPan_no,
-        industry: data.industry,
-        iUser_no: data.iUser_no,
-        bactive: data.bactive,
-      };
+        // --- 1. Construct the Base Payload with Direct Fields ---
+        const payload = {
+            // Mandatory direct fields
+            cCompany_name: data.cCompany_name,
+            iPhone_no: data.iPhone_no,
+            cWebsite: data.cWebsite,
+            caddress1: data.caddress1,
+            caddress2: data.caddress2,
+            caddress3: data.caddress3,
+            cGst_no: data.cGst_no,
+            icin_no: data.icin_no,
+            iUser_no: data.iUser_no,
+            bactive: data.bactive,
+            
+            // Optional direct fields, cast/checked as needed
+            cpincode: data.cpincode ? parseInt(data.cpincode) : null,
+            cLogo_link: data.cLogo_link || 'https://xcodefix.com/logo.png', // Fallback value
+            cPan_no: data.cPan_no || null,
+            industry: data.industry || null,
+            cemail_address: data.cemail_address || null,
+            fax_no: data.fax_no || null,
+        };
 
-      // Optional relations only if IDs exist
-      if (data.ireseller_id) payload.reseller = { connect: { ireseller_id: data.ireseller_id } };
-      if (data.icity_id) payload.city = { connect: { icity_id: data.icity_id } };
-      if (data.ireseller_admin) payload.resellerAdmin = { connect: { iUser_id: data.ireseller_admin } };
-      if (data.isubscription_plan) payload.pricing_plan = { connect: { plan_id: data.isubscription_plan } };
-      if (data.ibusiness_type) payload.businessType = { connect: { id: data.ibusiness_type } };
-      if (data.icurrency_id) payload.currency = { connect: { icurrency_id: data.icurrency_id } };
+        // --- 2. Conditionally Add Relational Fields (ID > 0 Check) ---
+        
+        // City ID
+        const cityId = parseInt(data.icity_id);
+        if (!isNaN(cityId) && cityId > 0) {
+            payload.city = { connect: { icity_id: cityId } };
+        }
 
-    // Call model function to insert company into DB
-    const res = await companyModel.addNewCompany(payload);
+        // Pricing Plan ID (maps 'isubscription_plan' to 'plan_id')
+        const planId = parseInt(data.isubscription_plan);
+        if (!isNaN(planId) && planId > 0) {
+            payload.pricing_plan = { connect: { plan_id: planId } };
+        }
 
-    console.log("Company created with ID:", res.data.iCompany_id);
-    return true;
+        // Business Type ID (maps 'ibusiness_type' to 'id')
+        const businessTypeId = parseInt(data.ibusiness_type);
+        if (!isNaN(businessTypeId) && businessTypeId > 0) {
+            payload.businessType = { connect: { id: businessTypeId } };
+        }
 
-  } catch (err) {
-    console.error("Failed to create company:", err);
-    return false;
-  }
+        // Currency ID
+        const currencyId = parseInt(data.icurrency_id);
+        if (!isNaN(currencyId) && currencyId > 0) {
+            payload.currency = { connect: { icurrency_id: currencyId } };
+        }
+        
+        // Reseller ID (maps 'ireseller_id' to 'ireseller_id')
+        const resellerId = parseInt(data.ireseller_id);
+        if (!isNaN(resellerId) && resellerId > 0) {
+            payload.reseller = { connect: { ireseller_id: resellerId } };
+        }
+        
+        // Reseller Admin ID (FIXED: Using the relational connect object)
+        const resellerAdminId = parseInt(data.ireseller_admin);
+        if (!isNaN(resellerAdminId) && resellerAdminId > 0) {
+            // Assumes the relation is named 'resellerAdmin' and connects via 'iUser_id' in the User table
+            payload.resellerAdmin = { connect: { iUser_id: resellerAdminId } }; 
+        }
+
+        // --- 3. Call the Model Function ---
+        const res = await companyModel.addNewCompany(payload);
+
+        console.log("Company created with ID:", res.data.iCompany_id);
+        return true;
+
+    } catch (err) {
+        console.error("Failed to create company:", err);
+        return false;
+    }
 };
-
-
-
 
  //function to create an admin user when the company is created
   const createAdminUser = async (data) => {
@@ -233,16 +225,16 @@ const fetchBusinessType = async () => {
           // ireseller_admin: data.ireseller_admin,
           ireseller_id: 1,
           isubscription_plan: data.isubscription_plan,
-    cpincode:data.cpincode,
-    cPan_no:data.cPan_no,
-    ibusiness_type:data.ibusiness_type,
-   
-    // cPassword: '',
-    irole_id: 1,
-    // cProfile_pic: '',
-    // reports_to: 13,
-    fax_no:'',
-    industry:'',
+          cpincode:data.cpincode,
+          cPan_no:data.cPan_no,
+          ibusiness_type:data.ibusiness_type,
+        
+          // cPassword: '',
+          irole_id: 1,
+          // cProfile_pic: '',
+          // reports_to: 13,
+          fax_no:'',
+          industry:'',
 
       }, company_id);
       console.log("Edit company response:", res);
