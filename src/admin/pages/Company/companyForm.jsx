@@ -8,14 +8,13 @@ const CompanyForm = ({ onClose, onSuccess }) => {
   const { cities, currencies, bussiness , plan } = useSharedController();
 
   const [formData, setFormData] = useState({
-     cCompany_name: "",
+    cCompany_name: "",
     iPhone_no: "",
     cWebsite: "",
     caddress1: "",
     caddress2: "",
     caddress3: "",
     cpincode: "",
-    cLogo_link: "",
     cGst_no: "",
     fax_no: "",
     icin_no: "",
@@ -24,21 +23,12 @@ const CompanyForm = ({ onClose, onSuccess }) => {
     cemail_address: "",
     iUser_no: "",
     cLogo_link: 'https://xcodefix.com/logo.png',
-    cCompany_name: '',
-    iPhone_no: '',
-    cWebsite: '',
-    caddress1: '',
-    caddress2: '',
-    caddress3: '',
-    cGst_no: '',  
-    icin_no: '',
     bactive: true,
     icity_id: "",
     isubscription_plan: "",
     ibusiness_type: "",
     ireseller_id: 1,
     icurrency_id: "",
-    isubscription_plan:"",
   });
 
   const [errors, setErrors] = useState({});
