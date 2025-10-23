@@ -110,7 +110,9 @@ const { cities, currencies, bussiness , plan } = useSharedController();
   const renderError = (field) => errors[field] && <p className="text-sm text-red-600">{errors[field]}</p>;
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md h-[80vh] overflow-y-auto">
+
+    {/* <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md"> */}
       <div className="flex justify-end mb-4">
         <button onClick={onClose} className="font-bold hover:bg-gray-300 px-2 py-1 rounded">❌</button>
       </div>

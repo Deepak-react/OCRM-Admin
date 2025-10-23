@@ -22,27 +22,22 @@ function AdminDashboard() {
     { name: 'June', users: 300 },
   ];
 
-  // Data for Storage Usage (Static) - Keeping as is since core logic is not to be changed
   const storageData = [
     { name: 'Used', value: 30 },
     { name: 'Available', value: 70 },
   ];
 
-  // Function to find the largest - Keeping as is since core logic is not to be changed
   const maxValueIndex = storageData.reduce(
     (maxIdx, item, idx, arr) => (item.value > arr[maxIdx].value ? idx : maxIdx),
     0
   );
 
-  // Function to fetch the dashboard data - Keeping as is since core logic is not to be changed
   const { dashboardData } = useDashboardController();
 
   const resellerList = dashboardData?.resellerRanking;
 
   console.log("The dashboard data are", dashboardData?.resellerRanking);
-
-  // Enhanced color palette for consistency and modern feel
-  const COLORS = ['#FF7043', '#4CAF50']; // A more vibrant red-orange for used, and a classic green for available
+  const COLORS = ['#FF7043', '#4CAF50']; 
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 sm:p-8 font-sans antialiased">
@@ -105,12 +100,12 @@ function AdminDashboard() {
                 data={storageData}
                 cx="50%"
                 cy="50%"
-                innerRadius={60} // Slightly larger inner radius for a bolder donut
-                outerRadius={90} // Slightly smaller outer radius
+                innerRadius={60} 
+                outerRadius={90} 
                 fill="#8884d8"
-                paddingAngle={4} // Reduced padding angle
+                paddingAngle={4} 
                 dataKey="value"
-                labelLine={false} // Hide label lines for a cleaner look
+                labelLine={false} 
               >
                 {storageData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

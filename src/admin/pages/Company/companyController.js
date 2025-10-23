@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import * as companyModel from './companyModel'; // This is the only model import needed
+import * as companyModel from './companyModel'; 
 import { create } from "../../api/ApiHelper";
 
 export const useCompanyController = () => {
@@ -11,7 +11,10 @@ export const useCompanyController = () => {
   const [usersByCompany, setUsersByCompany] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const[storageDetails,setStorageDetails]=useState([])
+  const [storageDetails,setStorageDetails]=useState([]);
+  const [currencies,setCurrencies]=useState([]);
+
+
   // Function to fetch all company details
   const fetchAllCompanyData = useCallback(async () => {
     try {
@@ -45,13 +48,11 @@ export const useCompanyController = () => {
     }
   }
 
-
-
-const fetchCurrencies = async (companyId) => {
+  const fetchCurrencies = async () => {
   try {
-    const res = await companyModel.getCurrencies(); 
-    setCurrencies(res.data || []);
-    return res.data || [];
+    const currencies = await companyModel.getAllCurrencies();
+    setCurrencies(currencies);
+    return currencies;
   } catch (err) {
     console.error("Failed to fetch currencies:", err);
     setError(err.message || "Something went wrong");
@@ -59,9 +60,35 @@ const fetchCurrencies = async (companyId) => {
   }
 };
 
+const fetchBusinessType = async () => {
+  try {
+    const businessTypes = await companyModel.getAllBusinessTypes();
+    return businessTypes;
+  } catch (err) {
+    console.error("Failed to fetch business types:", err);
+    setError(err.message || "Something went wrong");
+    return [];
+  }
+};
 
 
-  const fetchBusinessType = async (companyId) => {}
+
+// const fetchCurrencies = async (companyId) => {
+//   try {
+//     const res = await companyModel.getCurrencies(); 
+//     setCurrencies(res.data || []);
+//     return res.data || [];
+//   } catch (err) {
+//     console.error("Failed to fetch currencies:", err);
+//     setError(err.message || "Something went wrong");
+//     return [];
+//   }
+// };
+
+
+
+  // const fetchBusinessType = async (companyId) => {
+  // }
   const fetchAuditLogs = async (company_id) => {
     try {
       const data = await companyModel.getAuditLogs();
@@ -168,7 +195,6 @@ const fetchCurrencies = async (companyId) => {
       return false;
     }
   }
-
 
 
   //function to create normal user for an company 

@@ -77,7 +77,7 @@ import { getAll } from "../../api/ApiHelper";  
   export const getUserAttributes = async (userId) => {
     try {
       const response = await ApiHelper.getById(userId, ENDPOINTS.GET_ATTRIBUTE_USER_ID); 
-    console.log('Response from getUserAttributes:', response.data);
+      // console.log('Response from getUserAttributes:', response.data);
     
       if (response.data && response.data.error === "No attribute found for this user ID !") {
           return [];
@@ -98,13 +98,12 @@ import { getAll } from "../../api/ApiHelper";  
 
 
   export const changeUserSettingsStatus = async (settingsData) => {
-    console.log('Settings data being sent to changeUserSettingsStatus:', settingsData, ENDPOINTS.USER_SETTINGS);
+    // console.log('Settings data being sent to changeUserSettingsStatus:', settingsData, ENDPOINTS.USER_SETTINGS);
     const res = await ApiHelper.update_patch_no_id( ENDPOINTS.USER_SETTINGS, settingsData);
-    console.log('The response from changeUserSettingsStatus is :', res);
+    // console.log('The response from changeUserSettingsStatus is :', res);
     
     return res.data; 
   }
-
 
   // to get all the company data.
   export const getAllCompantData = async () => {
@@ -114,12 +113,25 @@ import { getAll } from "../../api/ApiHelper";  
 
 
   // to get all the currencies
-  export const getAllCurrencies = async () => {
-    const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
-    return res.data; 
-  };
+  // export const getAllCurrencies = async () => {
+  //   const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
+  //   return res.data; 
+  // };
 
-// // to get all the business types
+  //  Corrected getAllCurrencies function
+export const getAllCurrencies = async () => {
+  const res = await ApiHelper.getAll(ENDPOINTS.CURRENCY);
+  console.log("The currencies fetched are :", res);
+  const allCurrencies = res.data?.data || [];
+
+  // Return only active currencies
+  const activeCurrencies = allCurrencies.filter(currency => currency.bactive === true);
+  console.log("The active currencies are :", activeCurrencies);
+  return activeCurrencies;
+};
+
+
+// // to get all the business types BUSSINESS_TYPE:`${BASE_URL}/business-type`,
 // export const getAllBusinessTypes = async () => {
 //   //console.log(ENDPOINTS.COMPANIES);
 //   const res = await ApiHelper.getAll(ENDPOINTS.COMPANIES);
@@ -157,8 +169,6 @@ export const changeSettingStatus = async (data, company_id) => {
   };
 
 
-
-
 export const editCompany = async (data, company_id) => {
   console.log("The company data and the company id are :", data, company_id);
   const res = await ApiHelper.update(company_id,data,ENDPOINTS.COMPANIES);
@@ -173,7 +183,6 @@ export const getCompanyById = async (id) =>{
   //console.log("The company data are :", res);  
   return res.data.result;
 }
-
 
   // to get all the user data based on the company id.
   export const getUsersByCompanyId = async (companyId) => {
