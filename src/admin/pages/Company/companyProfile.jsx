@@ -277,7 +277,7 @@ const CompanyProfile = () => {
     storageDetailsController,
     storageDetails
   } = useCompanyController();
-
+  
   const { fetchAllCities, cities, fetchRoles, roles } = useSharedController();
   const { showToast } = useToast();
   const [showProfile, setShowProfile] = useState(false);
@@ -510,7 +510,7 @@ const handleOpenEditDialog = async (company) => {
         const storageData= await storageDetailsController(id)
         
         console.log("The storage company data is:", storageData);
-        console.log("The company data is:", data);
+        console.table("The company data is:", data);
         setCompany(data);
       } catch (error) {
         console.error("Failed to fetch company data:", error);
@@ -614,7 +614,7 @@ const handleOpenEditDialog = async (company) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center">
           <h3 className="text-base font-semibold text-gray-700 mb-2">Total Users</h3>
-          <p className="text-4xl font-extrabold text-blue-600">321</p>
+          <p className="text-4xl font-extrabold text-blue-600">{company?.userCount}</p>
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center">
           <h3 className="text-base font-semibold text-gray-700 mb-2">Total Leads</h3>
@@ -622,11 +622,11 @@ const handleOpenEditDialog = async (company) => {
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center">
           <h3 className="text-base font-semibold text-gray-700 mb-2">Total Revenue</h3>
-          <p className="text-4xl font-extrabold text-purple-600">₹1.2L</p>
+          <p className="text-4xl font-extrabold text-purple-600">{company?.totalRevenueAmount}</p>
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100 flex flex-col justify-center items-center">
           <h3 className="text-base font-semibold text-gray-700 mb-2">Active modules</h3>
-          <p className="text-4xl font-extrabold text-orange-600">5</p>
+          <p className="text-4xl font-extrabold text-orange-600">{company?.allocatedModules}</p>
         </div>
       </div>
 
@@ -705,7 +705,6 @@ const handleOpenEditDialog = async (company) => {
               </div>
             </div>
           </div>
-          <div>here the storage chart </div>
 {console.log("The company daaaaaaattaaaa is :", company)}
     <PieChart
       series={[
@@ -963,9 +962,21 @@ const handleOpenEditDialog = async (company) => {
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="reporting" className="block text-sm font-medium text-gray-700">Reports to</label>
-                  <select id="reporting" value={userFormData.reporting} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg shadow-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
+                  <select id="reporting" value={userFormData.reporting} onChange={handleChange} 
+                  className="w-full px-3 py-2 border rounded-lg shadow-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
+                    {!usersByCompany ? (
+                      <option value="" disabled className="text-gray-400">No users found</option>
+                    ) :(
+                      <>
                     <option value="" disabled className="text-gray-400">Choose reporting</option>
-                    {usersByCompany.map((user) => ( <option key={user.iUser_id} value={user.iUser_id}>{user.cFull_name}</option> ))}
+                    {usersByCompany.map((user) => ( <option key={user.iUser_id} value={user.iUser_id}>{user.cFull_name}</option> 
+                    )
+                  
+                  )}
+                  </>
+                  )}
+      
+                    
                   </select>
                 </div>
               </div>

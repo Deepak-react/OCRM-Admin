@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useCompanyController } from './companyController';
-import CompanyForm from './companyForm'; 
-import { Link } from 'react-router-dom'; 
+import CompanyForm from './companyForm';
+import { Link } from 'react-router-dom';
 
 // ---
 // ## Reusable Company Card (CompanyGrid) Enhanced Design
@@ -11,13 +11,13 @@ const CompanyGrid = ({ data }) => {
 
   return (
     <Link to={`/company-profile/${data.iCompany_id}`} className="block h-full">
-      
+
       <div
         className=" bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 ease-in-out 
         transform hover:-translate-y-0.5 overflow-hidden p-7 sm:p-8 border border-gray-200 flex flex-col h-full  ">
         {/* Top Section: Company Name, Initial, Website */}
         <div className="flex items-start gap-5 mb-6">
-          
+
           {/* Increased gap and margin */}
           {/* Profile Initial Circle */}
           <div
@@ -31,7 +31,7 @@ const CompanyGrid = ({ data }) => {
             {initial}
           </div>
           <div className="flex-grow">
-            
+
             {/* Allows name/website to take available space */}
             <h2 className="text-xl md:text-2xl font-semibold text-gray-900 leading-tight mb-0.5">
               {data.cCompany_name}
@@ -43,28 +43,28 @@ const CompanyGrid = ({ data }) => {
         <div className="border-t border-gray-100 my-4"></div> {/* Subtle separator */}
         {/* Details Section: Phone, Plan, City */}
         <div className="text-base text-gray-700 flex-grow">
-          
+
           {/* Allows details section to grow */}
           <div className="flex justify-between items-center mb-3">
-            
+
             <span className="font-medium text-gray-500">Phone:</span>
             <span className="font-semibold text-gray-800">{data.iPhone_no}</span>
           </div>
           <div className="flex justify-between items-center mb-3">
             <span className="font-medium text-gray-500">Plan:</span>
             <span
-              // className={`
-              //   text-sm font-bold px-3 py-1.5 rounded-full
-              //   uppercase
-              //   ${
-              //     data.pricing_plan?.plan_name.toLowerCase() === 'gold'
-              //       ? 'bg-yellow-50 text-yellow-700'
-              //       : data.pricing_plan.plan_name.toLowerCase() === 'silver'
-              //         ? 'bg-gray-100 text-gray-700'
-              //         : data.pricing_plan.plan_name.toLowerCase() === 'bronze'
-              //           ? 'bg-amber-50 text-amber-700'
-              //           : 'bg-indigo-50 text-indigo-700'
-              //   }`}
+            // className={`
+            //   text-sm font-bold px-3 py-1.5 rounded-full
+            //   uppercase
+            //   ${
+            //     data.pricing_plan?.plan_name.toLowerCase() === 'gold'
+            //       ? 'bg-yellow-50 text-yellow-700'
+            //       : data.pricing_plan.plan_name.toLowerCase() === 'silver'
+            //         ? 'bg-gray-100 text-gray-700'
+            //         : data.pricing_plan.plan_name.toLowerCase() === 'bronze'
+            //           ? 'bg-amber-50 text-amber-700'
+            //           : 'bg-indigo-50 text-indigo-700'
+            //   }`}
             >
               {data.pricing_plan?.plan_name}
             </span>
@@ -76,7 +76,7 @@ const CompanyGrid = ({ data }) => {
         </div>
         {/* Status Badge at the bottom, aligned to right */}
         <div className="flex justify-end mt-6 pt-4 border-t border-gray-100">
-          
+
           {/* Separated and aligned */}
           <span
             className={`
@@ -117,14 +117,13 @@ const CompanyTableRow = ({ data }) => {
             className={`
               text-xs font-bold px-3 py-1.5 rounded-full
               uppercase
-              ${
-                data.pricing_plan.plan_name.toLowerCase() === 'gold'
-                  ? 'bg-yellow-50 text-yellow-700'
-                  : data.pricing_plan.plan_name.toLowerCase() === 'silver'
-                    ? 'bg-gray-100 text-gray-700'
-                    : data.pricing_plan.plan_name.toLowerCase() === 'bronze'
-                      ? 'bg-amber-50 text-amber-700'
-                      : 'bg-indigo-50 text-indigo-700'
+              ${data.pricing_plan.plan_name.toLowerCase() === 'gold'
+                ? 'bg-yellow-50 text-yellow-700'
+                : data.pricing_plan.plan_name.toLowerCase() === 'silver'
+                  ? 'bg-gray-100 text-gray-700'
+                  : data.pricing_plan.plan_name.toLowerCase() === 'bronze'
+                    ? 'bg-amber-50 text-amber-700'
+                    : 'bg-indigo-50 text-indigo-700'
               }`}
           >
             {data.pricing_plan.plan_name}
@@ -222,29 +221,32 @@ const CompanyTable = ({ data, sortConfig, requestSort }) => {
 const Company = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showForm, setShowForm] = useState(false);
-  const [viewType, setViewType] = useState('grid'); 
+  const [viewType, setViewType] = useState('grid');
   const [sortConfig, setSortConfig] = useState({ key: 'dModifiedDate', direction: 'descending' });
 
   const { companyData, fetchAllCompanyData, createCompany } = useCompanyController();
 
+
+
   useEffect(() => {
     fetchAllCompanyData();
+    console.log("Fetching company data...")
   }, []);
 
-    useEffect(() => {
-    console.log("🔍 Company Data Debug:", {
-      companyData,
-      type: typeof companyData,
-      isArray: Array.isArray(companyData),
-      keys: companyData ? Object.keys(companyData) : 'no data'
-    });
-  }, [companyData]);
+  //   useEffect(() => {
+  //   console.log("🔍 Company Data Debug:", {
+  //     companyData,
+  //     type: typeof companyData,
+  //     isArray: Array.isArray(companyData),
+  //     keys: companyData ? Object.keys(companyData) : 'no data'
+  //   });
+  // }, [companyData]);
 
   // Filter data based on search query
-const filteredData = useMemo(() => {
+  const filteredData = useMemo(() => {
     // Ensure companyData is always an array
     const dataArray = Array.isArray(companyData) ? companyData : [];
-    
+
     return dataArray.filter((company) => {
       // Ensure all properties exist before calling .toLowerCase()
       const companyName = company.cCompany_name || '';
@@ -327,8 +329,8 @@ const filteredData = useMemo(() => {
     if (sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
     } else if (sortConfig.key === key && sortConfig.direction === 'descending') {
-      key = null; 
-      direction = 'ascending'; 
+      key = null;
+      direction = 'ascending';
     }
     setSortConfig({ key, direction });
   };
@@ -336,19 +338,19 @@ const filteredData = useMemo(() => {
   return (
     <div className="min-h-screen bg-gray-50 p-6 sm:p-8 font-sans antialiased">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-extrabold text-gray-800 tracking-tight">
-          Companies <span className="text-blue-600">Overview</span>
-        </h1>
-        {/* Bell Icon for Notifications */}
-        <button
-          className="p-2 text-gray-500 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-full transition-colors"
-          title="Notifications"
-        >
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-          </svg>
-        </button>
-      </div>
+        <h1 className="text-4xl font-extrabold text-gray-800 tracking-tight">
+          Companies <span className="text-blue-600">Overview</span>
+        </h1>
+        {/* Bell Icon for Notifications */}
+        <button
+          className="p-2 text-gray-500 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-full transition-colors"
+          title="Notifications"
+        >
+          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+          </svg>
+        </button>
+      </div>
 
       <div className="p-4 bg-white rounded-xl shadow-sm mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         {/* Search Box */}

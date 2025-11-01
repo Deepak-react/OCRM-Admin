@@ -173,108 +173,108 @@ const GeneralSettingsSection = ({ formData, handleChange, settings }) => {
         label="DCRM"
         status={localSettings.DCRM}
         name="DCRM"
-       companyId={settings.companyId}
+       companyId={settings?.companyId}
       />
       <ToggleSection
         label="Poster generator"
         status={localSettings.PosterGenerator}
         name="PosterGenerator"
-        companyId={settings.companyId}
+        companyId={settings?.companyId}
       />
       <ToggleSection
         label="Reminder"
         status={localSettings.Reminder}
         name="Reminder"
-        companyId={settings.companyId}
+        companyId={settings?.companyId}
       />
       <ToggleSection
         label="Website lead tab"
         status={localSettings.WebsiteLead}
         name="WebsiteLead"
-        companyId={settings.companyId}
+        companyId={settings?.companyId}
       />
       <ToggleSection
         label="Import"
         status={localSettings.Import}
         name="Import"
-        companyId={settings.companyId}
+        companyId={settings?.companyId}
       />
       <ToggleSection
         label="Export"
         status={localSettings.Export}
         name="Export"
-        companyId={settings.companyId}
+        companyId={settings?.companyId}
       />
       <ToggleSection
         label="File attachment"
         status={localSettings.FileAttachment}
         name="FileAttachment"
-        companyId={settings.companyId}
+        companyId={settings?.companyId}
       />
       <ToggleSection
         label="Email"
         status={localSettings.Email}
         name="Email"
-        companyId={settings.companyId}
+        companyId={settings?.companyId}
       />
 
       {/* Collapsible Reports */}
       <Collapsible title="Report" className="mt-5">
         <ToggleSection
           label="Lead lost"
-          status={localSettings.Reports.LostLeadReport}
+          status={localSettings?.Reports?.LostLeadReport}
           name="LostLeadReport"
           sub_name="Reports"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Sales by stage"
-          status={localSettings.Reports.SalesStageReport}
+          status={localSettings.Reports?.SalesStageReport}
           name="SalesStageReport"
           sub_name="Reports"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Lead by territory"
-          status={localSettings.Reports.TerritoryLeadReport}
+          status={localSettings.Reports?.TerritoryLeadReport}
           name="TerritoryLeadReport"
           sub_name="Reports"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Lead conversion"
-          status={localSettings.Reports.LeadConversionReport}
+          status={localSettings.Reports?.LeadConversionReport}
           name="LeadConversionReport"
           sub_name="Reports"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Lead owner activity"
-          status={localSettings.Reports.LeadOwnerActivityReport}
+          status={localSettings.Reports?.LeadOwnerActivityReport}
           name="LeadOwnerActivityReport"
           sub_name="Reports"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Prospects lost lead"
-          status={localSettings.Reports.ProspectsLostLeadsReport}
+          status={localSettings.Reports?.ProspectsLostLeadsReport}
           name="ProspectsLostLeadsReport"
           sub_name="Reports"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="First response time opportunity"
-          status={localSettings.Reports.FirstResponseTimeOppurtunityReport}
+          status={localSettings.Reports?.FirstResponseTimeOppurtunityReport}
           name="FirstResponseTimeOppurtunityReport"
           sub_name="Reports"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Company Overall report"
-          status={localSettings.Reports.CompanyOverallReport}
+          status={localSettings.Reports?.CompanyOverallReport}
           name="CompanyOverallReport"
           sub_name="Reports"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
       </Collapsible>
 
@@ -282,66 +282,66 @@ const GeneralSettingsSection = ({ formData, handleChange, settings }) => {
       <Collapsible title="Master" className="mt-5">
         <ToggleSection
           label="Status master"
-          status={localSettings.Masters.StatusMaster}
+          status={localSettings.Masters?.StatusMaster}
           name="StatusMaster"
           sub_name="Masters"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Currency master"
-          status={localSettings.Masters.CurrencyMaster}
+          status={localSettings.Masters?.CurrencyMaster}
           name="CurrencyMaster"
           sub_name="Masters"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Potential master"
-          status={localSettings.Masters.PotentialMaster}
+          status={localSettings.Masters?.PotentialMaster}
           name="PotentialMaster"
           sub_name="Masters"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Industry master"
-          status={localSettings.Masters.IndustryMaster}
+          status={localSettings.Masters?.IndustryMaster}
           name="IndustryMaster"
           sub_name="Masters"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Lead source master"
-          status={localSettings.Masters.SourceMaster}
+          status={localSettings.Masters?.SourceMaster}
           name="SourceMaster"
           sub_name="Masters"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Service master"
-          status={localSettings.Masters.ServiceMaster}
+          status={localSettings.Masters?.ServiceMaster}
           name="ServiceMaster"
           sub_name="Masters"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Proposal send mode master"
-          status={localSettings.Masters.ProposalModeMaster}
+          status={localSettings.Masters?.ProposalModeMaster}
           name="ProposalModeMaster"
           sub_name="Masters"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Email template master"
-          status={localSettings.Masters.EmailTemplateMaster}
+          status={localSettings.Masters?.EmailTemplateMaster}
           name="EmailTemplateMaster"
           sub_name="Masters"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
         <ToggleSection
           label="Lead Lost reason"
-          status={localSettings.Masters.LeasLostReasonMaster}
+          status={localSettings.Masters?.LeasLostReasonMaster}
           name="LeasLostReasonMaster"
           sub_name="Masters"
-          companyId={settings.companyId}
+          companyId={settings?.companyId}
         />
       </Collapsible>
     </div>

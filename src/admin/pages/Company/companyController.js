@@ -17,7 +17,8 @@ export const useCompanyController = () => {
   // Function to fetch all company details
   const fetchAllCompanyData = useCallback(async () => {
     try {
-      const data = await companyModel.getAllCompantData();``
+      const data = await companyModel.getAllCompantData();
+      console.info("All company date api hit!")
       setCompanyData(data);
     } catch (err) {
       console.error('Failed to fetch company data:', err);
@@ -25,9 +26,9 @@ export const useCompanyController = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchAllCompanyData();
-  }, [fetchAllCompanyData]);
+  // useEffect(() => {
+  //   fetchAllCompanyData();
+  // }, []);
 
   const changeUserStatus = async (userId, newStatus) => {
     try { 
@@ -310,9 +311,9 @@ const createCompany = async (data) => {
   }
 
 
-  useEffect(() => {
-    fetchAllCompanyData();
-  }, []);
+  // useEffect(() => {
+  //   fetchAllCompanyData();
+  // }, []);
 
   return {
     companyData,
